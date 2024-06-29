@@ -1,0 +1,35 @@
+{
+   "name": "spookbot",
+   "version": "1.0.0-dev",
+   "description": "BombParty bot",
+   "main": "dist/index.js",
+   "scripts": {
+      "dev": "ts-node src/index.ts",
+      "build": "tsc",
+      "start": "node dist/index.js",
+      "prisma:format": "npx prisma format",
+      "prisma:migrate": "npx prisma migrate dev --name mig",
+      "prisma:studio": "npx prisma studio",
+      "prisma:generate": "npx prisma generate",
+      "prisma:deploy": "npx prisma migrate deploy"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/PannH/spookbot.git"
+   },
+   "author": "PannH",
+   "license": "UNLICENSED",
+   "bugs": {
+      "url": "https://github.com/PannH/spookbot/issues"
+   },
+   "homepage": "https://github.com/PannH/spookbot#readme",
+   "devDependencies": {
+      "@types/node": "^20.14.9",
+      "ts-node": "^10.9.2",
+      "typescript": "^5.5.2"
+   },
+   "dependencies": {
+      "axios": "^1.7.2",
+      "socket.io-client": "^4.7.5"
+   }
+}
