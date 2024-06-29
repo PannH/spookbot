@@ -25,6 +25,7 @@
    "homepage": "https://github.com/PannH/spookbot#readme",
    "devDependencies": {
       "@types/node": "^20.14.9",
+      "prisma": "^5.16.1",
       "ts-node": "^10.9.2",
       "typescript": "^5.5.2"
    },
