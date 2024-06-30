@@ -5,7 +5,7 @@ import { Room } from '.';
 import type { CreateRoomOptions, JoinRoomData } from '../interfaces';
 
 export default class Client {
-   protected readonly _token: string = process.env.CLIENT_TOKEN;
+   private readonly _token: string = process.env.CLIENT_TOKEN;
    private readonly _userToken: string = randomBytes(8).toString('hex');
 
    public gameSocket: Socket;
