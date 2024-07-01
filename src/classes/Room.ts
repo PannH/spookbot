@@ -22,11 +22,11 @@ export default class Room {
    }
 
    public joinRound(): void {
-      this._client.gameSocket.emit('joinRound', console.log);
+      this._client.gameSocket.emit('joinRound');
    }
 
    public leaveRound(): void {
-      this._client.gameSocket.emit('leaveRound', console.log);
+      this._client.gameSocket.emit('leaveRound');
    }
 
    public startRound(): void {
