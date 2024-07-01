@@ -24,5 +24,7 @@ export default new Event(
             'info'
          );
       }
+
+      client.emit('selfTurn');
    }
 );
