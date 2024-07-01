@@ -7,6 +7,8 @@ import type { MessageVariant } from './MessageVariant';
 import type { PromptDifficulty } from './PromptDifficulty';
 import type { AlphabetLetter } from './AlphabetLetter';
 import type { Optional } from './Optional';
+import type { Awaitable } from './Awaitable';
+import type { EventCallback } from './EventCallback';
 
 export type {
    WordCategory,
@@ -17,5 +19,7 @@ export type {
    MessageVariant,
    PromptDifficulty,
    AlphabetLetter,
-   Optional
+   Optional,
+   Awaitable,
+   EventCallback
 };

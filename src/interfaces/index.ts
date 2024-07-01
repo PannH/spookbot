@@ -4,6 +4,7 @@ import type JoinRoomData from './JoinRoomData';
 import type Auth from './Auth';
 import type ChatterProfileData from './ChatterProfileData';
 import type Rules from './Rules';
+import type EventOptions from './EventOptions';
 
 export type {
    CreateRoomOptions,
@@ -11,5 +12,6 @@ export type {
    JoinRoomData,
    Auth,
    ChatterProfileData,
-   Rules
+   Rules,
+   EventOptions
 };

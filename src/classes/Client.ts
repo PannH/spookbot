@@ -1,10 +1,13 @@
 import axios from 'axios';
 import io, { type Socket } from 'socket.io-client';
 import { randomBytes } from 'node:crypto';
-import { Room } from '.';
+import { type Event, Room } from '.';
 import type { CreateRoomOptions, JoinRoomData } from '../interfaces';
+import EventEmitter from 'node:events';
+import { readdirSync } from 'node:fs';
+import globals from '../globals';
 
-export default class Client {
+export default class Client extends EventEmitter {
    private readonly _token: string = process.env.CLIENT_TOKEN;
    private readonly _userToken: string = randomBytes(8).toString('hex');
 
@@ -15,7 +18,44 @@ export default class Client {
    constructor(
       public nickname: string = process.env.DEFAULT_NICKNAME,
       public picture: string = process.env.DEFAULT_PICTURE
-   ) {}
+   ) {
+      super();
+   }
+
+   private _initEvents(): void {
+      const socketEventFiles = readdirSync(`${globals.baseDir}/events/socket`);
+      const clientEventFiles = readdirSync(`${globals.baseDir}/events/client`);
+
+      for (const file of socketEventFiles) {
+         const event: Event = require(`../events/socket/${file}`).default;
+         const callbackBind = event.callback.bind(null, this);
+
+         if (file.endsWith('.game.ts'))
+            this.gameSocket[event.options.isOnce ? 'once' : 'on'](
+               event.options.name,
+               callbackBind
+            );
+         else if (file.endsWith('.room.ts'))
+            this.roomSocket[event.options.isOnce ? 'once' : 'on'](
+               event.options.name,
+               callbackBind
+            );
+
+         console.log(`listening to ${event.options.name} (${file})`);
+      }
+
+      for (const file of clientEventFiles) {
+         const event: Event = require(`../events/client/${file}`).default;
+         const callbackBind = event.callback.bind(null, this);
+
+         this[event.options.isOnce ? 'once' : 'on'](
+            event.options.name,
+            callbackBind
+         );
+
+         console.log(`listening to ${event.options.name} (${file})`);
+      }
+   }
 
    public async createRoom(options?: CreateRoomOptions): Promise<string> {
       const response = await axios.post<{ url: string; roomCode: string }>(
@@ -76,6 +116,7 @@ export default class Client {
                      );
 
                      this.room = new Room(this);
+                     this._initEvents();
 
                      resolve();
                   }
