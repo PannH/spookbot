@@ -1,4 +1,4 @@
-import type CommandOptions from '../interfaces/CommandOptions';
+import type { CommandOptions } from '../interfaces';
 import type { CommandCallback } from '../types';
 
 export default class Command {
