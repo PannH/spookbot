@@ -1,12 +1,19 @@
 import type { MessageVariant, Optional } from '../types';
-import { Chatter, type Client } from '.';
-import type { ChatterProfileData, Rules } from '../interfaces';
+import { Chatter, type Round, type Client } from '.';
+import type { ChatterProfileData, JoinRoomData, Rules } from '../interfaces';
 import constants from '../constants';
 
 export default class Room {
+   public selfPeerId: number;
    public seatingPlayersCount = 0;
+   public round: Round | null = null;
 
-   constructor(private _client: Client) {}
+   constructor(
+      private _data: JoinRoomData,
+      private _client: Client
+   ) {
+      this.selfPeerId = _data.selfPeerId;
+   }
 
    public async getChatters(): Promise<Chatter[]> {
       return new Promise<Chatter[]>((resolve) => {
