@@ -1,5 +1,4 @@
 import { Event } from '../../classes';
-import type { ChatterProfileData } from '../../interfaces';
 
 export default new Event(
    {
