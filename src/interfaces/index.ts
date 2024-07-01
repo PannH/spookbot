@@ -10,6 +10,7 @@ import type DictionaryManifest from './DictionaryManifest';
 import type PlayerState from './PlayerState';
 import type RoundMilestone from './RoundMilestone';
 import type SeatingMilestone from './SeatingMilestone';
+import type SearchWordsOptions from './SearchWordsOptions';
 
 export type {
    CreateRoomOptions,
@@ -23,5 +24,6 @@ export type {
    DictionaryManifest,
    PlayerState,
    RoundMilestone,
-   SeatingMilestone
+   SeatingMilestone,
+   SearchWordsOptions
 };
