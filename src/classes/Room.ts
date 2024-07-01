@@ -4,6 +4,8 @@ import type { ChatterProfileData, Rules } from '../interfaces';
 import constants from '../constants';
 
 export default class Room {
+   public seatingPlayersCount = 0;
+
    constructor(private _client: Client) {}
 
    public async getChatters(): Promise<Chatter[]> {
