@@ -1,6 +1,8 @@
 import type { ChatterProfileData } from '../interfaces';
 import type { Role } from '../types';
 import type { Client } from '.';
+import type { Profile } from '@prisma/client';
+import globals from '../globals';
 
 export default class Chatter {
    public authId: string | null;
@@ -18,6 +20,14 @@ export default class Chatter {
       this.nickname = nickname;
       this.peerId = peerId;
       this.roles = roles;
+   }
+
+   public async getProfile(): Promise<Profile | null> {
+      return globals.prisma.profile.findUnique({
+         where: {
+            authId: this.authId
+         }
+      });
    }
 
    public get isModerator(): boolean {
