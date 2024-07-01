@@ -1,6 +1,5 @@
 import axios from 'axios';
 import io, { type Socket } from 'socket.io-client';
-import { randomBytes } from 'node:crypto';
 import { type Event, type Command, Room } from '.';
 import type { CreateRoomOptions, JoinRoomData } from '../interfaces';
 import EventEmitter from 'node:events';
@@ -9,7 +8,7 @@ import globals from '../globals';
 
 export default class Client extends EventEmitter {
    private readonly _token: string = process.env.CLIENT_TOKEN;
-   private readonly _userToken: string = randomBytes(8).toString('hex');
+   private readonly _userToken: string = process.env.CLIENT_USER_TOKEN;
 
    public gameSocket: Socket;
    public roomSocket: Socket;
