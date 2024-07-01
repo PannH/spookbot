@@ -5,5 +5,6 @@ import Chatter from './Chatter';
 import Event from './Event';
 import Message from './Message';
 import Command from './Command';
+import Round from './Round';
 
-export { Client, Room, Chatter, Event, Message, Command, Dictionary };
+export { Client, Room, Chatter, Event, Message, Command, Dictionary, Round };
