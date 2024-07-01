@@ -1,4 +1,4 @@
-import { type Chatter, Event } from '../../classes';
+import { type Chatter, Event, Message } from '../../classes';
 import type { ChatterProfileData } from '../../interfaces';
 
 export default new Event(
@@ -15,6 +15,7 @@ export default new Event(
 
       if (!chatter) return;
 
-      client.emit('chat', chatter, content);
+      const message = new Message(chatter, content, client);
+      client.emit('chat', message);
    }
 );
