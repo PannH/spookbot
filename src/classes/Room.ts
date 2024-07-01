@@ -74,16 +74,16 @@ export default class Room {
    }
 
    private _lockRules(): void {
-      this._client.roomSocket.emit('setRulesLocked', true);
+      this._client.gameSocket.emit('setRulesLocked', true);
    }
 
    private _unlockRules(): void {
-      this._client.roomSocket.emit('setRulesLocked', false);
+      this._client.gameSocket.emit('setRulesLocked', false);
    }
 
    public setRules(rules: Optional<Rules>): void {
       this._unlockRules();
-      this._client.roomSocket.emit('setRules', rules);
+      this._client.gameSocket.emit('setRules', rules);
       this._lockRules();
    }
 
