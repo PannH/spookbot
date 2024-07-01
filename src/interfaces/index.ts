@@ -6,6 +6,10 @@ import type ChatterProfileData from './ChatterProfileData';
 import type Rules from './Rules';
 import type EventOptions from './EventOptions';
 import type CommandOptions from './CommandOptions';
+import type DictionaryManifest from './DictionaryManifest';
+import type PlayerState from './PlayerState';
+import type RoundMilestone from './RoundMilestone';
+import type SeatingMilestone from './SeatingMilestone';
 
 export type {
    CreateRoomOptions,
@@ -15,5 +19,9 @@ export type {
    ChatterProfileData,
    Rules,
    EventOptions,
-   CommandOptions
+   CommandOptions,
+   DictionaryManifest,
+   PlayerState,
+   RoundMilestone,
+   SeatingMilestone
 };
