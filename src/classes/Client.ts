@@ -1,7 +1,7 @@
 import axios from 'axios';
 import io, { type Socket } from 'socket.io-client';
 import { randomBytes } from 'node:crypto';
-import { type Event, Room } from '.';
+import { type Event, type Command, Room } from '.';
 import type { CreateRoomOptions, JoinRoomData } from '../interfaces';
 import EventEmitter from 'node:events';
 import { readdirSync } from 'node:fs';
@@ -14,12 +14,15 @@ export default class Client extends EventEmitter {
    public gameSocket: Socket;
    public roomSocket: Socket;
    public room: Room;
+   public commands: Map<string, Command> = new Map();
 
    constructor(
       public nickname: string = process.env.DEFAULT_NICKNAME,
       public picture: string = process.env.DEFAULT_PICTURE
    ) {
       super();
+
+      this._initCommands();
    }
 
    private _initEvents(): void {
@@ -54,6 +57,16 @@ export default class Client extends EventEmitter {
          );
 
          console.log(`listening to ${event.options.name} (${file})`);
+      }
+   }
+
+   private _initCommands(): void {
+      const commandFiles = readdirSync(`${globals.baseDir}/commands`);
+
+      for (const file of commandFiles) {
+         const command: Command = require(`../commands/${file}`).default;
+
+         this.commands.set(command.options.name, command);
       }
    }
 

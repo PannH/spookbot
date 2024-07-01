@@ -9,6 +9,7 @@ import type { AlphabetLetter } from './AlphabetLetter';
 import type { Optional } from './Optional';
 import type { Awaitable } from './Awaitable';
 import type { EventCallback } from './EventCallback';
+import type { CommandCallback } from './CommandCallback';
 
 export type {
    WordCategory,
@@ -21,5 +22,6 @@ export type {
    AlphabetLetter,
    Optional,
    Awaitable,
-   EventCallback
+   EventCallback,
+   CommandCallback
 };
