@@ -42,8 +42,6 @@ export default class Client extends EventEmitter {
                event.options.name,
                callbackBind
             );
-
-         console.log(`listening to ${event.options.name} (${file})`);
       }
 
       for (const file of clientEventFiles) {
@@ -54,8 +52,6 @@ export default class Client extends EventEmitter {
             event.options.name,
             callbackBind
          );
-
-         console.log(`listening to ${event.options.name} (${file})`);
       }
    }
 
@@ -127,7 +123,7 @@ export default class Client extends EventEmitter {
                         this._userToken
                      );
 
-                     this.room = new Room(this);
+                     this.room = new Room(data, this);
                      this._initEvents();
 
                      resolve();
