@@ -8,9 +8,24 @@ datasource db {
 }
 
 model Word {
-  id             Int           @id @default(autoincrement())
-  value          String        @unique
-  categories     Json          @default("[]")
+  id         Int    @id @default(autoincrement())
+  value      String @unique
+  categories Json   @default("[]")
 
   @@map("words")
+}
+
+model Profile {
+  id        Int        @id @default(autoincrement())
+  authId    String     @unique
+  username  String     @unique
+  staffRole StaffRole? @map("staff_role")
+
+  @@map("profiles")
+}
+
+enum StaffRole {
+  ADMIN
+  TRUSTED
+  DICTIONARY_MANAGER
 }

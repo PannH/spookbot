@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `profiles` MODIFY `role` ENUM('ADMIN', 'TRUSTED', 'DICTIONARY_MANAGER') NULL;
