@@ -44,4 +44,13 @@ export default class Chatter {
    public ban(): void {
       this._client.roomSocket.emit('setUserBanned', this.peerId, true);
    }
+
+   public unban(): void {
+      this._client.roomSocket.emit('setUserBanned', this.peerId, false);
+   }
+
+   public softBan(): void {
+      this.ban();
+      this.unban();
+   }
 }
