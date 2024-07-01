@@ -21,6 +21,21 @@ export default class Room {
       });
    }
 
+   public async getChatter(peerId: number): Promise<Chatter | null> {
+      return new Promise<Chatter>((resolve) => {
+         this._client.roomSocket.emit(
+            'getChatterProfile',
+            peerId,
+            (chatterProfile: ChatterProfileData | null) => {
+               if (!chatterProfile) return resolve(null);
+
+               const chatter = new Chatter(chatterProfile, this._client);
+               resolve(chatter);
+            }
+         );
+      });
+   }
+
    public joinRound(): void {
       this._client.gameSocket.emit('joinRound');
    }
