@@ -1,4 +1,5 @@
 export default interface PlayerStats {
+   timeAliveMilliseconds: number;
    words: number;
    hyphens: number;
    longs: number;

@@ -1,5 +1,5 @@
 import type { StaffRole } from '@prisma/client';
-import type { Rules } from './interfaces';
+import type { PlayerStats, Rules } from './interfaces';
 import type { Optional, Role, WordCategory } from './types';
 
 export default {
@@ -40,5 +40,25 @@ export default {
       hyphen: 'un mot composé',
       long: 'un mot long',
       plant: 'une plante'
-   } satisfies Record<WordCategory, string>
+   } satisfies Record<WordCategory, string>,
+   DEFAULT_PLAYER_STATS: {
+      timeAliveMilliseconds: null,
+      words: 0,
+      hyphens: 0,
+      longs: 0,
+      ethnonyms: 0,
+      adverbs: 0,
+      plants: 0,
+      creatures: 0
+   } satisfies PlayerStats,
+   PLAYER_STAT_NAMES: {
+      timeAliveMilliseconds: 'temps',
+      adverbs: 'adverbes',
+      creatures: 'créatures',
+      ethnonyms: 'ethnonymes',
+      hyphens: 'mots composés',
+      longs: 'mots longs',
+      plants: 'plantes',
+      words: 'mots'
+   } satisfies Record<keyof PlayerStats, string>
 } as const;
