@@ -1,5 +1,5 @@
 import { Command } from '../classes';
-import { compactNumber } from '../functions';
+import { compactNumber, simplifyString } from '../functions';
 import globals from '../globals';
 import type { WordCategory } from '../types';
 
@@ -13,7 +13,7 @@ export default new Command(
       const flags = args.filter((arg) => arg.startsWith('-'));
       const queries = args
          .filter((arg) => !flags.includes(arg))
-         .map((query) => new RegExp(query, 'i'));
+         .map((query) => simplifyString(query));
 
       const flagCategories: Record<string, WordCategory> = {
          '-mc': 'hyphen',
