@@ -18,10 +18,10 @@ export default new Event(
             (statKey) =>
                `${constants.PLAYER_STAT_NAMES[statKey]} (${formatStatValue(statKey as keyof PlayerStats, playerStats[statKey])})`
          )
-         .join(', ');
+         .join(' — ');
 
       client.room.sendMessage(
-         `Récapapitulatif de la partie de ${chatter.nickname}: ${playerStatsString}`
+         `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}`
       );
    }
 );
