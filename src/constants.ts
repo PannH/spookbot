@@ -1,6 +1,6 @@
 import type { StaffRole } from '@prisma/client';
 import type { Rules } from './interfaces';
-import type { Optional, Role } from './types';
+import type { Optional, Role, WordCategory } from './types';
 
 export default {
    DEFAULT_RULES: {
@@ -24,5 +24,21 @@ export default {
       ADMIN: 'Admin',
       TRUSTED: 'Trusted',
       DICTIONARY_MANAGER: 'Gérant Dico'
-   } satisfies Record<StaffRole, string>
+   } satisfies Record<StaffRole, string>,
+   WORD_CATEGORY_NAMES: {
+      adverb: 'adverbe',
+      creature: 'créature',
+      ethnonym: 'ethnonyme',
+      hyphen: 'mot composé',
+      long: 'mot long',
+      plant: 'plante'
+   } satisfies Record<WordCategory, string>,
+   WORD_CATEGORY_NAMES_WITH_ARTICLE: {
+      adverb: 'un adverbe',
+      creature: 'une créature',
+      ethnonym: 'un ethnonyme',
+      hyphen: 'un mot composé',
+      long: 'un mot long',
+      plant: 'une plante'
+   } satisfies Record<WordCategory, string>
 } as const;
