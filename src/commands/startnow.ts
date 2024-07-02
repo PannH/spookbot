@@ -8,7 +8,7 @@ export default new Command(
       roomOwnerOnly: true
    },
    async (client, message, args) => {
-      if (client.room.seatingPlayersCount < 2)
+      if (client.room.seatingPlayers.length < 2)
          return client.room.sendMessage(
             "Il n'y a pas assez de joueurs.",
             'error'
