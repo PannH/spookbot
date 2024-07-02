@@ -8,8 +8,7 @@ export default new Event(
    async (client, data: SetupData) => {
       switch (data.milestone.name) {
          case 'round': {
-            client.room.round.syllable = data.milestone.syllable;
-            client.emit('roundStart');
+            client.emit('roundStart', data.milestone);
 
             if (data.milestone.currentPlayerPeerId === client.room.selfPeerId)
                client.emit('selfTurn', data.milestone.syllable);
