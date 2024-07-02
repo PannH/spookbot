@@ -2,6 +2,7 @@ import type { Client } from '.';
 import type { PlayerStats, RoundMilestone } from '../interfaces';
 
 export default class Round {
+   public hasEnded = false;
    public syllable: string;
    public playerPeerId: number;
    public currentWord = '';

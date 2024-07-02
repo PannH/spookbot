@@ -5,7 +5,8 @@ export default new Event(
       name: 'roundEnd'
    },
    (client) => {
-      client.room.round = null;
+      if (client.room.round) client.room.round.hasEnded = true;
+
       client.room.joinRound();
    }
 );
