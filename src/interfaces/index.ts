@@ -11,6 +11,9 @@ import type PlayerState from './PlayerState';
 import type RoundMilestone from './RoundMilestone';
 import type SeatingMilestone from './SeatingMilestone';
 import type SearchWordsOptions from './SearchWordsOptions';
+import type Player from './Player';
+import type SetupRules from './SetupRules';
+import type SetupData from './SetupData';
 
 export type {
    CreateRoomOptions,
@@ -25,5 +28,8 @@ export type {
    PlayerState,
    RoundMilestone,
    SeatingMilestone,
-   SearchWordsOptions
+   SearchWordsOptions,
+   Player,
+   SetupRules,
+   SetupData
 };
