@@ -6,6 +6,7 @@ export default new Event(
       name: 'addPlayer'
    },
    async (client, player: Player) => {
-      client.room.seatingPlayersCount++;
+      const chatter = await client.room.getChatter(player.profile.peerId);
+      client.room.seatingPlayers.push(chatter);
    }
 );

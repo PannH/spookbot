@@ -5,6 +5,8 @@ export default new Event(
       name: 'removePlayer'
    },
    async (client, peerId: number) => {
-      client.room.seatingPlayersCount--;
+      client.room.seatingPlayers = client.room.seatingPlayers.filter(
+         (player) => player.peerId !== peerId
+      );
    }
 );

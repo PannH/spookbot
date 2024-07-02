@@ -5,7 +5,7 @@ import constants from '../constants';
 
 export default class Room {
    public selfPeerId: number;
-   public seatingPlayersCount = 0;
+   public seatingPlayers: Chatter[] = [];
    public round: Round | null = null;
 
    constructor(

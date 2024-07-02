@@ -16,7 +16,12 @@ export default new Event(
          }
 
          case 'seating': {
-            client.room.seatingPlayersCount = data.players.length;
+            client.room.seatingPlayers = await Promise.all(
+               data.players.map(
+                  async (player) =>
+                     await client.room.getChatter(player.profile.peerId)
+               )
+            );
             client.emit('roundEnd', data.milestone);
             break;
          }
