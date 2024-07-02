@@ -8,7 +8,6 @@ export default new Event(
    async (client, milestone: Milestone) => {
       switch (milestone.name) {
          case 'round': {
-            client.room.round = new Round(milestone, client);
             client.emit('roundStart');
 
             if (milestone.currentPlayerPeerId === client.room.selfPeerId)
@@ -17,7 +16,6 @@ export default new Event(
          }
 
          case 'seating':
-            client.room.round = null;
             client.emit('roundEnd', milestone);
             break;
       }
