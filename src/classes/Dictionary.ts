@@ -23,9 +23,13 @@ export default class Dictionary {
    }
 
    public searchWords(
-      query: string | RegExp,
+      query: string | RegExp | (string | RegExp)[],
       options?: SearchWordsOptions
    ): string[] {
+      const queries = (!Array.isArray(query) ? [query] : query).map((query) =>
+         typeof query === 'string' ? new RegExp(query, 'i') : query
+      );
+
       const matchingElements = this._cache.filter(({ word, categories }) => {
          if (
             options?.categories?.length &&
@@ -41,9 +45,11 @@ export default class Dictionary {
          )
             return false;
 
-         return query instanceof RegExp
-            ? query.test(word)
-            : word.includes(query);
+         // TODO: add protection against malicious regex
+
+         return !queries.length
+            ? true
+            : queries.some((query) => query.test(word));
       });
 
       const words = matchingElements.map((element) => element.word);
