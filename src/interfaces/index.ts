@@ -14,6 +14,7 @@ import type SearchWordsOptions from './SearchWordsOptions';
 import type Player from './Player';
 import type SetupRules from './SetupRules';
 import type SetupData from './SetupData';
+import type PlayerStats from './PlayerStats';
 
 export type {
    CreateRoomOptions,
@@ -31,5 +32,6 @@ export type {
    SearchWordsOptions,
    Player,
    SetupRules,
-   SetupData
+   SetupData,
+   PlayerStats
 };

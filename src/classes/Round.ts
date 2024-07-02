@@ -1,11 +1,12 @@
 import type { Client } from '.';
-import type { RoundMilestone } from '../interfaces';
+import type { PlayerStats, RoundMilestone } from '../interfaces';
 
 export default class Round {
    public syllable: string;
    public playerPeerId: number;
    public currentWord = '';
    public setWords: string[] = [];
+   public playersStats: Record<number, PlayerStats> = {};
 
    constructor(
       private readonly _milestone: RoundMilestone,
