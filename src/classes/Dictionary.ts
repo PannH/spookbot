@@ -22,6 +22,10 @@ export default class Dictionary {
       }));
    }
 
+   public getWordCategories(word: string): WordCategory[] {
+      return this._cache.find((element) => element.word === word)?.categories;
+   }
+
    public searchWords(
       query: string | RegExp | (string | RegExp)[],
       options?: SearchWordsOptions
