@@ -20,6 +20,7 @@ model Profile {
   authId    String     @unique @map("auth_id")
   username  String     @unique
   staffRole StaffRole? @map("staff_role")
+  records   Record[]
 
   @@map("profiles")
 }
@@ -28,4 +29,14 @@ enum StaffRole {
   ADMIN
   TRUSTED
   DICTIONARY_MANAGER
+}
+
+model Record {
+  id        Int      @id @default(autoincrement())
+  key       String
+  value     Int
+  Profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId Int?     @map("profile_id")
+
+  @@map("records")
 }
