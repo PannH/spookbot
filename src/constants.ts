@@ -42,7 +42,7 @@ export default {
       plant: 'une plante'
    } satisfies Record<WordCategory, string>,
    DEFAULT_PLAYER_STATS: {
-      timeAliveMilliseconds: null,
+      lifetime: null,
       words: 0,
       hyphens: 0,
       longs: 0,
@@ -52,7 +52,7 @@ export default {
       creatures: 0
    } satisfies PlayerStats,
    PLAYER_STAT_NAMES: {
-      timeAliveMilliseconds: 'temps',
+      lifetime: 'temps',
       adverbs: 'adverbes',
       creatures: 'créatures',
       ethnonyms: 'ethnonymes',

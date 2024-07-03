@@ -6,7 +6,7 @@ export default function formatStatValue(
    value: number
 ): string {
    switch (key) {
-      case 'timeAliveMilliseconds':
+      case 'lifetime':
          return `${globals.dayjs.duration(value).format('HH:mm:ss')}`;
 
       default:

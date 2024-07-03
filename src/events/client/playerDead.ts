@@ -9,7 +9,7 @@ export default new Event(
       name: 'playerDead'
    },
    async (client, chatter: Chatter) => {
-      client.room.round.playersStats[chatter.peerId].timeAliveMilliseconds =
+      client.room.round.playersStats[chatter.peerId].lifetime =
          Date.now() - client.room.round.startTimestamp;
 
       const playerStats = client.room.round.playersStats[chatter.peerId];
