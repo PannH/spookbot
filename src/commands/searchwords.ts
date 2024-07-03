@@ -33,7 +33,7 @@ export default new Command(
       if (!matchingWords.length)
          return client.room.sendMessage('Aucun mot trouvé.', 'error');
 
-      const MAX_LENGTH = 300;
+      const MAX_LENGTH = 200;
       let messageContent = `${compactNumber(matchingWords.length)} ${matchingWords.length > 1 ? 'mots trouvés' : 'mot trouvé'}: `;
       while (true) {
          const oldMessageContent = messageContent;
