@@ -14,6 +14,13 @@ export default new Event(
          }
       );
 
-      client.room.round.setWord(matchingWords[0]);
+      if (!matchingWords.length) {
+         client.room.round.setWord('Aucun mot trouvé 😔', false);
+         setTimeout(() => {
+            client.room.round.setWord('💥');
+         }, 1000);
+      } else {
+         client.room.round.setWord(matchingWords[0]);
+      }
    }
 );
