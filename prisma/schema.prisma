@@ -34,7 +34,7 @@ enum StaffRole {
 model Record {
   id        Int      @id @default(autoincrement())
   key       String
-  value     Int
+  value     Int      @default(0)
   Profile   Profile? @relation(fields: [profileId], references: [id])
   profileId Int?     @map("profile_id")
 

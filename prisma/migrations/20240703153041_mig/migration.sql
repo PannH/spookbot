@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `records` MODIFY `value` INTEGER NOT NULL DEFAULT 0;
