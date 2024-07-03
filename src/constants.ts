@@ -71,6 +71,15 @@ export default {
          startingLives: 2,
          maxLives: 3
       },
+      sub50: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -50,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
       sub1: {
          dictionaryId: 'fr',
          promptDifficulty: 'custom',
