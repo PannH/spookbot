@@ -4,6 +4,7 @@ import type { Client } from '.';
 import type { Profile } from '@prisma/client';
 import globals from '../globals';
 import { randomBytes } from 'node:crypto';
+import constants from '../constants';
 
 export default class Chatter {
    public authId: string | null;
@@ -45,7 +46,16 @@ export default class Chatter {
             authId: this.authId,
             username: sameUsernameProfile
                ? `Joueur-${randomBytes(3).toString('hex')}`
-               : this.nickname
+               : this.nickname,
+            records: {
+               createMany: {
+                  data: Object.keys(constants.DEFAULT_PLAYER_STATS).map(
+                     (statKey) => ({
+                        key: statKey
+                     })
+                  )
+               }
+            }
          }
       });
 
