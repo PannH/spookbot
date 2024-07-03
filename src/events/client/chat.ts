@@ -16,7 +16,7 @@ export default new Event(
          const command =
             client.commands.get(commandName) ??
             [...client.commands.values()].find((command) =>
-               command.options.aliases.includes(commandName)
+               command.options.aliases?.includes(commandName)
             );
 
          if (!command) return;
