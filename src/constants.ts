@@ -1,6 +1,6 @@
 import type { StaffRole } from '@prisma/client';
 import type { PlayerStats, Rules } from './interfaces';
-import type { Optional, Role, WordCategory } from './types';
+import type { Optional, Role, RulePreset, WordCategory } from './types';
 
 export default {
    DEFAULT_RULES: {
@@ -60,5 +60,52 @@ export default {
       longs: 'mots longs',
       plants: 'plantes',
       words: 'mots'
-   } satisfies Record<keyof PlayerStats, string>
+   } satisfies Record<keyof PlayerStats, string>,
+   RULE_PRESETS: {
+      reset: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: 1,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      sub1: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -1,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      sub100: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -100,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      sub500: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -500,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      sub1000: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -1000,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      }
+   } satisfies Record<RulePreset, Optional<Rules>>
 } as const;
