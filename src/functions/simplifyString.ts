@@ -1,7 +1,7 @@
+import removeAccents from './removeAccents';
+
 export default function simplifyString(string: string): string {
-   return string
+   return removeAccents(string)
       .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z'-]/g, '');
 }
