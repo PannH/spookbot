@@ -3,6 +3,7 @@ import type { Role } from '../types';
 import type { Client } from '.';
 import type { Profile } from '@prisma/client';
 import globals from '../globals';
+import { randomBytes } from 'node:crypto';
 
 export default class Chatter {
    public authId: string | null;
@@ -23,11 +24,32 @@ export default class Chatter {
    }
 
    public async getProfile(): Promise<Profile | null> {
-      return globals.prisma.profile.findUnique({
+      if (!this.authId) return null;
+
+      return await globals.prisma.profile.findUnique({
          where: {
             authId: this.authId
          }
       });
+   }
+
+   public async createProfile(): Promise<Profile> {
+      const sameUsernameProfile = await globals.prisma.profile.findUnique({
+         where: {
+            username: this.nickname
+         }
+      });
+
+      await globals.prisma.profile.create({
+         data: {
+            authId: this.authId,
+            username: sameUsernameProfile
+               ? `Joueur-${randomBytes(3).toString('hex')}`
+               : this.nickname
+         }
+      });
+
+      return await this.getProfile();
    }
 
    public get isModerator(): boolean {
