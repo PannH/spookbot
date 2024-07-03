@@ -10,8 +10,11 @@ export default new Event(
       client.room.round = new Round(milestone, client);
 
       for (const player of client.room.seatingPlayers) {
-         client.room.round.playersStats[player.peerId] =
-            constants.DEFAULT_PLAYER_STATS;
+         if (player.peerId === client.room.selfPeerId) continue;
+
+         client.room.round.playersStats[player.peerId] = structuredClone(
+            constants.DEFAULT_PLAYER_STATS
+         );
       }
    }
 );
