@@ -11,6 +11,7 @@ import type { Awaitable } from './Awaitable';
 import type { EventCallback } from './EventCallback';
 import type { CommandCallback } from './CommandCallback';
 import type { Milestone } from './Milestone';
+import type { RulePreset } from './RulePreset';
 
 export type {
    WordCategory,
@@ -25,5 +26,6 @@ export type {
    Awaitable,
    EventCallback,
    CommandCallback,
-   Milestone
+   Milestone,
+   RulePreset
 };
