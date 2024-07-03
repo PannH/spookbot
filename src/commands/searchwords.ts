@@ -1,4 +1,5 @@
 import { Command } from '../classes';
+import constants from '../constants';
 import { compactNumber, removeAccents, simplifyString } from '../functions';
 import globals from '../globals';
 import type { WordCategory } from '../types';
@@ -20,9 +21,23 @@ export default new Command(
          '-l': 'long',
          '-adv': 'adverb',
          '-pl': 'plant',
-         '-e': 'ethnonym',
+         '-eth': 'ethnonym',
          '-cr': 'creature'
       };
+
+      if (flags.some((flag) => flagCategories[flag] === undefined))
+         return client.room.sendMessage(
+            `Vous avez spécifié un ou plusieurs paramètre(s) invalide(s), veuillez choisir parmi: ${Object.keys(
+               flagCategories
+            )
+               .map(
+                  (flag) =>
+                     `${flag} (${constants.WORD_CATEGORY_NAMES[flagCategories[flag]]})`
+               )
+               .join(', ')}`,
+            'error'
+         );
+
       const categories = flags.map((flag) => flagCategories[flag]);
 
       const matchingWords = globals.dictionary.searchWords(queries, {
