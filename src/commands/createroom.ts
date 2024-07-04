@@ -1,4 +1,5 @@
 import { Client, Command } from '../classes';
+import globals from '../globals';
 
 export default new Command(
    {
@@ -11,6 +12,18 @@ export default new Command(
       requireAuth: true
    },
    async (client, message, args) => {
+      const existingRoom = await globals.prisma.activeRoom.findUnique({
+         where: {
+            ownerAuthId: message.chatter.authId
+         }
+      });
+
+      if (existingRoom)
+         return client.room.sendMessage(
+            `${message.chatter.nickname}, vous avez déjà une salle: https://jklm.fun/${existingRoom.code}`,
+            'error'
+         );
+
       const roomPrivacy = args[0];
       const isPublic = !(roomPrivacy === 'private' || roomPrivacy === 'pv');
 
@@ -21,6 +34,7 @@ export default new Command(
             '{username}',
             message.chatter.nickname
          ),
+         ownerAuthId: message.chatter.authId,
          isPublic
       });
 

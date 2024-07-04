@@ -76,7 +76,17 @@ export default class Client extends EventEmitter {
          }
       );
 
-      return response.data.roomCode;
+      const { roomCode } = response.data;
+
+      await globals.prisma.activeRoom.create({
+         data: {
+            isDefault: options?.isDefault ?? false,
+            code: roomCode,
+            ownerAuthId: options?.ownerAuthId
+         }
+      });
+
+      return roomCode;
    }
 
    public async joinRoom(code: string): Promise<void> {
