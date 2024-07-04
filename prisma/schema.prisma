@@ -40,3 +40,12 @@ model Record {
 
   @@map("records")
 }
+
+model ActiveRoom {
+  id          Int     @id @default(autoincrement())
+  ownerAuthId String? @unique @map("owner_auth_id")
+  code        String  @unique
+  isDefault   Boolean @map("is_default")
+
+  @@map("active_rooms")
+}
