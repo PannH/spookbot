@@ -49,7 +49,8 @@ export default {
       ethnonyms: 0,
       adverbs: 0,
       plants: 0,
-      creatures: 0
+      creatures: 0,
+      lives: 0
    } satisfies PlayerStats,
    PLAYER_STAT_NAMES: {
       lifetime: 'temps',
@@ -59,7 +60,8 @@ export default {
       hyphens: 'mots composés',
       longs: 'mots longs',
       plants: 'plantes',
-      words: 'mots'
+      words: 'mots',
+      lives: 'vies'
    } satisfies Record<keyof PlayerStats, string>,
    RULE_PRESETS: {
       reset: {

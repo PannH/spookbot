@@ -7,4 +7,5 @@ export default interface PlayerStats {
    adverbs: number;
    plants: number;
    creatures: number;
+   lives: number;
 }

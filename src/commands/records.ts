@@ -26,7 +26,8 @@ export default new Command(
          'lifetime',
          'longs',
          'plants',
-         'words'
+         'words',
+         'lives'
       ];
 
       if (!category) {
@@ -70,7 +71,8 @@ export default new Command(
             t: 'lifetime',
             l: 'longs',
             pl: 'plants',
-            m: 'words'
+            m: 'words',
+            v: 'lives'
          };
 
          if (!CATEGORY_SHORTCUTS[category])
