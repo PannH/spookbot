@@ -6,7 +6,7 @@ import globals from '../globals';
 export default new Command(
    {
       name: 'categories',
-      description: "Voir les catégories d'un mot",
+      description: "Voir les catégories d'un mot.",
       aliases: ['cat'],
       usage: {
          formats: ['/cat <mot>'],
