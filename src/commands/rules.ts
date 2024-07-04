@@ -41,7 +41,12 @@ export default new Command(
             );
 
          client.room.setRules(rulePreset);
-         client.room.sendMessage('Les règles ont été mises à jour.');
+         client.room.sendMessage(
+            'Les règles ont été mises à jour. Les statistiques ne seront pas sauvegardées.'
+         );
+         client.room.notCountStats = {
+            reason: 'CUSTOM_RULES'
+         };
       } else if (args.length === 5) {
          const rules: Optional<Rules> = {
             customPromptDifficulty: Number.parseInt(args[0]),
@@ -58,7 +63,12 @@ export default new Command(
             );
 
          client.room.setRules(rules);
-         client.room.sendMessage('Les règles ont été mises à jour.');
+         client.room.sendMessage(
+            'Les règles ont été mises à jour. Les statistiques ne seront pas sauvegardées.'
+         );
+         client.room.notCountStats = {
+            reason: 'CUSTOM_RULES'
+         };
       } else {
          client.room.sendMessage(
             'Nombre d\'arguments invalide. Veuillez indiquer soit un preset, soit la configuration complète (voir "/help rules")',

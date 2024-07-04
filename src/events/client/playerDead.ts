@@ -25,6 +25,12 @@ export default new Event(
          `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}`
       );
 
+      if (client.room.notCountStats)
+         return client.room.sendMessage(
+            `Les statistiques ne sont pas sauvegardées car ${constants.NOT_COUNT_STATS_REASONS[client.room.notCountStats.reason]}.`,
+            'warning'
+         );
+
       let profile = await chatter.getProfile();
 
       if (!profile) {

@@ -12,6 +12,7 @@ import type { EventCallback } from './EventCallback';
 import type { CommandCallback } from './CommandCallback';
 import type { Milestone } from './Milestone';
 import type { RulePreset } from './RulePreset';
+import type { NotCountStatsReason } from './NotCountStatsReason';
 
 export type {
    WordCategory,
@@ -27,5 +28,6 @@ export type {
    EventCallback,
    CommandCallback,
    Milestone,
-   RulePreset
+   RulePreset,
+   NotCountStatsReason
 };

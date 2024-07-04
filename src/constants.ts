@@ -2,6 +2,7 @@ import type { StaffRole } from '@prisma/client';
 import type { PlayerStats, Rules } from './interfaces';
 import type {
    AlphabetLetter,
+   NotCountStatsReason,
    Optional,
    Role,
    RulePreset,
@@ -156,5 +157,8 @@ export default {
       'x',
       'y',
       'z'
-   ] satisfies AlphabetLetter[]
+   ] satisfies AlphabetLetter[],
+   NOT_COUNT_STATS_REASONS: {
+      CUSTOM_RULES: 'les règles sont modifiées'
+   } satisfies Record<NotCountStatsReason, string>
 } as const;
