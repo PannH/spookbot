@@ -6,6 +6,7 @@ import constants from '../constants';
 export default class Room {
    public selfPeerId: number;
    public code: string;
+   public isPublic: boolean;
    public seatingPlayers: Chatter[] = [];
    public round: Round | null = null;
 
@@ -15,6 +16,7 @@ export default class Room {
    ) {
       this.selfPeerId = _data.selfPeerId;
       this.code = _data.roomEntry.roomCode;
+      this.isPublic = _data.roomEntry.isPublic;
    }
 
    public leave(): void {
@@ -86,6 +88,7 @@ export default class Room {
 
    public setPrivacy(isPublic: boolean): void {
       this._client.roomSocket.emit('setRoomPublic', isPublic);
+      this.isPublic = isPublic;
    }
 
    private _lockRules(): void {
