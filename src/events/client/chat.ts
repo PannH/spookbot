@@ -55,8 +55,11 @@ export default new Event(
             );
          }
 
-         // TODO: Check if the user is the owner of the room
-         if (roomOwnerOnly && profile?.staffRole !== 'ADMIN')
+         if (
+            roomOwnerOnly &&
+            client.room.ownerAuthId !== message.chatter.authId &&
+            profile?.staffRole !== 'ADMIN'
+         )
             return client.room.sendMessage(
                'Vous devez être le propriétaire de la salle pour utiliser cette commande.',
                'error'

@@ -123,7 +123,7 @@ export default class Client extends EventEmitter {
                      roomCode: code,
                      userToken: this._userToken
                   },
-                  (data: JoinRoomData) => {
+                  async (data: JoinRoomData) => {
                      const { gameId, roomCode } = data.roomEntry;
 
                      this.gameSocket.emit(
@@ -133,7 +133,14 @@ export default class Client extends EventEmitter {
                         this._userToken
                      );
 
-                     this.room = new Room(data, this);
+                     const activeRoom =
+                        await globals.prisma.activeRoom.findFirst({
+                           where: {
+                              code
+                           }
+                        });
+
+                     this.room = new Room(activeRoom.ownerAuthId, data, this);
                      this._initEvents();
 
                      resolve();

@@ -11,6 +11,7 @@ export default class Room {
    public round: Round | null = null;
 
    constructor(
+      public ownerAuthId: string | null,
       private _data: JoinRoomData,
       private _client: Client
    ) {
