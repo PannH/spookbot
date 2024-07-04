@@ -78,7 +78,7 @@ export default new Event(
          const beatenRecordsString = Object.entries(beatenRecords)
             .map(
                ([statKey, { oldValue, newValue }]) =>
-                  `${constants.PLAYER_STAT_NAMES[statKey as keyof PlayerStats]}: ${formatStatValue(statKey as keyof PlayerStats, oldValue)} → ${formatStatValue(statKey as keyof PlayerStats, newValue)}`
+                  `${constants.PLAYER_STAT_NAMES[statKey as keyof PlayerStats]} (${formatStatValue(statKey as keyof PlayerStats, oldValue)} → ${formatStatValue(statKey as keyof PlayerStats, newValue)})`
             )
             .join(' — ');
 
