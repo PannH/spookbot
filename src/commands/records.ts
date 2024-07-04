@@ -31,10 +31,7 @@ export default new Command(
 
       if (!category) {
          const records: Optional<
-            Record<
-               keyof PlayerStats,
-               { username: string; value: number; date: Date }
-            >
+            Record<keyof PlayerStats, { username: string; value: number }>
          > = {};
 
          for (const CATEGORY of CATEGORIES) {
@@ -52,8 +49,7 @@ export default new Command(
 
             records[CATEGORY] = {
                username: categoryRecord.Profile.username,
-               value: categoryRecord.value,
-               date: categoryRecord.date
+               value: categoryRecord.value
             };
          }
 
