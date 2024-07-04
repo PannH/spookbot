@@ -8,6 +8,7 @@ export default class Round {
    public playerPeerId: number;
    public currentWord = '';
    public setWords: string[] = [];
+   public setCategoryWords: string[] = [];
    public playersStats: Record<number, PlayerStats> = {};
    public fuckedSyllables: string[] = [];
 

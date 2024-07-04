@@ -30,36 +30,71 @@ export default new Event(
       if (data.playerPeerId !== client.room.selfPeerId) {
          client.room.round.playersStats[data.playerPeerId].words++;
 
-         const wordCategories =
-            globals.dictionary.getWordCategories(currentWord);
-
-         const categoryStats: Record<WordCategory, keyof PlayerStats> = {
-            adverb: 'adverbs',
-            creature: 'creatures',
-            ethnonym: 'ethnonyms',
-            hyphen: 'hyphens',
-            long: 'longs',
-            plant: 'plants'
-         };
-
          const chatter = await client.room.getChatter(data.playerPeerId);
 
-         if (wordCategories.length) {
-            for (const category of wordCategories)
-               client.room.round.playersStats[data.playerPeerId][
-                  categoryStats[category]
-               ]++;
+         if (!client.room.round.setCategoryWords.includes(currentWord)) {
+            const wordCategories =
+               globals.dictionary.getWordCategories(currentWord);
 
-            const wordCategoriesString = wordCategories
-               .map(
-                  (category) =>
-                     `${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[category]} (${client.room.round.playersStats[data.playerPeerId][categoryStats[category]]})`
-               )
-               .join(', ');
+            const categoryStats: Record<WordCategory, keyof PlayerStats> = {
+               adverb: 'adverbs',
+               creature: 'creatures',
+               ethnonym: 'ethnonyms',
+               hyphen: 'hyphens',
+               long: 'longs',
+               plant: 'plants'
+            };
 
-            client.room.sendMessage(
-               `${chatter.nickname} a placé ${wordCategoriesString}: ${currentWord.toUpperCase()}`
+            if (wordCategories.length) {
+               client.room.round.setCategoryWords.push(currentWord);
+
+               for (const category of wordCategories)
+                  client.room.round.playersStats[data.playerPeerId][
+                     categoryStats[category]
+                  ]++;
+
+               const wordCategoriesString = wordCategories
+                  .map(
+                     (category) =>
+                        `${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[category]} (${client.room.round.playersStats[data.playerPeerId][categoryStats[category]]})`
+                  )
+                  .join(', ');
+
+               client.room.sendMessage(
+                  `${chatter.nickname} a placé ${wordCategoriesString}: ${currentWord.toUpperCase()}`
+               );
+            }
+
+            const wordSyllables = getSyllables(currentWord).filter(
+               (syllable) =>
+                  !client.room.round.fuckedSyllables.includes(syllable)
             );
+            const fuckedSyllables: string[] = [];
+            for (const syllable of wordSyllables) {
+               const remainingSyllableWords = globals.dictionary.searchWords(
+                  syllable,
+                  {
+                     excludes: client.room.round.setWords
+                  }
+               );
+
+               if (
+                  remainingSyllableWords.length === 1 &&
+                  remainingSyllableWords.includes(currentWord)
+               )
+                  fuckedSyllables.push(syllable);
+            }
+
+            if (fuckedSyllables.length) {
+               client.room.round.fuckedSyllables.push(...fuckedSyllables);
+               client.room.round.playersStats[
+                  data.playerPeerId
+               ].fuckedSyllables += fuckedSyllables.length;
+
+               client.room.sendMessage(
+                  `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
+               );
+            }
          }
 
          const currentAlphaLetterIndex =
@@ -73,35 +108,6 @@ export default new Event(
 
             client.room.sendMessage(
                `${chatter.nickname} a placé un alpha (${formatStatValue('alpha', client.room.round.playersStats[data.playerPeerId].alpha)}): ${currentWord.toUpperCase()}`
-            );
-         }
-
-         const wordSyllables = getSyllables(currentWord).filter(
-            (syllable) => !client.room.round.fuckedSyllables.includes(syllable)
-         );
-         const fuckedSyllables: string[] = [];
-         for (const syllable of wordSyllables) {
-            const remainingSyllableWords = globals.dictionary.searchWords(
-               syllable,
-               {
-                  excludes: client.room.round.setWords
-               }
-            );
-
-            if (
-               remainingSyllableWords.length === 1 &&
-               remainingSyllableWords.includes(currentWord)
-            )
-               fuckedSyllables.push(syllable);
-         }
-
-         if (fuckedSyllables.length) {
-            client.room.round.fuckedSyllables.push(...fuckedSyllables);
-            client.room.round.playersStats[data.playerPeerId].fuckedSyllables +=
-               fuckedSyllables.length;
-
-            client.room.sendMessage(
-               `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
             );
          }
       }
