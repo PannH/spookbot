@@ -9,7 +9,7 @@ export default new Command(
       aliases: ['syl'],
       usage: {
          formats: ['/syl <mot>'],
-         examples: ['/syl keynesianisme']
+         examples: ['/syl wahhabisme']
       }
    },
    async (client, message, args) => {
