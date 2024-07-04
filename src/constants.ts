@@ -50,7 +50,8 @@ export default {
       adverbs: 0,
       plants: 0,
       creatures: 0,
-      lives: 0
+      lives: 0,
+      alpha: 0
    } satisfies PlayerStats,
    PLAYER_STAT_NAMES: {
       lifetime: 'temps',
@@ -61,7 +62,8 @@ export default {
       longs: 'mots longs',
       plants: 'plantes',
       words: 'mots',
-      lives: 'vies'
+      lives: 'vies gagnées',
+      alpha: 'alpha'
    } satisfies Record<keyof PlayerStats, string>,
    RULE_PRESETS: {
       reset: {

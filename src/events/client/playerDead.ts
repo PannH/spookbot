@@ -45,13 +45,6 @@ export default new Event(
       const beatenRecords: {
          [key: string]: { oldValue: number; newValue: number };
       } = {};
-      const beatenGlobalRecords: {
-         [key: string]: {
-            username: string;
-            oldValue: number;
-            newValue: number;
-         };
-      } = {};
       for (const [statKey, statValue] of Object.entries(playerStats)) {
          const beatenRecord = await globals.prisma.record.findFirst({
             where: {
@@ -60,18 +53,6 @@ export default new Event(
                value: {
                   lt: statValue
                }
-            }
-         });
-
-         const beatenGlobalRecord = await globals.prisma.record.findFirst({
-            where: {
-               key: statKey,
-               value: {
-                  lt: statValue
-               }
-            },
-            include: {
-               Profile: true
             }
          });
 
@@ -91,14 +72,6 @@ export default new Event(
                }
             });
          }
-
-         if (beatenGlobalRecord) {
-            beatenGlobalRecords[statKey] = {
-               username: beatenGlobalRecord.Profile.username,
-               oldValue: beatenGlobalRecord.value,
-               newValue: statValue
-            };
-         }
       }
 
       if (Object.keys(beatenRecords).length) {
@@ -111,19 +84,6 @@ export default new Event(
 
          client.room.sendMessage(
             `${chatter.nickname}, vous avez battu certains de vos records: ${beatenRecordsString}`
-         );
-      }
-
-      if (Object.keys(beatenGlobalRecords).length) {
-         const beatenGlobalRecordsString = Object.entries(beatenGlobalRecords)
-            .map(
-               ([statKey, { username, oldValue, newValue }]) =>
-                  `${constants.PLAYER_STAT_NAMES[statKey as keyof PlayerStats]} (${formatStatValue(statKey as keyof PlayerStats, oldValue)} [${username}] → ${formatStatValue(statKey as keyof PlayerStats, newValue)})`
-            )
-            .join(' — ');
-
-         client.room.sendMessage(
-            `${chatter.nickname}, vous avez battu certains records globaux: ${beatenGlobalRecordsString}`
          );
       }
    }
