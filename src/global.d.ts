@@ -5,6 +5,7 @@ declare namespace NodeJS {
       DEFAULT_NICKNAME: string;
       DEFAULT_PICTURE: string;
       DEFAULT_ROOM_NAME: string;
+      PLAYER_ROOM_NAME_TEMPLATE: string;
       DATABASE_URL: string;
    }
 }
