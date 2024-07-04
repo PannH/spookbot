@@ -1,6 +1,6 @@
 import { Command } from '../classes';
 import constants from '../constants';
-import { formatStatValue } from '../functions';
+import { capitalize, formatStatValue } from '../functions';
 import globals from '../globals';
 import type { PlayerStats } from '../interfaces';
 import type { Optional } from '../types';
@@ -31,7 +31,10 @@ export default new Command(
 
       if (!category) {
          const records: Optional<
-            Record<keyof PlayerStats, { username: string; value: number }>
+            Record<
+               keyof PlayerStats,
+               { username: string; value: number; date: Date }
+            >
          > = {};
 
          for (const CATEGORY of CATEGORIES) {
@@ -49,18 +52,19 @@ export default new Command(
 
             records[CATEGORY] = {
                username: categoryRecord.Profile.username,
-               value: categoryRecord.value
+               value: categoryRecord.value,
+               date: categoryRecord.date
             };
          }
 
          const recordsString = Object.entries(records)
             .map(
                ([key, record]) =>
-                  `${constants.PLAYER_STAT_NAMES[key]}: ${formatStatValue(key as keyof PlayerStats, record.value)}, par ${record.username}`
+                  `${capitalize(constants.PLAYER_STAT_NAMES[key])}: ${formatStatValue(key as keyof PlayerStats, record.value)} (${record.username})`
             )
-            .join(' — ');
+            .join('\n');
 
-         client.room.sendMessage(`Records globaux: ${recordsString}`);
+         client.room.sendMessage(`Records globaux:\n${recordsString}`);
       } else {
          const CATEGORY_SHORTCUTS: Record<string, keyof PlayerStats> = {
             adv: 'adverbs',
@@ -118,12 +122,12 @@ export default new Command(
          const leadRecordsString = leadRecords
             .map(
                (record, index) =>
-                  `${getLeadPosition(index + 1)} ${record.Profile.username} (${formatStatValue(CATEGORY_SHORTCUTS[category], record.value)})`
+                  `${getLeadPosition(index + 1)} ${formatStatValue(CATEGORY_SHORTCUTS[category], record.value)} (${record.Profile.username})`
             )
-            .join(' — ');
+            .join('\n');
 
          client.room.sendMessage(
-            `Records en ${constants.PLAYER_STAT_NAMES[CATEGORY_SHORTCUTS[category]]}: ${leadRecordsString}`
+            `Records en ${constants.PLAYER_STAT_NAMES[CATEGORY_SHORTCUTS[category]]}:\n${leadRecordsString}`
          );
       }
    }

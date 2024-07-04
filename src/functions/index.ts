@@ -5,6 +5,7 @@ import compactNumber from './compactNumber';
 import pluralize from './pluralize';
 import formatStatValue from './formatStatValue';
 import removeAccents from './removeAccents';
+import capitalize from './capitalize';
 
 export {
    simplifyString,
@@ -13,5 +14,6 @@ export {
    compactNumber,
    pluralize,
    formatStatValue,
-   removeAccents
+   removeAccents,
+   capitalize
 };

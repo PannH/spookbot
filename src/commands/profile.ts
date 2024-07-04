@@ -67,7 +67,7 @@ export default new Command(
          .join(' — ');
 
       client.room.sendMessage(
-         `Profil de ${profile.username}: ${recordsString}`
+         `Profil de ${profile.username}\n\nRecords: ${recordsString}${profile.staffRole ? `\n\nRôle staff: ${constants.STAFF_ROLE_NAMES[profile.staffRole]}` : ''}`
       );
    }
 );

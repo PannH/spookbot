@@ -39,7 +39,7 @@ export default new Command(
          const { options } = command;
 
          client.room.sendMessage(
-            `Commande /${options.name}${options.aliases?.length ? ` (${options.aliases?.map((alias) => `/${alias}`)?.join(', ')})` : ''}: ${options.description} ${pluralize(options.usage.formats.length, 'Utilisation')}: ${options.usage.formats.map((format) => `"${format}"`).join(' — ')}${options.usage.examples?.length ? ` (ex: ${options.usage.examples.map((example) => `"${example}"`).join(' — ')})` : ''}`
+            `Commande /${options.name}${options.aliases?.length ? ` (${options.aliases?.map((alias) => `/${alias}`)?.join(', ')})` : ''}: ${options.description}\n\n${pluralize(options.usage.formats.length, 'Utilisation')}:\n${options.usage.formats.map((format) => `- ${format}`).join('\n')}${options.usage.examples?.length ? `\n\n${pluralize(options.usage.examples.length, 'Exemple')}:\n${options.usage.examples.map((example) => `- ${example}`).join('\n')}` : ''}`
          );
       }
    }
