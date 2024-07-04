@@ -5,6 +5,7 @@ import constants from '../constants';
 
 export default class Room {
    public selfPeerId: number;
+   public code: string;
    public seatingPlayers: Chatter[] = [];
    public round: Round | null = null;
 
@@ -13,6 +14,11 @@ export default class Room {
       private _client: Client
    ) {
       this.selfPeerId = _data.selfPeerId;
+      this.code = _data.roomEntry.roomCode;
+   }
+
+   public leave(): void {
+      this._client.roomSocket.emit('forceQuit');
    }
 
    public async getChatters(): Promise<Chatter[]> {
