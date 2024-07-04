@@ -57,7 +57,8 @@ export default {
       plants: 0,
       creatures: 0,
       lives: 0,
-      alpha: 0
+      alpha: 0,
+      fuckedSyllables: 0
    } satisfies PlayerStats,
    PLAYER_STAT_NAMES: {
       lifetime: 'temps',
@@ -69,7 +70,8 @@ export default {
       plants: 'plantes',
       words: 'mots',
       lives: 'vies gagnées',
-      alpha: 'alpha'
+      alpha: 'alpha',
+      fuckedSyllables: 'syllabes niquées'
    } satisfies Record<keyof PlayerStats, string>,
    RULE_PRESETS: {
       reset: {

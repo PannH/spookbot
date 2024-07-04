@@ -28,7 +28,8 @@ export default new Command(
          'plants',
          'words',
          'lives',
-         'alpha'
+         'alpha',
+         'fuckedSyllables'
       ];
 
       if (!category) {
@@ -74,7 +75,8 @@ export default new Command(
             pl: 'plants',
             m: 'words',
             v: 'lives',
-            a: 'alpha'
+            a: 'alpha',
+            sn: 'fuckedSyllables'
          };
 
          if (!CATEGORY_SHORTCUTS[category])

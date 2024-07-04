@@ -1,9 +1,10 @@
 import { Event } from '../../classes';
 import constants from '../../constants';
-import { formatStatValue } from '../../functions';
+import { formatStatValue, getSyllables, pluralize } from '../../functions';
 import globals from '../../globals';
 import type { PlayerStats } from '../../interfaces';
 import type { AlphabetLetter, WordCategory } from '../../types';
+import { inspect } from 'node:util';
 
 export default new Event(
    {
@@ -72,6 +73,35 @@ export default new Event(
 
             client.room.sendMessage(
                `${chatter.nickname} a placé un alpha (${formatStatValue('alpha', client.room.round.playersStats[data.playerPeerId].alpha)}): ${currentWord.toUpperCase()}`
+            );
+         }
+
+         const wordSyllables = getSyllables(currentWord).filter(
+            (syllable) => !client.room.round.fuckedSyllables.includes(syllable)
+         );
+         const fuckedSyllables: string[] = [];
+         for (const syllable of wordSyllables) {
+            const remainingSyllableWords = globals.dictionary.searchWords(
+               syllable,
+               {
+                  excludes: client.room.round.setWords
+               }
+            );
+
+            if (
+               remainingSyllableWords.length === 1 &&
+               remainingSyllableWords.includes(currentWord)
+            )
+               fuckedSyllables.push(syllable);
+         }
+
+         if (fuckedSyllables.length) {
+            client.room.round.fuckedSyllables.push(...fuckedSyllables);
+            client.room.round.playersStats[data.playerPeerId].fuckedSyllables +=
+               fuckedSyllables.length;
+
+            client.room.sendMessage(
+               `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
             );
          }
       }

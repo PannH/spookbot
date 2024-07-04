@@ -6,6 +6,7 @@ import pluralize from './pluralize';
 import formatStatValue from './formatStatValue';
 import removeAccents from './removeAccents';
 import capitalize from './capitalize';
+import getSyllables from './getSyllables';
 
 export {
    simplifyString,
@@ -15,5 +16,6 @@ export {
    pluralize,
    formatStatValue,
    removeAccents,
-   capitalize
+   capitalize,
+   getSyllables
 };

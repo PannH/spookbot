@@ -9,6 +9,7 @@ export default class Round {
    public currentWord = '';
    public setWords: string[] = [];
    public playersStats: Record<number, PlayerStats> = {};
+   public fuckedSyllables: string[] = [];
 
    constructor(
       private readonly _milestone: RoundMilestone,

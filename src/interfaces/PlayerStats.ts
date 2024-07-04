@@ -9,4 +9,5 @@ export default interface PlayerStats {
    creatures: number;
    lives: number;
    alpha: number;
+   fuckedSyllables: number;
 }
