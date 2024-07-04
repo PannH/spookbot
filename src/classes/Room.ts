@@ -1,4 +1,4 @@
-import type { MessageVariant, Optional } from '../types';
+import type { MessageVariant, NotCountStatsReason, Optional } from '../types';
 import { Chatter, type Round, type Client } from '.';
 import type { ChatterProfileData, JoinRoomData, Rules } from '../interfaces';
 import constants from '../constants';
@@ -9,6 +9,7 @@ export default class Room {
    public isPublic: boolean;
    public seatingPlayers: Chatter[] = [];
    public round: Round | null = null;
+   public notCountStats: false | { reason: NotCountStatsReason } = false;
 
    constructor(
       public ownerAuthId: string | null,
