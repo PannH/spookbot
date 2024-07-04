@@ -9,5 +9,7 @@ export default function getSyllables(word: string): string[] {
       }
    }
 
-   return syllables;
+   return syllables.filter(
+      (syllable) => !syllable.includes('-') && !syllable.includes("'")
+   );
 }
