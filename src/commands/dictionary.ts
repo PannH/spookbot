@@ -7,6 +7,16 @@ export default new Command(
       name: 'dictionary',
       description: 'Gérer le dictionnaire.',
       aliases: ['dict'],
+      usage: {
+         formats: [
+            '/dict add <mot1> <mot2> ...',
+            '/dict remove <mot1> <mot2> ...'
+         ],
+         examples: [
+            '/dict add hippoboscide hippoboscides',
+            '/dict remove samsung'
+         ]
+      },
       requiredStaffRoles: ['DICTIONARY_MANAGER', 'TRUSTED']
    },
    async (client, message, args) => {

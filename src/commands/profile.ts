@@ -9,7 +9,11 @@ export default new Command(
    {
       name: 'profile',
       description: "Afficher votre profil ou celui d'un autre joueur.",
-      aliases: ['p']
+      aliases: ['p'],
+      usage: {
+         formats: ['/p', '/p <pseudo>'],
+         examples: ['/p', '/p Joueur123']
+      }
    },
    async (client, message, args) => {
       const usernameQuery = args[0];

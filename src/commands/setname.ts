@@ -5,7 +5,11 @@ import globals from '../globals';
 export default new Command(
    {
       name: 'setname',
-      description: 'Modifier le nom de votre profil.'
+      description: 'Modifier le nom de votre profil.',
+      usage: {
+         formats: ['/setname <pseudo>'],
+         examples: ['/setname Joueur123']
+      }
    },
    async (client, message, args) => {
       if (!args.length)

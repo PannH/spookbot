@@ -7,7 +7,11 @@ export default new Command(
    {
       name: 'categories',
       description: "Voir les catégories d'un mot",
-      aliases: ['cat']
+      aliases: ['cat'],
+      usage: {
+         formats: ['/cat <mot>'],
+         examples: ['/cat chauve-souris']
+      }
    },
    async (client, message, args) => {
       const word = args[0] ? simplifyString(args[0]) : null;

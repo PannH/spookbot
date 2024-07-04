@@ -9,7 +9,11 @@ export default new Command(
    {
       name: 'records',
       description: 'Afficher les records globaux.',
-      aliases: ['rec', 'r']
+      aliases: ['rec', 'r'],
+      usage: {
+         formats: ['/r', '/r <catégorie>'],
+         examples: ['/r', '/r eth']
+      }
    },
    async (client, message, args) => {
       const category = args[0];

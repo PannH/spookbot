@@ -8,7 +8,11 @@ export default new Command(
    {
       name: 'searchwords',
       description: 'Rechercher des mots dans le dictionnaire.',
-      aliases: ['sw', 'c']
+      aliases: ['sw', 'c'],
+      usage: {
+         formats: ['/c', '/c <recherche> <param1> <param2> ...'],
+         examples: ['/c', '/c ^attrape-', '/c -mc -pl', '/c ites$ -eth']
+      }
    },
    async (client, message, args) => {
       const flags = args.filter((arg) => arg.startsWith('-'));

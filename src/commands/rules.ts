@@ -7,6 +7,13 @@ export default new Command(
    {
       name: 'rules',
       description: 'Modifier les règles du jeu.',
+      usage: {
+         formats: [
+            '/rules <preset>',
+            '/rules <difficulté_syllabe> <durée_tour> <âge_syllabes> <vies_début> <vies_max>'
+         ],
+         examples: ['/rules sub100', '/rules 1 5 16 2 3']
+      },
       roomOwnerOnly: true
    },
    async (client, message, args) => {

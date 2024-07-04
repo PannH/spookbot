@@ -5,6 +5,9 @@ export default new Command(
       name: 'startnow',
       description: 'Lancer la partie directement.',
       aliases: ['sn'],
+      usage: {
+         formats: ['/sn']
+      },
       roomOwnerOnly: true
    },
    async (client, message, args) => {
