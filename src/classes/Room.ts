@@ -78,7 +78,7 @@ export default class Room {
          info: '#3b82f6'
       };
 
-      const contentChunks = content.match(/.{1,300}/g);
+      const contentChunks = content.match(/(.|\n){1,300}/g);
 
       for (const chunk of contentChunks) {
          this._client.roomSocket.emit('chat', chunk, {
