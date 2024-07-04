@@ -35,7 +35,6 @@ model Record {
   id        Int      @id @default(autoincrement())
   key       String
   value     Int      @default(0)
-  date      DateTime @default(now()) @updatedAt
   Profile   Profile? @relation(fields: [profileId], references: [id])
   profileId Int?     @map("profile_id")
 
