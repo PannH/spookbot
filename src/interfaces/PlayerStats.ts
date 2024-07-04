@@ -8,4 +8,5 @@ export default interface PlayerStats {
    plants: number;
    creatures: number;
    lives: number;
+   alpha: number;
 }

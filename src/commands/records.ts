@@ -27,7 +27,8 @@ export default new Command(
          'longs',
          'plants',
          'words',
-         'lives'
+         'lives',
+         'alpha'
       ];
 
       if (!category) {
@@ -72,7 +73,8 @@ export default new Command(
             l: 'longs',
             pl: 'plants',
             m: 'words',
-            v: 'lives'
+            v: 'lives',
+            a: 'alpha'
          };
 
          if (!CATEGORY_SHORTCUTS[category])

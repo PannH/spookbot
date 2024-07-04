@@ -1,5 +1,6 @@
 import { Event } from '../../classes';
 import constants from '../../constants';
+import { formatStatValue } from '../../functions';
 import globals from '../../globals';
 import type { PlayerStats } from '../../interfaces';
 import type { AlphabetLetter, WordCategory } from '../../types';
@@ -40,13 +41,14 @@ export default new Event(
             plant: 'plants'
          };
 
+         const chatter = await client.room.getChatter(data.playerPeerId);
+
          if (wordCategories.length) {
             for (const category of wordCategories)
                client.room.round.playersStats[data.playerPeerId][
                   categoryStats[category]
                ]++;
 
-            const chatter = await client.room.getChatter(data.playerPeerId);
             const wordCategoriesString = wordCategories
                .map(
                   (category) =>
@@ -56,6 +58,20 @@ export default new Event(
 
             client.room.sendMessage(
                `${chatter.nickname} a placé ${wordCategoriesString}: ${currentWord.toUpperCase()}`
+            );
+         }
+
+         const currentAlphaLetterIndex =
+            client.room.round.playersStats[data.playerPeerId].alpha % 26;
+         const wordFirstLetterIndex = constants.ALPHA_LETTERS.indexOf(
+            currentWord[0] as AlphabetLetter
+         );
+
+         if (currentAlphaLetterIndex === wordFirstLetterIndex) {
+            client.room.round.playersStats[data.playerPeerId].alpha++;
+
+            client.room.sendMessage(
+               `${chatter.nickname} a placé un alpha (${formatStatValue('alpha', client.room.round.playersStats[data.playerPeerId].alpha)}): ${currentWord.toUpperCase()}`
             );
          }
       }

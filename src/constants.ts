@@ -1,6 +1,12 @@
 import type { StaffRole } from '@prisma/client';
 import type { PlayerStats, Rules } from './interfaces';
-import type { Optional, Role, RulePreset, WordCategory } from './types';
+import type {
+   AlphabetLetter,
+   Optional,
+   Role,
+   RulePreset,
+   WordCategory
+} from './types';
 
 export default {
    DEFAULT_RULES: {
@@ -120,5 +126,33 @@ export default {
          startingLives: 2,
          maxLives: 3
       }
-   } satisfies Record<RulePreset, Optional<Rules>>
+   } satisfies Record<RulePreset, Optional<Rules>>,
+   ALPHA_LETTERS: [
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'f',
+      'g',
+      'h',
+      'i',
+      'j',
+      'k',
+      'l',
+      'm',
+      'n',
+      'o',
+      'p',
+      'q',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+      'x',
+      'y',
+      'z'
+   ] satisfies AlphabetLetter[]
 } as const;
