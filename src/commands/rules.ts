@@ -1,7 +1,7 @@
 import { Command } from '../classes';
 import constants from '../constants';
 import type { Rules } from '../interfaces';
-import type { Optional, RulePreset } from '../types';
+import type { Optional } from '../types';
 
 export default new Command(
    {

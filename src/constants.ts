@@ -5,7 +5,6 @@ import type {
    NotCountStatsReason,
    Optional,
    Role,
-   RulePreset,
    WordCategory
 } from './types';
 
@@ -104,5 +103,6 @@ export default {
    ] satisfies AlphabetLetter[],
    NOT_COUNT_STATS_REASONS: {
       CUSTOM_RULES: 'les règles sont modifiées'
-   } satisfies Record<NotCountStatsReason, string>
+   } satisfies Record<NotCountStatsReason, string>,
+   MODE_RULES: {}
 } as const;
