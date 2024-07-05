@@ -3,7 +3,7 @@ import constants from '../constants';
 import { capitalize, formatStatValue } from '../functions';
 import globals from '../globals';
 import type { PlayerStats } from '../interfaces';
-import type { Optional } from '../types';
+import type { Optional, Mode } from '../types';
 
 export default new Command(
    {
@@ -11,12 +11,17 @@ export default new Command(
       description: 'Afficher les records globaux.',
       aliases: ['rec', 'r'],
       usage: {
-         formats: ['/r', '/r <catégorie>'],
-         examples: ['/r', '/r eth']
+         formats: ['/r', '/r <catégorie> <-mode>'],
+         examples: ['/r', '/r eth', '/r l -turbo', '/r -sub50']
       }
    },
    async (client, message, args) => {
-      const category = args[0];
+      const modes = args
+         .filter((arg) => arg.startsWith('-'))
+         .map((arg) => arg.slice(1).toLowerCase());
+      const categories = args
+         .filter((arg) => !arg.startsWith('-'))
+         .map((arg) => arg.toLowerCase());
 
       const CATEGORIES: (keyof PlayerStats)[] = [
          'adverbs',
@@ -32,7 +37,22 @@ export default new Command(
          'fuckedSyllables'
       ];
 
-      if (!category) {
+      if (modes.length > 1 || categories.length > 1)
+         return client.room.sendMessage(
+            `Veuillez ne specifier qu'un mode, qu'une catégorie, ou qu'un de chaque.`,
+            'error'
+         );
+
+      const mode = (modes[0] ?? 'normal') as Mode;
+      const ALLOWED_MODES = Object.keys(constants.MODE_RULES) as Mode[];
+
+      if (!ALLOWED_MODES.includes(mode))
+         return client.room.sendMessage(
+            `Mode "-${mode}" inconnu, veuillez choisir parmi: ${ALLOWED_MODES.map((mode) => `-${mode}`).join(', ')}`,
+            'error'
+         );
+
+      if (!categories.length) {
          const records: Optional<
             Record<keyof PlayerStats, { username: string; value: number }>
          > = {};
@@ -40,7 +60,8 @@ export default new Command(
          for (const CATEGORY of CATEGORIES) {
             const categoryRecord = await globals.prisma.record.findFirst({
                where: {
-                  key: CATEGORY
+                  key: CATEGORY,
+                  mode
                },
                orderBy: {
                   value: 'desc'
@@ -63,8 +84,11 @@ export default new Command(
             )
             .join('\n');
 
-         client.room.sendMessage(`Records globaux:\n${recordsString}`);
+         client.room.sendMessage(
+            `Records globaux [${mode}]:\n${recordsString}`
+         );
       } else {
+         const category = categories[0];
          const CATEGORY_SHORTCUTS: Record<string, keyof PlayerStats> = {
             adv: 'adverbs',
             cr: 'creatures',
@@ -94,7 +118,8 @@ export default new Command(
 
          const leadRecords = await globals.prisma.record.findMany({
             where: {
-               key: CATEGORY_SHORTCUTS[category]
+               key: CATEGORY_SHORTCUTS[category],
+               mode
             },
             orderBy: {
                value: 'desc'
@@ -129,7 +154,7 @@ export default new Command(
             .join('\n');
 
          client.room.sendMessage(
-            `Records en ${constants.PLAYER_STAT_NAMES[CATEGORY_SHORTCUTS[category]]}:\n${leadRecordsString}`
+            `Records en ${constants.PLAYER_STAT_NAMES[CATEGORY_SHORTCUTS[category]]} [${mode}]:\n${leadRecordsString}`
          );
       }
    }

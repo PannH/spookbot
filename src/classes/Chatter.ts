@@ -46,18 +46,21 @@ export default class Chatter {
             authId: this.authId,
             username: sameUsernameProfile
                ? `Joueur-${randomBytes(3).toString('hex')}`
-               : this.nickname,
-            records: {
-               createMany: {
-                  data: Object.keys(constants.DEFAULT_PLAYER_STATS).map(
-                     (statKey) => ({
-                        key: statKey
-                     })
-                  )
-               }
-            }
+               : this.nickname
          }
       });
+
+      for (const modeKey of Object.keys(constants.MODE_RULES)) {
+         for (const statKey of Object.keys(constants.DEFAULT_PLAYER_STATS)) {
+            await globals.prisma.record.create({
+               data: {
+                  key: statKey,
+                  mode: modeKey,
+                  profileId: (await this.getProfile()).id
+               }
+            });
+         }
+      }
 
       return await this.getProfile();
    }

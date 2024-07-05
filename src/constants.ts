@@ -5,7 +5,8 @@ import type {
    NotCountStatsReason,
    Optional,
    Role,
-   WordCategory
+   WordCategory,
+   Mode
 } from './types';
 
 export default {
@@ -104,5 +105,60 @@ export default {
    NOT_COUNT_STATS_REASONS: {
       CUSTOM_RULES: 'les règles sont modifiées'
    } satisfies Record<NotCountStatsReason, string>,
-   MODE_RULES: {}
+   MODE_RULES: {
+      normal: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: 1,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      turbo: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: 1,
+         minTurnDuration: 3,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      easy: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: 1,
+         minTurnDuration: 10,
+         maxPromptAge: 16,
+         startingLives: 3,
+         maxLives: 3
+      },
+      survival: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: 1,
+         minTurnDuration: 5,
+         maxPromptAge: 1,
+         startingLives: 1,
+         maxLives: 1
+      },
+      sub500: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -500,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      },
+      sub50: {
+         dictionaryId: 'fr',
+         promptDifficulty: 'custom',
+         customPromptDifficulty: -50,
+         minTurnDuration: 5,
+         maxPromptAge: 16,
+         startingLives: 2,
+         maxLives: 3
+      }
+   } satisfies Record<Mode, Optional<Rules>>
 } as const;
