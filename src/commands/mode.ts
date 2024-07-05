@@ -33,7 +33,8 @@ export default new Command(
 
       client.room.setRules(modeRules);
       client.room.mode = mode;
-      client.room.sendMessage(`Mode de jeu appliqué: ${mode}.`);
       client.room.notCountStats = false;
+      client.room.trainCategory = null;
+      client.room.sendMessage(`Mode de jeu appliqué: ${mode}.`);
    }
 );

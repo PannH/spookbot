@@ -2,7 +2,8 @@ import type {
    MessageVariant,
    Mode,
    NotCountStatsReason,
-   Optional
+   Optional,
+   WordCategory
 } from '../types';
 import { Chatter, type Round, type Client } from '.';
 import type { ChatterProfileData, JoinRoomData, Rules } from '../interfaces';
@@ -16,6 +17,7 @@ export default class Room {
    public round: Round | null = null;
    public notCountStats: false | { reason: NotCountStatsReason } = false;
    public mode: Mode = 'normal';
+   public trainCategory: null | WordCategory = null;
 
    constructor(
       public ownerAuthId: string | null,

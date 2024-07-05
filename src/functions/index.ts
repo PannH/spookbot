@@ -7,6 +7,7 @@ import formatStatValue from './formatStatValue';
 import removeAccents from './removeAccents';
 import capitalize from './capitalize';
 import getSyllables from './getSyllables';
+import percentage from './percentage';
 
 export {
    simplifyString,
@@ -17,5 +18,6 @@ export {
    formatStatValue,
    removeAccents,
    capitalize,
-   getSyllables
+   getSyllables,
+   percentage
 };

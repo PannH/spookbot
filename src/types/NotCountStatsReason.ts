@@ -1,1 +1,1 @@
-export type NotCountStatsReason = 'CUSTOM_RULES';
+export type NotCountStatsReason = 'CUSTOM_RULES' | 'TRAIN_MODE';

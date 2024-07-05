@@ -45,7 +45,7 @@ export default new Command(
       const categories = flags.map((flag) => flagCategories[flag]);
 
       const matchingWords = globals.dictionary.searchWords(queries, {
-         categories,
+         categories: categories,
          shuffle: true,
          limit: 20
       });

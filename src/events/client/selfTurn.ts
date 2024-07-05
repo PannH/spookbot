@@ -5,7 +5,7 @@ export default new Event(
    {
       name: 'selfTurn'
    },
-   (client) => {
+   async (client) => {
       const matchingWords = globals.dictionary.searchWords(
          client.room.round.syllable,
          {

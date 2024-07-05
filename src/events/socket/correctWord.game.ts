@@ -1,6 +1,12 @@
 import { Event } from '../../classes';
 import constants from '../../constants';
-import { formatStatValue, getSyllables, pluralize } from '../../functions';
+import {
+   capitalize,
+   formatStatValue,
+   getSyllables,
+   percentage,
+   pluralize
+} from '../../functions';
 import globals from '../../globals';
 import type { PlayerStats } from '../../interfaces';
 import type { AlphabetLetter, WordCategory } from '../../types';
@@ -52,33 +58,42 @@ export default new Event(
             const wordCategories =
                globals.dictionary.getWordCategories(currentWord);
 
-            const categoryStats: Record<WordCategory, keyof PlayerStats> = {
-               adverb: 'adverbs',
-               creature: 'creatures',
-               ethnonym: 'ethnonyms',
-               hyphen: 'hyphens',
-               long: 'longs',
-               plant: 'plants'
-            };
+            if (client.room.trainCategory) {
+               if (!wordCategories.includes(client.room.trainCategory)) {
+                  client.emit('trainHints');
+               } else {
+                  const categoryStatKey =
+                     constants.CATEGORY_STATS[client.room.trainCategory];
+                  const stats =
+                     client.room.round.playersStats[data.playerPeerId];
+                  const stat = stats[categoryStatKey] + 1;
+                  const { words } = stats;
+                  client.room.sendMessage(
+                     `✅ ${chatter.nickname} a placé ${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[client.room.trainCategory]} (${stat} - ${percentage(stat, words).toFixed(1)}%): ${currentWord.toUpperCase()}`
+                  );
+               }
+            }
 
             if (wordCategories.length) {
                client.room.round.setCategoryWords.push(currentWord);
 
                for (const category of wordCategories)
                   client.room.round.playersStats[data.playerPeerId][
-                     categoryStats[category]
+                     constants.CATEGORY_STATS[category]
                   ]++;
 
-               const wordCategoriesString = wordCategories
-                  .map(
-                     (category) =>
-                        `${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[category]} (${client.room.round.playersStats[data.playerPeerId][categoryStats[category]]})`
-                  )
-                  .join(', ');
+               if (!client.room.trainCategory) {
+                  const wordCategoriesString = wordCategories
+                     .map(
+                        (category) =>
+                           `${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[category]} (${client.room.round.playersStats[data.playerPeerId][constants.CATEGORY_STATS[category]]})`
+                     )
+                     .join(', ');
 
-               client.room.sendMessage(
-                  `${chatter.nickname} a placé ${wordCategoriesString}: ${currentWord.toUpperCase()}`
-               );
+                  client.room.sendMessage(
+                     `${chatter.nickname} a placé ${wordCategoriesString}: ${currentWord.toUpperCase()}`
+                  );
+               }
             }
 
             const wordSyllables = getSyllables(currentWord).filter(
@@ -108,9 +123,10 @@ export default new Event(
                   data.playerPeerId
                ].fuckedSyllables += fuckedSyllables.length;
 
-               client.room.sendMessage(
-                  `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
-               );
+               !client.room.trainCategory &&
+                  client.room.sendMessage(
+                     `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
+                  );
             }
          }
 
@@ -123,9 +139,10 @@ export default new Event(
          if (currentAlphaLetterIndex === wordFirstLetterIndex) {
             client.room.round.playersStats[data.playerPeerId].alpha++;
 
-            client.room.sendMessage(
-               `${chatter.nickname} a placé un alpha (${formatStatValue('alpha', client.room.round.playersStats[data.playerPeerId].alpha)}): ${currentWord.toUpperCase()}`
-            );
+            !client.room.trainCategory &&
+               client.room.sendMessage(
+                  `${chatter.nickname} a placé un alpha (${formatStatValue('alpha', client.room.round.playersStats[data.playerPeerId].alpha)}): ${currentWord.toUpperCase()}`
+               );
          }
       }
 

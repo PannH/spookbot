@@ -5,6 +5,7 @@ export default class Round {
    public hasEnded = false;
    public startTimestamp = Date.now();
    public syllable: string;
+   public previousSyllable: string;
    public playerPeerId: number;
    public currentWord = '';
    public setWords: string[] = [];
@@ -17,6 +18,7 @@ export default class Round {
       private readonly _client: Client
    ) {
       this.syllable = _milestone.syllable;
+      this.previousSyllable = _milestone.syllable;
       this.playerPeerId = _milestone.currentPlayerPeerId;
    }
 

@@ -48,6 +48,14 @@ export default {
       long: 'un mot long',
       plant: 'une plante'
    } satisfies Record<WordCategory, string>,
+   WORD_CATEGORY_NAMES_PLURAL: {
+      adverb: 'adverbes',
+      creature: 'créatures',
+      ethnonym: 'ethnonymes',
+      hyphen: 'mots composés',
+      long: 'mots longs',
+      plant: 'plantes'
+   } satisfies Record<WordCategory, string>,
    DEFAULT_PLAYER_STATS: {
       lifetime: null,
       words: 0,
@@ -103,7 +111,8 @@ export default {
       'z'
    ] satisfies AlphabetLetter[],
    NOT_COUNT_STATS_REASONS: {
-      CUSTOM_RULES: 'les règles sont modifiées'
+      CUSTOM_RULES: 'les règles sont modifiées',
+      TRAIN_MODE: 'le mode entraînement est activé'
    } satisfies Record<NotCountStatsReason, string>,
    MODE_RULES: {
       normal: {
@@ -173,5 +182,22 @@ export default {
       fuckedSyllables: 0.2,
       lives: 0.1,
       lifetime: 0.000001
-   } satisfies Record<keyof PlayerStats, number>
+   } satisfies Record<keyof PlayerStats, number>,
+   TRAIN_RULES: {
+      dictionaryId: 'fr',
+      promptDifficulty: 'custom',
+      customPromptDifficulty: 1,
+      minTurnDuration: 10,
+      maxPromptAge: 1,
+      startingLives: 3,
+      maxLives: 3
+   } satisfies Optional<Rules>,
+   CATEGORY_STATS: {
+      adverb: 'adverbs',
+      creature: 'creatures',
+      ethnonym: 'ethnonyms',
+      hyphen: 'hyphens',
+      long: 'longs',
+      plant: 'plants'
+   } satisfies Record<WordCategory, keyof PlayerStats>
 } as const;

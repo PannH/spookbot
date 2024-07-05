@@ -1,6 +1,6 @@
 import { type Chatter, Event } from '../../classes';
 import constants from '../../constants';
-import { formatStatValue } from '../../functions';
+import { formatStatValue, percentage } from '../../functions';
 import globals from '../../globals';
 import type { PlayerStats } from '../../interfaces';
 
@@ -34,6 +34,11 @@ export default new Event(
       client.room.sendMessage(
          `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}${chatter.authId && statsCoinsWorth ? ` ⇒ +${statsCoinsWorth} 🪙` : ''}`
       );
+
+      if (client.room.trainCategory)
+         client.room.sendMessage(
+            `🏋️ ${chatter.nickname}, vous avez placé ${playerStats[constants.CATEGORY_STATS[client.room.trainCategory]]} ${constants.WORD_CATEGORY_NAMES_PLURAL[client.room.trainCategory]} pour ${playerStats.words} mots (${percentage(playerStats[constants.CATEGORY_STATS[client.room.trainCategory]], playerStats.words).toFixed(1)}%).`
+         );
 
       if (client.room.notCountStats)
          return client.room.sendMessage(
