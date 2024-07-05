@@ -11,6 +11,12 @@ export default new Command(
       roomOwnerOnly: true
    },
    async (client, message, args) => {
+      if (client.room.round && !client.room.round.hasEnded)
+         return client.room.sendMessage(
+            'La partie est déjà en cours.',
+            'error'
+         );
+
       if (client.room.seatingPlayers.length < 2)
          return client.room.sendMessage(
             "Il n'y a pas assez de joueurs.",

@@ -17,6 +17,12 @@ export default new Command(
       roomOwnerOnly: true
    },
    async (client, message, args) => {
+      if (client.room.round && !client.room.round.hasEnded)
+         return client.room.sendMessage(
+            'Les règles ne peuvent pas être modifiées en cours de partie.',
+            'error'
+         );
+
       if (!args.length)
          return client.room.sendMessage(
             'Veuillez indiquer "reset" ou la configuration complète (voir "/help rules").',
