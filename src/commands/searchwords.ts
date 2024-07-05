@@ -1,6 +1,11 @@
 import { Command } from '../classes';
 import constants from '../constants';
-import { compactNumber, removeAccents, simplifyString } from '../functions';
+import {
+   compactNumber,
+   pluralize,
+   removeAccents,
+   simplifyString
+} from '../functions';
 import globals from '../globals';
 import type { WordCategory } from '../types';
 
@@ -19,6 +24,9 @@ export default new Command(
       const queries = args
          .filter((arg) => !flags.includes(arg))
          .map((arg) => removeAccents(arg));
+
+      if (!queries.length && client.room.round)
+         queries.push(client.room.round.syllable);
 
       const flagCategories: Record<string, WordCategory> = {
          '-mc': 'hyphen',
@@ -46,24 +54,34 @@ export default new Command(
 
       const matchingWords = globals.dictionary.searchWords(queries, {
          categories: categories,
-         shuffle: true,
-         limit: 20
+         shuffle: true
       });
+      const hiddenWords =
+         client.room.round && !client.room.round.hasEnded
+            ? matchingWords.filter((word) =>
+                 word.includes(client.room.round.syllable)
+              )
+            : [];
 
-      if (!matchingWords.length)
+      if (!matchingWords.length && !hiddenWords.length)
          return client.room.sendMessage('Aucun mot trouvé.', 'error');
 
       const MAX_LENGTH = 200;
-      let messageContent = `${compactNumber(matchingWords.length)} ${matchingWords.length > 1 ? 'mots trouvés' : 'mot trouvé'}: `;
-      while (true) {
-         const oldMessageContent = messageContent;
-         messageContent += `${messageContent.endsWith(': ') ? '' : ', '}${matchingWords.shift().toUpperCase()}`;
+      let messageContent = `${compactNumber(matchingWords.length)} ${pluralize(matchingWords.length, 'mot trouvé', 'mots trouvés')}${hiddenWords.length ? ` (${compactNumber(hiddenWords.length)} ${pluralize(hiddenWords.length, 'caché')})` : ''}: `;
 
-         if (!matchingWords.length) break;
+      if (matchingWords.length === hiddenWords.length) {
+         messageContent += 'Tous les mots sont cachés.';
+      } else {
+         while (true) {
+            const oldMessageContent = messageContent;
+            messageContent += `${messageContent.endsWith(': ') ? '' : ', '}${matchingWords.shift().toUpperCase()}`;
 
-         if (messageContent.length > MAX_LENGTH) {
-            messageContent = oldMessageContent;
-            break;
+            if (!matchingWords.length) break;
+
+            if (messageContent.length > MAX_LENGTH) {
+               messageContent = oldMessageContent;
+               break;
+            }
          }
       }
 
