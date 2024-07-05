@@ -34,7 +34,8 @@ export default new Command(
 
          if (rulePreset !== 'reset')
             return client.room.sendMessage(
-               `Veuillez spécifier "reset" ou une configuration complète pour modifier les règles.`
+               'Veuillez spécifier "reset" ou une configuration complète pour modifier les règles.',
+               'error'
             );
 
          client.room.setRules(constants.DEFAULT_RULES);
