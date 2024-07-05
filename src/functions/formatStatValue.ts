@@ -11,7 +11,9 @@ export default function formatStatValue(
          return `${globals.dayjs.duration(value).format('HH:mm:ss')}`;
 
       case 'alpha':
-         return `${constants.ALPHA_LETTERS[(value % 26) - 1].toUpperCase()} [${Math.floor(value / 26)}]`;
+         return !value
+            ? '∅'
+            : `${constants.ALPHA_LETTERS[(value % 26) - 1].toUpperCase()} [${Math.floor(value / 26)}]`;
 
       default:
          return value.toString();

@@ -56,6 +56,7 @@ export default new Event(
             where: {
                profileId: profile.id,
                key: statKey,
+               mode: client.room.mode,
                value: {
                   lt: statValue
                }
@@ -71,7 +72,8 @@ export default new Event(
             await globals.prisma.record.update({
                where: {
                   id: beatenRecord.id,
-                  key: statKey
+                  key: statKey,
+                  mode: client.room.mode
                },
                data: {
                   value: statValue
@@ -89,7 +91,7 @@ export default new Event(
             .join(' — ');
 
          client.room.sendMessage(
-            `${chatter.nickname}, vous avez battu certains de vos records: ${beatenRecordsString}`
+            `${chatter.nickname}, vous avez battu certains de vos records [${client.room.mode}]: ${beatenRecordsString}`
          );
       }
    }
