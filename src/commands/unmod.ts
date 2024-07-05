@@ -7,7 +7,8 @@ export default new Command(
       usage: {
          formats: ['/unmod <pseudo>'],
          examples: ['/unmod Joueur123']
-      }
+      },
+      roomOwnerOnly: true
    },
    async (client, message, args) => {
       const username = args.join(' ');
