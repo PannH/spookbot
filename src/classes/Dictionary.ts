@@ -34,30 +34,34 @@ export default class Dictionary {
          typeof query === 'string' ? new RegExp(query, 'i') : query
       );
 
-      const matchingElements = this._cache.filter(({ word, categories }) => {
-         if (
-            options?.categories?.length &&
-            !options.categories.every((category) =>
-               categories.includes(category)
+      const words = this._cache
+         .filter(({ word, categories }) => {
+            if (
+               options?.categories?.length &&
+               !options.categories.every((category) =>
+                  categories.includes(category)
+               )
             )
-         )
-            return false;
+               return false;
 
-         if (
-            options?.excludes?.length &&
-            options.excludes.some((exclude) => word === exclude)
-         )
-            return false;
+            if (
+               options?.excludes?.length &&
+               options.excludes.some((exclude) => word === exclude)
+            )
+               return false;
 
-         // TODO: add protection against malicious regex
+            // TODO: add protection against malicious regex
 
-         return !queries.length
-            ? true
-            : queries.some((query) => query.test(word));
-      });
+            return !queries.length
+               ? true
+               : queries.some((query) => query.test(word));
+         })
+         .map(({ word }) => word);
 
-      const words = matchingElements.map((element) => element.word);
-      return options?.shuffle ? shuffleArray(words) : words;
+      return (options?.shuffle ? shuffleArray(words) : words).slice(
+         0,
+         options?.limit ?? words.length
+      );
    }
 
    public isWordKnown(word: string): boolean {

@@ -18,7 +18,9 @@ export default new Command(
       if (!word)
          return client.room.sendMessage('Veuillez indiquer un mot.', 'error');
 
-      const matchingWord = globals.dictionary.searchWords(word)[0];
+      const matchingWord = globals.dictionary.searchWords(word, {
+         limit: 1
+      })[0];
 
       if (!matchingWord)
          return client.room.sendMessage("Ce mot n'existe pas.", 'error');

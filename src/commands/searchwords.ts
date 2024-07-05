@@ -46,7 +46,8 @@ export default new Command(
 
       const matchingWords = globals.dictionary.searchWords(queries, {
          categories,
-         shuffle: true
+         shuffle: true,
+         limit: 20
       });
 
       if (!matchingWords.length)

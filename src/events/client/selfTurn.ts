@@ -10,7 +10,8 @@ export default new Event(
          client.room.round.syllable,
          {
             excludes: client.room.round.setWords,
-            shuffle: true
+            shuffle: true,
+            limit: 1
          }
       );
 

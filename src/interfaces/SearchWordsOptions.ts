@@ -4,4 +4,5 @@ export default interface SearchWordsOptions {
    categories?: WordCategory[];
    excludes?: string[];
    shuffle?: boolean;
+   limit?: number;
 }

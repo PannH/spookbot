@@ -90,7 +90,8 @@ export default new Event(
                const remainingSyllableWords = globals.dictionary.searchWords(
                   syllable,
                   {
-                     excludes: client.room.round.setWords
+                     excludes: client.room.round.setWords,
+                     limit: 1
                   }
                );
 
