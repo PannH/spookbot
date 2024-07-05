@@ -81,10 +81,10 @@ export default class Room {
    ): void {
       const variantColors: Record<MessageVariant, string> = {
          default: '#ffffff',
-         error: '#dc2626',
-         success: '#16a34a',
-         warning: '#eab308',
-         info: '#3b82f6'
+         error: '#e61717',
+         success: '#12c934',
+         warning: '#f5a905',
+         info: '#197ee3'
       };
 
       const contentChunks = content.match(/(.|\n){1,300}/g);
