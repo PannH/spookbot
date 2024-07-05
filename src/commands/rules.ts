@@ -9,44 +9,33 @@ export default new Command(
       description: 'Modifier les règles du jeu.',
       usage: {
          formats: [
-            '/rules <preset>',
+            '/rules reset',
             '/rules <difficulté_syllabe> <durée_tour> <âge_syllabes> <vies_début> <vies_max>'
          ],
-         examples: ['/rules sub100', '/rules 1 5 16 2 3']
+         examples: ['/rules reset', '/rules 1 5 16 2 3']
       },
       roomOwnerOnly: true
    },
    async (client, message, args) => {
-      const ALLOWED_RULE_PRESETS: RulePreset[] = [
-         'reset',
-         'sub1',
-         'sub100',
-         'sub500',
-         'sub1000'
-      ];
-
       if (!args.length)
          return client.room.sendMessage(
-            'Veuillez indiquer soit un preset de règles, soit la configuration complète (voir "/help rules").',
+            'Veuillez indiquer "reset" ou la configuration complète (voir "/help rules").',
             'error'
          );
 
       if (args.length === 1) {
-         const rulePreset = constants.RULE_PRESETS[args[0]];
+         const rulePreset = args[0].toLowerCase();
 
-         if (!rulePreset)
+         if (rulePreset !== 'reset')
             return client.room.sendMessage(
-               `Preset de règles inconnu. Veuillez choisir parmi: ${ALLOWED_RULE_PRESETS.join(', ')}.`,
-               'error'
+               `Veuillez spécifier "reset" ou une configuration complète pour modifier les règles.`
             );
 
-         client.room.setRules(rulePreset);
+         client.room.setRules(constants.DEFAULT_RULES);
          client.room.sendMessage(
-            'Les règles ont été mises à jour. Les statistiques ne seront pas sauvegardées.'
+            'Les règles ont été réinitialisées, les statistiques seront de nouveau sauvegardées.'
          );
-         client.room.notCountStats = {
-            reason: 'CUSTOM_RULES'
-         };
+         client.room.notCountStats = false;
       } else if (args.length === 5) {
          const rules: Optional<Rules> = {
             customPromptDifficulty: Number.parseInt(args[0]),
@@ -64,7 +53,7 @@ export default new Command(
 
          client.room.setRules(rules);
          client.room.sendMessage(
-            'Les règles ont été mises à jour. Les statistiques ne seront pas sauvegardées.'
+            'Les règles ont été mises à jour, les statistiques ne seront pas sauvegardées.'
          );
          client.room.notCountStats = {
             reason: 'CUSTOM_RULES'

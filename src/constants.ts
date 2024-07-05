@@ -74,62 +74,6 @@ export default {
       alpha: 'alpha',
       fuckedSyllables: 'syllabes niquées'
    } satisfies Record<keyof PlayerStats, string>,
-   RULE_PRESETS: {
-      reset: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: 1,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      },
-      sub50: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: -50,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      },
-      sub1: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: -1,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      },
-      sub100: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: -100,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      },
-      sub500: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: -500,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      },
-      sub1000: {
-         dictionaryId: 'fr',
-         promptDifficulty: 'custom',
-         customPromptDifficulty: -1000,
-         minTurnDuration: 5,
-         maxPromptAge: 16,
-         startingLives: 2,
-         maxLives: 3
-      }
-   } satisfies Record<RulePreset, Optional<Rules>>,
    ALPHA_LETTERS: [
       'a',
       'b',
