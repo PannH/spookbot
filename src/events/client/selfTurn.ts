@@ -11,7 +11,8 @@ export default new Event(
          {
             excludes: client.room.round.setWords,
             shuffle: true,
-            limit: 1
+            limit: 1,
+            pritoritizeLessCategories: true
          }
       );
 

@@ -5,4 +5,5 @@ export default interface SearchWordsOptions {
    excludes?: string[];
    shuffle?: boolean;
    limit?: number;
+   pritoritizeLessCategories?: boolean;
 }

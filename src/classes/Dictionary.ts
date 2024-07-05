@@ -56,6 +56,11 @@ export default class Dictionary {
                ? true
                : queries.some((query) => query.test(word));
          })
+         .sort((a, b) =>
+            options?.pritoritizeLessCategories
+               ? a.categories.length - b.categories.length
+               : 0
+         )
          .map(({ word }) => word);
 
       return (options?.shuffle ? shuffleArray(words) : words).slice(
