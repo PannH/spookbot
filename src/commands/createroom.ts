@@ -4,10 +4,10 @@ import globals from '../globals';
 export default new Command(
    {
       name: 'createroom',
-      description: 'Créer une nouvelle salle pour vous.',
+      description: 'Créer une nouvelle salle personnelle.',
       aliases: ['cr', 'b'],
       usage: {
-         formats: ['/b', '/b pv']
+         formats: ['/b']
       },
       requireAuth: true
    },
@@ -24,9 +24,6 @@ export default new Command(
             'error'
          );
 
-      const roomPrivacy = args[0];
-      const isPublic = !(roomPrivacy === 'private' || roomPrivacy === 'pv');
-
       const newClient = new Client();
 
       const newRoomCode = await newClient.createRoom({
@@ -34,12 +31,11 @@ export default new Command(
             '{username}',
             message.chatter.nickname
          ),
-         ownerAuthId: message.chatter.authId,
-         isPublic
+         ownerAuthId: message.chatter.authId
       });
 
       client.room.sendMessage(
-         `${message.chatter.nickname}, voici votre salle: https://jklm.fun/${newRoomCode} (${isPublic ? 'publique' : 'privée'})`
+         `${message.chatter.nickname}, voici votre salle: https://jklm.fun/${newRoomCode}`
       );
 
       await newClient.joinRoom(newRoomCode);
