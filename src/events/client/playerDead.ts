@@ -32,7 +32,7 @@ export default new Event(
       );
 
       client.room.sendMessage(
-         `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}${chatter.authId ? ` ⇒ +${statsCoinsWorth} 🪙` : ''}`
+         `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}${chatter.authId && statsCoinsWorth ? ` ⇒ +${statsCoinsWorth} 🪙` : ''}`
       );
 
       if (client.room.notCountStats)
