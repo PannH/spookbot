@@ -91,7 +91,7 @@ export default new Event(
                   syllable,
                   {
                      excludes: client.room.round.setWords,
-                     limit: 1
+                     limit: 2
                   }
                );
 
