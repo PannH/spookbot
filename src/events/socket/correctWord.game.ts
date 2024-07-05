@@ -25,7 +25,7 @@ export default new Event(
             await globals.dictionary.addWord(currentWord);
 
             client.room.sendMessage(
-               `Merci ${chatter.nickname} ! Tu as appris le mot ${currentWord.toUpperCase()} au bot${chatter.authId ? ' (+5 🪙)' : ''}.`,
+               `Merci ${chatter.nickname} ! Tu as appris le mot ${currentWord.toUpperCase()} au bot${chatter.authId ? ' (+3 🪙)' : ''}.`,
                'info'
             );
 
@@ -39,7 +39,7 @@ export default new Event(
                         increment: 1
                      },
                      coins: {
-                        increment: 5
+                        increment: 3
                      }
                   }
                });

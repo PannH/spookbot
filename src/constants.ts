@@ -162,16 +162,16 @@ export default {
       }
    } satisfies Record<Mode, Optional<Rules>>,
    STATS_COINS_VALUES: {
-      words: 0.05,
-      hyphens: 0.1,
-      longs: 0.1,
-      ethnonyms: 0.5,
-      adverbs: 0.5,
-      plants: 1,
-      creatures: 1,
-      alpha: 0.1,
-      fuckedSyllables: 2,
-      lives: 0.2,
-      lifetime: 0.000003
+      words: 0.01,
+      hyphens: 0.05,
+      longs: 0.05,
+      ethnonyms: 0.1,
+      adverbs: 0.1,
+      plants: 0.2,
+      creatures: 0.2,
+      alpha: 0.02,
+      fuckedSyllables: 0.2,
+      lives: 0.1,
+      lifetime: 0.000001
    } satisfies Record<keyof PlayerStats, number>
 } as const;
