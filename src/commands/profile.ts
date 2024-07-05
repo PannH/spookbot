@@ -4,6 +4,7 @@ import globals from '../globals';
 import constants from '../constants';
 import { formatStatValue } from '../functions';
 import type { PlayerStats } from '../interfaces';
+import type { Mode } from '../types';
 
 export default new Command(
    {
@@ -11,12 +12,32 @@ export default new Command(
       description: "Afficher votre profil ou celui d'un autre joueur.",
       aliases: ['p'],
       usage: {
-         formats: ['/p', '/p <pseudo>'],
-         examples: ['/p', '/p Joueur123']
+         formats: ['/p', '/p <pseudo> <-mode>'],
+         examples: ['/p', '/p -sub500', '/p Joueur123', '/p Joueur123 -turbo']
       }
    },
    async (client, message, args) => {
-      const usernameQuery = args[0];
+      const usernames = args.filter((arg) => !arg.startsWith('-'));
+      const modes = args
+         .filter((arg) => arg.startsWith('-'))
+         .map((arg) => arg.slice(1).toLowerCase()) as Mode[];
+
+      const ALLOWED_MODES = Object.keys(constants.MODE_RULES) as Mode[];
+
+      if (usernames.length > 1 || modes.length > 1)
+         return client.room.sendMessage(
+            "Vous ne pouvez spécifier qu'un seul pseudo et un seul mode à la fois.",
+            'error'
+         );
+
+      const usernameQuery = usernames[0];
+      const mode = (modes[0] || 'normal') as Mode;
+
+      if (!ALLOWED_MODES.includes(mode))
+         return client.room.sendMessage(
+            `Mode "${mode}" invalide, veuillez choisir parmi: ${ALLOWED_MODES.join(', ')}.`,
+            'error'
+         );
 
       let profile: Profile & { records: Record[] };
       if (usernameQuery) {
@@ -25,7 +46,9 @@ export default new Command(
                username: usernameQuery
             },
             include: {
-               records: true
+               records: {
+                  where: { mode }
+               }
             }
          });
 
@@ -48,7 +71,9 @@ export default new Command(
                authId: message.chatter.authId
             },
             include: {
-               records: true
+               records: {
+                  where: { mode }
+               }
             }
          });
 
@@ -67,7 +92,7 @@ export default new Command(
          .join(' — ');
 
       client.room.sendMessage(
-         `Profil de ${profile.username}\n\nRecords: ${recordsString}${profile.staffRole ? `\n\nRôle staff: ${constants.STAFF_ROLE_NAMES[profile.staffRole]}` : ''}`
+         `Profil de ${profile.username}\n\nRecords [${mode}]: ${recordsString}${profile.staffRole ? `\n\nRôle staff: ${constants.STAFF_ROLE_NAMES[profile.staffRole]}` : ''}`
       );
    }
 );
