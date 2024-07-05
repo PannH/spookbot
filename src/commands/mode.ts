@@ -8,7 +8,7 @@ export default new Command(
       description: 'Changer le mode de jeu.',
       usage: {
          formats: ['/mode <mode>'],
-         examples: ['/mode hard', '/mode turbo']
+         examples: ['/mode turbo']
       },
       roomOwnerOnly: true,
       onlyInSeating: true
