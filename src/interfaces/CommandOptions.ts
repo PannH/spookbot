@@ -12,4 +12,5 @@ export default interface CommandOptions {
    roomOwnerOnly?: boolean;
    adminOnly?: boolean;
    requiredStaffRoles?: StaffRole[];
+   onlyInSeating?: boolean;
 }

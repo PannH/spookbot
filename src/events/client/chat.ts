@@ -65,6 +65,16 @@ export default new Event(
                'error'
             );
 
+         if (
+            command.options.onlyInSeating &&
+            client.room.round &&
+            !client.room.round.hasEnded
+         )
+            return client.room.sendMessage(
+               "Cette commande n'est pas utilisable lorsque qu'une partie est en cours.",
+               'error'
+            );
+
          command.callback(client, message, args);
       }
    }

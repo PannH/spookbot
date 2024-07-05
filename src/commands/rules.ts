@@ -14,15 +14,10 @@ export default new Command(
          ],
          examples: ['/rules reset', '/rules 1 5 16 2 3']
       },
-      roomOwnerOnly: true
+      roomOwnerOnly: true,
+      onlyInSeating: true
    },
    async (client, message, args) => {
-      if (client.room.round && !client.room.round.hasEnded)
-         return client.room.sendMessage(
-            'Les règles ne peuvent pas être modifiées en cours de partie.',
-            'error'
-         );
-
       if (!args.length)
          return client.room.sendMessage(
             'Veuillez indiquer "reset" ou la configuration complète (voir "/help rules").',

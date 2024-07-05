@@ -8,7 +8,8 @@ export default new Command(
       usage: {
          formats: ['/sn']
       },
-      roomOwnerOnly: true
+      roomOwnerOnly: true,
+      onlyInSeating: true
    },
    async (client, message, args) => {
       if (client.room.round && !client.room.round.hasEnded)
