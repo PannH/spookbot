@@ -4,7 +4,6 @@ import { formatStatValue, getSyllables, pluralize } from '../../functions';
 import globals from '../../globals';
 import type { PlayerStats } from '../../interfaces';
 import type { AlphabetLetter, WordCategory } from '../../types';
-import { inspect } from 'node:util';
 
 export default new Event(
    {
@@ -18,19 +17,36 @@ export default new Event(
       }
    ) => {
       const { currentWord } = client.room.round;
-      if (!globals.dictionary.isWordKnown(currentWord)) {
-         await globals.dictionary.addWord(currentWord);
-
-         client.room.sendMessage(
-            `Le mot ${currentWord.toUpperCase()} était inconnu et a été ajouté au dictionnaire.`,
-            'info'
-         );
-      }
 
       if (data.playerPeerId !== client.room.selfPeerId) {
-         client.room.round.playersStats[data.playerPeerId].words++;
-
          const chatter = await client.room.getChatter(data.playerPeerId);
+
+         if (!globals.dictionary.isWordKnown(currentWord)) {
+            await globals.dictionary.addWord(currentWord);
+
+            client.room.sendMessage(
+               `Merci ${chatter.nickname} ! Tu as appris le mot ${currentWord.toUpperCase()} au bot${chatter.authId ? ' (+5 🪙)' : ''}.`,
+               'info'
+            );
+
+            if (chatter.authId) {
+               await globals.prisma.profile.update({
+                  where: {
+                     authId: chatter.authId
+                  },
+                  data: {
+                     taughtWords: {
+                        increment: 1
+                     },
+                     coins: {
+                        increment: 5
+                     }
+                  }
+               });
+            }
+         }
+
+         client.room.round.playersStats[data.playerPeerId].words++;
 
          if (!client.room.round.setCategoryWords.includes(currentWord)) {
             const wordCategories =

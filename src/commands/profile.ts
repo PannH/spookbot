@@ -92,7 +92,7 @@ export default new Command(
          .join(' — ');
 
       client.room.sendMessage(
-         `Profil de ${profile.username}\n\nRecords [${mode}]: ${recordsString}${profile.staffRole ? `\n\nRôle staff: ${constants.STAFF_ROLE_NAMES[profile.staffRole]}` : ''}`
+         `Profil de ${profile.username}\n\nRecords [${mode}]: ${recordsString}\n\nPièces: ${profile.coins} 🪙\nMots appris: ${profile.taughtWords}${profile.staffRole ? `\n\nRôle staff: ${constants.STAFF_ROLE_NAMES[profile.staffRole]}` : ''}`
       );
    }
 );

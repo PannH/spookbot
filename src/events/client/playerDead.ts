@@ -21,8 +21,18 @@ export default new Event(
          )
          .join(' — ');
 
+      const statsCoinsWorth = Math.floor(
+         Object.keys(playerStats).reduce(
+            (acc, curr) =>
+               acc +
+               constants.STATS_COINS_VALUES[curr as keyof PlayerStats] *
+                  playerStats[curr as keyof PlayerStats],
+            0
+         )
+      );
+
       client.room.sendMessage(
-         `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}`
+         `Bien joué ${chatter.nickname} ! Voici vos scores pour cette partie: ${playerStatsString}${chatter.authId ? ` ⇒ +${statsCoinsWorth} 🪙` : ''}`
       );
 
       if (client.room.notCountStats)
@@ -47,6 +57,17 @@ export default new Event(
             'info'
          );
       }
+
+      await globals.prisma.profile.update({
+         where: {
+            id: profile.id
+         },
+         data: {
+            coins: {
+               increment: statsCoinsWorth
+            }
+         }
+      });
 
       const beatenRecords: {
          [key: string]: { oldValue: number; newValue: number };

@@ -16,11 +16,13 @@ model Word {
 }
 
 model Profile {
-  id        Int        @id @default(autoincrement())
-  authId    String     @unique @map("auth_id")
-  username  String     @unique
-  staffRole StaffRole? @map("staff_role")
-  records   Record[]
+  id          Int        @id @default(autoincrement())
+  authId      String     @unique @map("auth_id")
+  username    String     @unique
+  staffRole   StaffRole? @map("staff_role")
+  records     Record[]
+  coins       Int        @default(0)
+  taughtWords Int        @default(0) @map("taught_words")
 
   @@map("profiles")
 }
