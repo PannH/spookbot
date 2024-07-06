@@ -66,6 +66,7 @@ export default class Client extends EventEmitter {
    }
 
    public async createRoom(options?: CreateRoomOptions): Promise<string> {
+      globals.logger.info('Creating room...');
       const response = await axios.post<{ url: string; roomCode: string }>(
          'https://jklm.fun/api/startRoom',
          {
@@ -77,6 +78,8 @@ export default class Client extends EventEmitter {
       );
 
       const { roomCode } = response.data;
+
+      globals.logger.info(`Created room: https://jklm.fun/${roomCode}`);
 
       await globals.prisma.activeRoom.create({
          data: {
@@ -90,6 +93,7 @@ export default class Client extends EventEmitter {
    }
 
    public async joinRoom(code: string): Promise<void> {
+      globals.logger.info(`Joining room ${code}...`);
       return new Promise((resolve) => {
          (async () => {
             const response = await axios.post<{ url: string }>(
@@ -125,6 +129,10 @@ export default class Client extends EventEmitter {
                   },
                   async (data: JoinRoomData) => {
                      const { gameId, roomCode } = data.roomEntry;
+
+                     globals.logger.info(
+                        `Joined room https://jklm.fun/${roomCode}`
+                     );
 
                      this.gameSocket.emit(
                         'joinGame',
