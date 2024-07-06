@@ -32,6 +32,7 @@
    "dependencies": {
       "@prisma/client": "^5.16.1",
       "axios": "^1.7.2",
+      "beautify-logs": "^1.0.1",
       "dayjs": "^1.11.11",
       "dotenv": "^16.4.5",
       "socket.io": "^4.7.5",
