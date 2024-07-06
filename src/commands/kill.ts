@@ -13,15 +13,6 @@ export default new Command(
    async (client, message, args) => {
       client.room.sendMessage('Destruction de la salle...');
 
-      await globals.prisma.activeRoom.delete({
-         where: {
-            code: client.room.code
-         }
-      });
-
-      client.room.leave();
-
-      client.gameSocket.disconnect();
-      client.roomSocket.disconnect();
+      await client.room.destroy();
    }
 );

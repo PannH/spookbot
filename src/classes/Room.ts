@@ -8,6 +8,7 @@ import type {
 import { Chatter, type Round, type Client } from '.';
 import type { ChatterProfileData, JoinRoomData, Rules } from '../interfaces';
 import constants from '../constants';
+import globals from '../globals';
 
 export default class Room {
    public selfPeerId: number;
@@ -18,6 +19,7 @@ export default class Room {
    public notCountStats: false | { reason: NotCountStatsReason } = false;
    public mode: Mode = 'normal';
    public trainCategory: null | WordCategory = null;
+   public destroyTimeout: NodeJS.Timeout | null = null;
 
    constructor(
       public ownerAuthId: string | null,
@@ -27,6 +29,19 @@ export default class Room {
       this.selfPeerId = _data.selfPeerId;
       this.code = _data.roomEntry.roomCode;
       this.isPublic = _data.roomEntry.isPublic;
+   }
+
+   public async destroy(): Promise<void> {
+      await globals.prisma.activeRoom.delete({
+         where: {
+            code: this._client.room.code
+         }
+      });
+
+      this._client.room.leave();
+
+      this._client.gameSocket.disconnect();
+      this._client.roomSocket.disconnect();
    }
 
    public leave(): void {
