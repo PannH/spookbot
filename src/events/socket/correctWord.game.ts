@@ -23,38 +23,15 @@ export default new Event(
       const { currentWord } = client.room.round;
 
       if (data.playerPeerId !== client.room.selfPeerId) {
-         const chatter = await client.room.getChatter(data.playerPeerId);
-
-         if (!globals.dictionary.isWordKnown(currentWord)) {
-            await globals.dictionary.addWord(currentWord);
-
-            client.room.sendMessage(
-               `Merci ${chatter.nickname} ! Tu as appris le mot ${currentWord.toUpperCase()} au bot${chatter.authId ? ' (+3 🪙)' : ''}.`,
-               'info'
-            );
-
-            if (chatter.authId) {
-               await globals.prisma.profile.update({
-                  where: {
-                     authId: chatter.authId
-                  },
-                  data: {
-                     taughtWords: {
-                        increment: 1
-                     },
-                     coins: {
-                        increment: 3
-                     }
-                  }
-               });
-            }
-         }
+         client.emit('checkWordKnown', currentWord, data.playerPeerId);
 
          client.room.round.playersStats[data.playerPeerId].words++;
 
+         const chatter = await client.room.getChatter(data.playerPeerId);
+
          if (!client.room.round.setCategoryWords.includes(currentWord)) {
             const wordCategories =
-               globals.dictionary.getWordCategories(currentWord);
+               await globals.dictionary.getWordCategories(currentWord);
 
             if (client.room.trainCategory) {
                if (!wordCategories.includes(client.room.trainCategory)) {
@@ -72,7 +49,7 @@ export default new Event(
                }
             }
 
-            if (wordCategories.length) {
+            if (wordCategories?.length) {
                client.room.round.setCategoryWords.push(currentWord);
 
                for (const category of wordCategories)

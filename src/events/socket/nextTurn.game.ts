@@ -1,4 +1,5 @@
 import { Event } from '../../classes';
+import globals from '../../globals';
 
 export default new Event(
    {

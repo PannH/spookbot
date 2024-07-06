@@ -2,6 +2,7 @@ import type { PrismaClient } from '@prisma/client';
 import type { WordCategory } from '../types';
 import type { SearchWordsOptions } from '../interfaces';
 import { determineCategories, shuffleArray } from '../functions';
+import globals from '../globals';
 
 export default class Dictionary {
    private _cache: { word: string; categories: WordCategory[] }[] = [];
@@ -20,10 +21,23 @@ export default class Dictionary {
          word: value,
          categories: categories as WordCategory[]
       }));
+
+      globals.logger.info(
+         `Dictionary cache initialize (${this._cache.length} entries)`
+      );
    }
 
-   public getWordCategories(word: string): WordCategory[] {
-      return this._cache.find((element) => element.word === word)?.categories;
+   public async getWordCategories(word: string): Promise<WordCategory[]> {
+      return (
+         await this._prisma.word.findUnique({
+            where: {
+               value: word
+            },
+            select: {
+               categories: true
+            }
+         })
+      )?.categories as WordCategory[] | null;
    }
 
    public searchWords(
@@ -34,28 +48,17 @@ export default class Dictionary {
          typeof query === 'string' ? new RegExp(query, 'i') : query
       );
 
+      // TODO: add protection against malicious regex
       const words = this._cache
-         .filter(({ word, categories }) => {
-            if (
-               options?.categories?.length &&
-               !options.categories.every((category) =>
-                  categories.includes(category)
-               )
-            )
-               return false;
-
-            if (
-               options?.excludes?.length &&
-               options.excludes.some((exclude) => word === exclude)
-            )
-               return false;
-
-            // TODO: add protection against malicious regex
-
-            return !queries.length
-               ? true
-               : queries.some((query) => query.test(word));
-         })
+         .filter(({ word }) => !(options?.excludes ?? []).includes(word))
+         .filter(({ word }) => queries.every((query) => query.test(word)))
+         .filter(({ categories }) =>
+            options?.categories?.length
+               ? options.categories.every((category) =>
+                    categories.includes(category)
+                 )
+               : true
+         )
          .sort((a, b) =>
             options?.pritoritizeLessCategories
                ? a.categories.length - b.categories.length

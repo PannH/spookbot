@@ -19,7 +19,7 @@ export default new Command(
       if (!word)
          return client.room.sendMessage('Veuillez indiquer un mot.', 'error');
 
-      const categories = globals.dictionary.getWordCategories(word);
+      const categories = await globals.dictionary.getWordCategories(word);
 
       if (!categories)
          return client.room.sendMessage(
