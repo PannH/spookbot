@@ -1,15 +1,13 @@
 import { Event } from '../../classes';
 import constants from '../../constants';
 import {
-   capitalize,
    formatStatValue,
    getSyllables,
    percentage,
    pluralize
 } from '../../functions';
 import globals from '../../globals';
-import type { PlayerStats } from '../../interfaces';
-import type { AlphabetLetter, WordCategory } from '../../types';
+import type { AlphabetLetter } from '../../types';
 
 export default new Event(
    {
