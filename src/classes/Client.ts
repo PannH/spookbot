@@ -1,7 +1,7 @@
 import axios from 'axios';
 import io, { type Socket } from 'socket.io-client';
 import { type Event, type Command, Room } from '.';
-import type { CreateRoomOptions, JoinRoomData } from '../interfaces';
+import type { CreateRoomOptions, JoinRoomData, RoomEntry } from '../interfaces';
 import EventEmitter from 'node:events';
 import { readdirSync } from 'node:fs';
 import globals from '../globals';
@@ -63,6 +63,15 @@ export default class Client extends EventEmitter {
 
          this.commands.set(command.options.name, command);
       }
+   }
+
+   public async fetchRooms(): Promise<RoomEntry[]> {
+      const response = await axios.get<{
+         publicRooms: RoomEntry[];
+         stats: { rooms: number; playerCount: number };
+      }>('https://jklm.fun/api/rooms');
+
+      return response.data.publicRooms;
    }
 
    public async createRoom(options?: CreateRoomOptions): Promise<string> {
