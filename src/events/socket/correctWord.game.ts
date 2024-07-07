@@ -33,22 +33,6 @@ export default new Event(
             const wordCategories =
                await globals.dictionary.getWordCategories(currentWord);
 
-            if (client.room.trainCategory) {
-               if (!wordCategories.includes(client.room.trainCategory)) {
-                  client.emit('trainHints');
-               } else {
-                  const categoryStatKey =
-                     constants.CATEGORY_STATS[client.room.trainCategory];
-                  const stats =
-                     client.room.round.playersStats[data.playerPeerId];
-                  const stat = stats[categoryStatKey] + 1;
-                  const { words } = stats;
-                  client.room.sendMessage(
-                     `✅ ${chatter.nickname} a placé ${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[client.room.trainCategory]} (${stat} - ${percentage(stat, words).toFixed(1)}%): ${currentWord.toUpperCase()}`
-                  );
-               }
-            }
-
             if (wordCategories?.length) {
                client.room.round.setCategoryWords.push(currentWord);
 
@@ -75,22 +59,22 @@ export default new Event(
                (syllable) =>
                   !client.room.round.fuckedSyllables.includes(syllable)
             );
-            const fuckedSyllables: string[] = [];
-            for (const syllable of wordSyllables) {
-               const remainingSyllableWords = globals.dictionary.searchWords(
-                  syllable,
-                  {
-                     excludes: client.room.round.setWords,
-                     limit: 2
-                  }
-               );
+            const fuckedSyllables: string[] = (
+               await Promise.all(
+                  wordSyllables.map(async (syllable) => {
+                     const wordsCount = await globals.prisma.word.count({
+                        where: {
+                           value: {
+                              contains: syllable,
+                              notIn: client.room.round.setWords
+                           }
+                        }
+                     });
 
-               if (
-                  remainingSyllableWords.length === 1 &&
-                  remainingSyllableWords.includes(currentWord)
+                     return wordsCount === 1 ? syllable : null;
+                  })
                )
-                  fuckedSyllables.push(syllable);
-            }
+            ).filter((syllable) => !!syllable);
 
             if (fuckedSyllables.length) {
                client.room.round.fuckedSyllables.push(...fuckedSyllables);
@@ -102,6 +86,22 @@ export default new Event(
                   client.room.sendMessage(
                      `${chatter.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syllable) => syllable.toUpperCase()).join(', ')} (${client.room.round.playersStats[data.playerPeerId].fuckedSyllables}): ${currentWord.toUpperCase()}`
                   );
+            }
+
+            if (client.room.trainCategory) {
+               if (!wordCategories.includes(client.room.trainCategory)) {
+                  client.emit('trainHints');
+               } else {
+                  const categoryStatKey =
+                     constants.CATEGORY_STATS[client.room.trainCategory];
+                  const stats =
+                     client.room.round.playersStats[data.playerPeerId];
+                  const stat = stats[categoryStatKey] + 1;
+                  const { words } = stats;
+                  client.room.sendMessage(
+                     `✅ ${chatter.nickname} a placé ${constants.WORD_CATEGORY_NAMES_WITH_ARTICLE[client.room.trainCategory]} (${stat} - ${percentage(stat, words).toFixed(1)}%): ${currentWord.toUpperCase()}`
+                  );
+               }
             }
          }
 
