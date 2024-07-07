@@ -17,7 +17,7 @@ export default new Event(
          reason === 'notInDictionary' &&
          globals.dictionary.isWordKnown(currentWord)
       ) {
-         await globals.dictionary.removeWord(currentWord);
+         await globals.dictionary.removeWords([currentWord]);
 
          client.room.sendMessage(
             `Le mot ${currentWord.toUpperCase()} n'a pas fonctionné et a été retiré du dictionnaire.`,

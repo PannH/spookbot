@@ -9,7 +9,7 @@ export default new Event(
       if (!globals.dictionary.isWordKnown(word)) {
          const chatter = await client.room.getChatter(playerPeerId);
 
-         await globals.dictionary.addWord(word);
+         await globals.dictionary.addWords([word]);
 
          client.room.sendMessage(
             `Merci ${chatter.nickname} ! Tu as appris le mot ${word.toUpperCase()} au bot${chatter.authId ? ' (+3 🪙)' : ''}.`,
