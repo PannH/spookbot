@@ -76,30 +76,41 @@ export default class Dictionary {
       return this._cache.some((element) => element.word === word);
    }
 
-   public async addWord(word: string): Promise<void> {
-      const categories = determineCategories(word);
-
-      await this._prisma.word.create({
-         data: {
+   public async addWords(words: string[]): Promise<void> {
+      const elements: { value: string; categories: WordCategory[] }[] =
+         words.map((word) => ({
             value: word,
-            categories
-         }
+            categories: determineCategories(word)
+         }));
+
+      await this._prisma.word.createMany({
+         data: elements
       });
 
-      this._cache.push({ word, categories });
+      this._cache.push(
+         ...elements.map(({ value, categories }) => ({
+            word: value,
+            categories
+         }))
+      );
 
-      globals.discordSocket.emit('wordAdded', word);
+      globals.discordSocket.emit(
+         'wordsAdded',
+         elements.map(({ value }) => value)
+      );
    }
 
-   public async removeWord(word: string): Promise<void> {
-      await this._prisma.word.delete({
+   public async removeWords(words: string[]): Promise<void> {
+      await this._prisma.word.deleteMany({
          where: {
-            value: word
+            value: {
+               in: words
+            }
          }
       });
 
-      this._cache = this._cache.filter((element) => element.word !== word);
+      this._cache = this._cache.filter(({ word }) => !words.includes(word));
 
-      globals.discordSocket.emit('wordRemoved', word);
+      globals.discordSocket.emit('wordsRemoved', words);
    }
 }

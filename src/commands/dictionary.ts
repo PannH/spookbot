@@ -38,8 +38,7 @@ export default new Command(
                   'error'
                );
 
-            for (const word of unknownWords)
-               await globals.dictionary.addWord(word);
+            globals.dictionary.addWords(unknownWords);
 
             client.room.sendMessage(
                `[+] ${unknownWords.map((word) => word.toUpperCase()).join(', ')}`,
@@ -61,8 +60,7 @@ export default new Command(
                   'error'
                );
 
-            for (const word of knownWords)
-               await globals.dictionary.removeWord(word);
+            globals.dictionary.removeWords(knownWords);
 
             client.room.sendMessage(
                `[-] ${knownWords.map((word) => word.toUpperCase()).join(', ')}`,
