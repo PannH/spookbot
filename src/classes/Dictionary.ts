@@ -87,6 +87,8 @@ export default class Dictionary {
       });
 
       this._cache.push({ word, categories });
+
+      globals.discordSocket.emit('wordAdded', word);
    }
 
    public async removeWord(word: string): Promise<void> {
@@ -97,5 +99,7 @@ export default class Dictionary {
       });
 
       this._cache = this._cache.filter((element) => element.word !== word);
+
+      globals.discordSocket.emit('wordRemoved', word);
    }
 }
