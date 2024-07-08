@@ -74,7 +74,7 @@ export default new Event(
          }
       });
 
-      const beatenRecords: {
+      const beatenPersonalRecords: {
          id: number;
          key: string;
          oldValue: number;
@@ -107,11 +107,33 @@ export default new Event(
          )
       ).filter((record) => !!record);
 
-      // todo: tell on discord when a high record is beaten (at least top 10)
-      if (!beatenRecords.length) return;
+      if (!beatenPersonalRecords.length) return;
+
+      const beatenTopRecords = (
+         await Promise.all(
+            beatenPersonalRecords.map(async (personalRecord) => {
+               const topRecord = await globals.prisma.record.findFirst({
+                  where: {
+                     key: personalRecord.key,
+                     mode: client.room.mode
+                  },
+                  orderBy: {
+                     value: 'desc'
+                  },
+                  include: {
+                     Profile: true
+                  }
+               });
+
+               return personalRecord.newValue > topRecord.value
+                  ? topRecord
+                  : null;
+            })
+         )
+      ).filter((record) => !!record);
 
       await Promise.all(
-         beatenRecords.map((record) =>
+         beatenPersonalRecords.map((record) =>
             globals.prisma.record.update({
                where: {
                   id: record.id
@@ -123,7 +145,30 @@ export default new Event(
          )
       );
 
-      const beatenRecordsString = beatenRecords
+      if (beatenTopRecords.length)
+         globals.discordSocket.emit(
+            'beatenTopRecords',
+            beatenTopRecords.map((topRecord) => {
+               const personalRecord = beatenPersonalRecords.find(
+                  (personalRecord) => personalRecord.key === topRecord.key
+               );
+
+               return {
+                  key: topRecord.key,
+                  mode: topRecord.mode,
+                  oldData: {
+                     username: topRecord.Profile.username,
+                     value: topRecord.value
+                  },
+                  newData: {
+                     username: profile.username,
+                     value: personalRecord.newValue
+                  }
+               };
+            })
+         );
+
+      const beatenPersonalRecordsString = beatenPersonalRecords
          .map(
             ({ key, oldValue, newValue }) =>
                `${constants.PLAYER_STAT_NAMES[key as keyof PlayerStats]} (${formatStatValue(key as keyof PlayerStats, oldValue)} → ${formatStatValue(key as keyof PlayerStats, newValue)})`
@@ -131,7 +176,7 @@ export default new Event(
          .join(' — ');
 
       client.room.sendMessage(
-         `${chatter.nickname}, vous avez battu certains de vos records [${client.room.mode}]: ${beatenRecordsString}`
+         `${chatter.nickname}, vous avez battu certains de vos records [${client.room.mode}]: ${beatenPersonalRecordsString}`
       );
    }
 );
