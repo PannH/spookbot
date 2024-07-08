@@ -89,7 +89,7 @@ export default new Event(
             }
 
             if (client.room.trainCategory) {
-               if (!wordCategories.includes(client.room.trainCategory)) {
+               if (!wordCategories?.includes(client.room.trainCategory)) {
                   client.emit('trainHints');
                } else {
                   const categoryStatKey =
