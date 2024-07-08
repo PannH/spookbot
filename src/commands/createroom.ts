@@ -15,6 +15,9 @@ export default new Command(
       const existingRoom = await globals.prisma.activeRoom.findUnique({
          where: {
             ownerAuthId: message.chatter.authId
+         },
+         select: {
+            code: true
          }
       });
 

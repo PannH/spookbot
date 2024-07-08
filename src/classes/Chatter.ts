@@ -38,6 +38,9 @@ export default class Chatter {
       const sameUsernameProfile = await globals.prisma.profile.findUnique({
          where: {
             username: this.nickname
+         },
+         select: {
+            id: true
          }
       });
 

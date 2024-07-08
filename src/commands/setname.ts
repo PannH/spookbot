@@ -37,6 +37,9 @@ export default new Command(
       const sameUsernameProfile = await globals.prisma.profile.findFirst({
          where: {
             username: newUsername
+         },
+         select: {
+            id: true
          }
       });
 

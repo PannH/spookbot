@@ -90,6 +90,10 @@ export default new Event(
                      value: {
                         lt: statValue
                      }
+                  },
+                  select: {
+                     id: true,
+                     value: true
                   }
                });
 

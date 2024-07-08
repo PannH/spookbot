@@ -154,6 +154,9 @@ export default class Client extends EventEmitter {
                         await globals.prisma.activeRoom.findFirst({
                            where: {
                               code
+                           },
+                           select: {
+                              ownerAuthId: true
                            }
                         });
 
