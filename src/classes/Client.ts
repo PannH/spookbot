@@ -32,12 +32,12 @@ export default class Client extends EventEmitter {
          const event: Event = require(`../events/socket/${file}`).default;
          const callbackBind = event.callback.bind(null, this);
 
-         if (file.endsWith('.game.ts'))
+         if (file.includes('.game'))
             this.gameSocket[event.options.isOnce ? 'once' : 'on'](
                event.options.name,
                callbackBind
             );
-         else if (file.endsWith('.room.ts'))
+         else if (file.includes('.room'))
             this.roomSocket[event.options.isOnce ? 'once' : 'on'](
                event.options.name,
                callbackBind
