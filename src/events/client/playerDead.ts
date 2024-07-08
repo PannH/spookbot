@@ -75,50 +75,63 @@ export default new Event(
       });
 
       const beatenRecords: {
-         [key: string]: { oldValue: number; newValue: number };
-      } = {};
-      for (const [statKey, statValue] of Object.entries(playerStats)) {
-         const beatenRecord = await globals.prisma.record.findFirst({
-            where: {
-               profileId: profile.id,
-               key: statKey,
-               mode: client.room.mode,
-               value: {
-                  lt: statValue
+         id: number;
+         key: string;
+         oldValue: number;
+         newValue: number;
+      }[] = (
+         await Promise.all(
+            Object.entries(playerStats).map(async ([statKey, statValue]) => {
+               const beatenRecord = await globals.prisma.record.findFirst({
+                  where: {
+                     profileId: profile.id,
+                     key: statKey,
+                     mode: client.room.mode,
+                     value: {
+                        lt: statValue
+                     }
+                  }
+               });
+
+               if (beatenRecord) {
+                  return {
+                     id: beatenRecord.id,
+                     key: statKey,
+                     oldValue: beatenRecord.value,
+                     newValue: statValue
+                  };
                }
-            }
-         });
 
-         if (beatenRecord) {
-            beatenRecords[statKey] = {
-               oldValue: beatenRecord.value,
-               newValue: statValue
-            };
+               return null;
+            })
+         )
+      ).filter((record) => !!record);
 
-            await globals.prisma.record.update({
+      // todo: tell on discord when a high record is beaten (at least top 10)
+      if (!beatenRecords.length) return;
+
+      await Promise.all(
+         beatenRecords.map((record) =>
+            globals.prisma.record.update({
                where: {
-                  id: beatenRecord.id,
-                  key: statKey,
-                  mode: client.room.mode
+                  id: record.id
                },
                data: {
-                  value: statValue
+                  value: record.newValue
                }
-            });
-         }
-      }
+            })
+         )
+      );
 
-      if (Object.keys(beatenRecords).length) {
-         const beatenRecordsString = Object.entries(beatenRecords)
-            .map(
-               ([statKey, { oldValue, newValue }]) =>
-                  `${constants.PLAYER_STAT_NAMES[statKey as keyof PlayerStats]} (${formatStatValue(statKey as keyof PlayerStats, oldValue)} → ${formatStatValue(statKey as keyof PlayerStats, newValue)})`
-            )
-            .join(' — ');
+      const beatenRecordsString = beatenRecords
+         .map(
+            ({ key, oldValue, newValue }) =>
+               `${constants.PLAYER_STAT_NAMES[key as keyof PlayerStats]} (${formatStatValue(key as keyof PlayerStats, oldValue)} → ${formatStatValue(key as keyof PlayerStats, newValue)})`
+         )
+         .join(' — ');
 
-         client.room.sendMessage(
-            `${chatter.nickname}, vous avez battu certains de vos records [${client.room.mode}]: ${beatenRecordsString}`
-         );
-      }
+      client.room.sendMessage(
+         `${chatter.nickname}, vous avez battu certains de vos records [${client.room.mode}]: ${beatenRecordsString}`
+      );
    }
 );
