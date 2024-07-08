@@ -7,6 +7,10 @@ import { readdirSync } from 'node:fs';
 
 dotenv.config();
 
+process.on('uncaughtException', (error, origin) => {
+   globals.logger.error(`Uncaught exception: ${error} at ${origin}`);
+});
+
 const defaultClient = new Client();
 
 (async () => {
