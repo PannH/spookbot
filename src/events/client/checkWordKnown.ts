@@ -17,19 +17,21 @@ export default new Event(
          );
 
          if (chatter.authId) {
-            await globals.prisma.profile.update({
-               where: {
-                  authId: chatter.authId
-               },
-               data: {
-                  taughtWords: {
-                     increment: 1
+            await globals.prisma.profile
+               .update({
+                  where: {
+                     authId: chatter.authId
                   },
-                  coins: {
-                     increment: 3
+                  data: {
+                     taughtWords: {
+                        increment: 1
+                     },
+                     coins: {
+                        increment: 3
+                     }
                   }
-               }
-            });
+               })
+               .catch(() => {});
          }
       }
    }
