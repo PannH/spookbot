@@ -13,7 +13,10 @@ export default new Event(
          `Bienvenue ${chatter.nickname} ! Vous pouvez utiliser /help pour découvrir les commandes disponibles et rejoindre le serveur Discord: https://dsc.gg/spookbot`
       );
 
-      if (profile?.staffRole || chatter.authId === client.room.ownerAuthId)
+      if (
+         profile?.staffRole ||
+         (chatter.authId && chatter.authId === client.room.ownerAuthId)
+      )
          chatter.setModerator(true);
    }
 );
