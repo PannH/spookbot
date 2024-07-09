@@ -14,6 +14,18 @@ process.on('uncaughtException', (error, origin) => {
 const defaultClient = new Client();
 
 (async () => {
+   await globals.dictionary.initCache();
+
+   const allRooms = await defaultClient.fetchRooms();
+
+   await globals.prisma.activeRoom.deleteMany({
+      where: {
+         code: {
+            notIn: allRooms.map((room) => room.roomCode)
+         }
+      }
+   });
+
    const defaultRoom = await globals.prisma.activeRoom.findFirst({
       where: {
          isDefault: true
@@ -23,20 +35,8 @@ const defaultClient = new Client();
       }
    });
 
-   const rooms = await defaultClient.fetchRooms();
-
-   if (rooms.find((room) => room.roomCode === defaultRoom?.code)) {
-      await defaultClient.joinRoom(defaultRoom.code);
-      defaultClient.room.joinRound();
-   } else {
-      await globals.prisma.activeRoom.deleteMany({
-         where: {
-            isDefault: true
-         }
-      });
-
+   if (!defaultRoom) {
       const roomCode = await defaultClient.createRoom({
-         isPublic: false,
          isDefault: true
       });
 
@@ -44,9 +44,30 @@ const defaultClient = new Client();
 
       defaultClient.room.joinRound();
       defaultClient.room.setDefaultRules();
+   } else {
+      await defaultClient.joinRoom(defaultRoom.code);
+      defaultClient.room.joinRound();
+      defaultClient.room.setDefaultRules();
    }
 
-   await globals.dictionary.initCache();
+   const activeRooms = await globals.prisma.activeRoom.findMany({
+      where: {
+         isDefault: false
+      },
+      select: {
+         code: true
+      }
+   });
+
+   await Promise.all(
+      activeRooms.map(async (room) => {
+         const client = new Client();
+
+         await client.joinRoom(room.code);
+         client.room.joinRound();
+         client.room.setDefaultRules();
+      })
+   );
 })();
 
 (async () => {
