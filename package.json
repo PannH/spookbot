@@ -25,16 +25,20 @@
    "homepage": "https://github.com/PannH/spookbot#readme",
    "devDependencies": {
       "@types/node": "^20.14.9",
+      "@types/safe-regex": "^1.1.6",
       "prisma": "^5.16.1",
       "ts-node": "^10.9.2",
       "typescript": "^5.5.2"
    },
    "dependencies": {
       "@prisma/client": "^5.16.1",
+      "@vorlefan/prisma-backup": "^0.3.5",
       "axios": "^1.7.2",
       "beautify-logs": "^1.0.1",
+      "cron": "^3.1.7",
       "dayjs": "^1.11.11",
       "dotenv": "^16.4.5",
+      "safe-regex": "^2.1.1",
       "socket.io": "^4.7.5",
       "socket.io-client": "^4.7.5"
    }
