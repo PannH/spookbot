@@ -3,7 +3,9 @@ import { Client, type Event } from './classes';
 import dotenv from 'dotenv';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
-import { readdirSync } from 'node:fs';
+import { readdirSync, rmSync } from 'node:fs';
+import { runBackup } from '@vorlefan/prisma-backup';
+import { CronJob } from 'cron';
 
 dotenv.config();
 
@@ -37,7 +39,8 @@ const defaultClient = new Client();
 
    if (!defaultRoom) {
       const roomCode = await defaultClient.createRoom({
-         isDefault: true
+         isDefault: true,
+         isPublic: false
       });
 
       await defaultClient.joinRoom(roomCode);
@@ -104,3 +107,35 @@ const defaultClient = new Client();
       )
    );
 })();
+
+new CronJob(
+   '0 0 0 * * *',
+   async () => {
+      globals.logger.info('Running database backup...');
+      const [profiles, records, words] = await globals.prisma.$transaction([
+         globals.prisma.profile.findMany(),
+         globals.prisma.record.findMany(),
+         globals.prisma.word.findMany()
+      ]);
+
+      await runBackup({
+         models: {
+            profiles,
+            records,
+            words
+         },
+         compress: true,
+         folder: 'backups/'
+      });
+
+      rmSync('backups/', {
+         recursive: true,
+         force: true
+      });
+
+      globals.logger.info('Database backup complete');
+   },
+   null,
+   true,
+   'Europe/Brussels'
+);
