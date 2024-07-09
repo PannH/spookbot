@@ -44,10 +44,14 @@ const defaultClient = new Client();
 
       defaultClient.room.joinRound();
       defaultClient.room.setDefaultRules();
+
+      globals.discordSocket.emit('setDefaultRoom', roomCode);
    } else {
       await defaultClient.joinRoom(defaultRoom.code);
       defaultClient.room.joinRound();
       defaultClient.room.setDefaultRules();
+
+      globals.discordSocket.emit('setDefaultRoom', defaultRoom.code);
    }
 
    const activeRooms = await globals.prisma.activeRoom.findMany({
