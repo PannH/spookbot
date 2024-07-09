@@ -1,13 +1,9 @@
 import { Command } from '../classes';
 import constants from '../constants';
-import {
-   compactNumber,
-   pluralize,
-   removeAccents,
-   simplifyString
-} from '../functions';
+import { compactNumber, pluralize, removeAccents } from '../functions';
 import globals from '../globals';
 import type { WordCategory } from '../types';
+import safeRegex from 'safe-regex';
 
 export default new Command(
    {
@@ -24,6 +20,12 @@ export default new Command(
       const queries = args
          .filter((arg) => !flags.includes(arg))
          .map((arg) => removeAccents(arg));
+
+      if (queries.some((query) => !safeRegex(query)))
+         return client.room.sendMessage(
+            'Veuillez ne spécifier que des expression régulières sûres ou moins complexes.',
+            'error'
+         );
 
       if (!queries.length && client.room.round)
          queries.push(client.room.round.syllable);
