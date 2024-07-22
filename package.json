@@ -1,0 +1,38 @@
+{
+   "name": "spookbot",
+   "version": "1.0.0-beta",
+   "main": "dist/index.js",
+   "scripts": {
+      "dev": "ts-node src/index.ts",
+      "build": "tsc",
+      "start": "node dist/index.js",
+      "prisma:format": "npx prisma format",
+      "prisma:migrate": "npx prisma migrate dev --name mig",
+      "prisma:studio": "npx prisma studio",
+      "prisma:generate": "npx prisma generate",
+      "prisma:deploy": "npx prisma migrate deploy"
+   },
+   "license": "UNLICENSED",
+   "devDependencies": {
+      "@types/lodash": "^4.17.6",
+      "@types/node": "^20.14.10",
+      "@types/safe-regex": "^1.1.6",
+      "axios": "^1.7.2",
+      "prisma": "^5.16.2",
+      "socket.io-client": "^4.7.5",
+      "ts-node": "^10.9.2",
+      "typescript": "^5.5.3"
+   },
+   "dependencies": {
+      "@prisma/client": "^5.16.2",
+      "@vorlefan/prisma-backup": "^0.3.5",
+      "beautify-logs": "^1.0.1",
+      "cron": "^3.1.7",
+      "dayjs": "^1.11.11",
+      "dotenv": "^16.4.5",
+      "french-verbs-lefff": "^3.3.0",
+      "lodash": "^4.17.21",
+      "safe-regex": "^2.1.1",
+      "socket.io": "^4.7.5"
+   }
+}

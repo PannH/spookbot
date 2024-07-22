@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `records` ADD COLUMN `coins` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `taught_words` INTEGER NOT NULL DEFAULT 0;
