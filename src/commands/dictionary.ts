@@ -1,7 +1,6 @@
 import { Command } from '../classes';
 import deburr from 'lodash/deburr';
 import { dictionary } from '../globals';
-import verbsConjugations from 'french-verbs-lefff/dist/conjugations.json';
 import { removeDuplicates } from '../functions';
 import axios from 'axios';
 
