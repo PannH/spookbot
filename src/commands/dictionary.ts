@@ -102,7 +102,7 @@ export default new Command(
                `http://verbe.cc/verbecc/conjugate/fr/${verb}`
             );
 
-            let conjugations = [data.value.verb.infinitive];
+            let conjugations = [deburr(data.value.verb.infinitive)];
 
             conjugations.push(
                ...Object.values(data.value.moods)
