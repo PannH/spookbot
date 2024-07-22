@@ -3,6 +3,7 @@ import deburr from 'lodash/deburr';
 import { dictionary } from '../globals';
 import verbsConjugations from 'french-verbs-lefff/dist/conjugations.json';
 import { removeDuplicates } from '../functions';
+import axios from 'axios';
 
 type Subcommand = 'add' | 'remove' | 'conjug';
 
@@ -23,7 +24,7 @@ export default new Command(
       ],
       dictionaryManagerOnly: true
    },
-   (client, message) => {
+   async (client, message) => {
       const subcommand = message.args.shift() as Subcommand;
 
       const SUBCOMMANDS: Subcommand[] = ['add', 'remove', 'conjug'];
@@ -98,19 +99,24 @@ export default new Command(
                );
 
             const verb = message.args[0].toLowerCase();
-            const rawConjugations = verbsConjugations[verb];
+            const { data } = await axios.get(
+               `http://verbe.cc/verbecc/conjugate/fr/${verb}`
+            );
 
-            if (!rawConjugations)
-               return client.room.sendMessage(
-                  "Ce verbe n'est pas dans le dictionnaire de conjugaison, n'oubliez pas les accents du mot et l'infinitif.",
-                  'danger'
-               );
+            let conjugations = [data.value.verb.infinitive];
 
-            const conjugations = removeDuplicates(
-               Object.values(verbsConjugations[verb] as string[][]).flat()
-            )
-               .filter((c) => c !== 'NA')
-               .map((c) => deburr(c));
+            conjugations.push(
+               ...Object.values(data.value.moods)
+                  .flatMap(Object.values)
+                  .flat()
+                  .map((conjugation) => {
+                     const parts = conjugation.split(/ +/g);
+
+                     return deburr(parts[parts.length - 1]).replace("j'", '');
+                  })
+            );
+
+            conjugations = removeDuplicates(conjugations);
 
             const unknownConjugations = conjugations.filter(
                (c) => !dictionary.hasWord(c)
