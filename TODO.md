@@ -1,7 +1,5 @@
 ### Features
 - Dico de test
-- Utiliser API pour conjugaison verbes (https://verbe.cc/verbecc/conjugate/fr/:verb)
-- Commande /rooms pour voir les rooms actives
 
 ### Bugs
 - Disconnect
