@@ -15,9 +15,12 @@ export class Client extends EventEmitter {
 
    constructor(
       public readonly nickname: string = process.env.DEFAULT_CLIENT_NICKNAME,
-      public readonly picture: string = process.env.DEFAULT_CLIENT_PICTURE
+      public readonly picture: string = process.env.DEFAULT_CLIENT_PICTURE,
+      deadInstance?: Client
    ) {
       super();
+
+      if (deadInstance) this.room = deadInstance.room;
    }
 
    private _initEvents(): void {
