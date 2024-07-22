@@ -49,7 +49,7 @@ process.on('uncaughtException', (error, origin) => {
       const roomCode = await createRoom({
          creatorUserToken: process.env.CLIENT_USER_TOKEN,
          gameId: 'bombparty',
-         isPublic: false,
+         isPublic: true,
          name: '🎃 SpookBot [BETA][FR]'
       });
 
