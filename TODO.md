@@ -4,6 +4,7 @@
 - Ajouter records accuracy et speed (/acc, /speed, commands identiques à /records)
 - Mettre à jour la commande "/dictionary conjug" sur le bot Discord
 - Commande pour voir le mot bonus actuel
+- Faire une commande "/silent" pour couper les messages du bot en pleine partie (catégories, etc)
 
 ### Bugs
 - Le mot bonus est trop lent
