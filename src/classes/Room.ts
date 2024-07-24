@@ -23,6 +23,7 @@ export class Room {
    public notRegisterStatsReason: NotRegisterStatsReason | null = null;
    public playstyle: Playstyle = 'normal';
    public destroyTimeout: NodeJS.Timeout | null = null;
+   public isSilent = false;
 
    constructor(
       public readonly data: RoomData,

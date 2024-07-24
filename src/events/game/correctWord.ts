@@ -29,10 +29,11 @@ export default new Event(
 
       if (!dictionary.hasWord(word)) {
          dictionary.addWords([word], player.profile.auth?.id);
-         client.room.sendMessage(
-            `Merci ${player.profile.nickname} ! Vous avez appris le mot ${word.toUpperCase()} au bot${player.profile.auth ? ' (+3 🪙)' : ''}.`,
-            'info'
-         );
+         !client.room.isSilent &&
+            client.room.sendMessage(
+               `Merci ${player.profile.nickname} ! Vous avez appris le mot ${word.toUpperCase()} au bot${player.profile.auth ? ' (+3 🪙)' : ''}.`,
+               'info'
+            );
          player.taughtWordsCount++;
       }
 
@@ -72,12 +73,13 @@ export default new Event(
          );
          const bonusWord = possibleBonusWords[0].value;
          client.room.round.currentBonusWord = bonusWord;
-         client.room.sendMessage(
-            `Le nouveau mot bonus est: ${bonusWord.toUpperCase()}`
-         );
+         !client.room.isSilent &&
+            client.room.sendMessage(
+               `Le nouveau mot bonus est: ${bonusWord.toUpperCase()}`
+            );
       }
 
-      if (client.room.trainCategory) {
+      if (client.room.trainCategory && !client.room.isSilent) {
          if (
             wordCategories.includes(
                TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
@@ -89,7 +91,11 @@ export default new Event(
          else client.emit('trainHints', client.room.round.previousSyllable);
       }
 
-      if (wordCategories.length && !client.room.trainCategory)
+      if (
+         wordCategories.length &&
+         !client.room.trainCategory &&
+         !client.room.isSilent
+      )
          client.room.sendMessage(
             `${player.profile.nickname} a placé ${wordCategories.map((category) => `${CATEGORY_NAME_WITH_ARTICLE[category]} (${formatStat(CATEGORY_TO_STAT[category], player.stats[CATEGORY_TO_STAT[category]])})`).join(', ')}: ${word.toUpperCase()}`
          );
@@ -112,7 +118,7 @@ export default new Event(
       if (fuckedSyllables.length) {
          player.incrementStat('fuckedSyllables', fuckedSyllables.length);
 
-         if (!client.room.trainCategory)
+         if (!client.room.trainCategory && !client.room.isSilent)
             client.room.sendMessage(
                `${player.profile.nickname} a niqué ${pluralize(fuckedSyllables.length, 'la syllabe', 'les syllabes')} ${fuckedSyllables.map((syl) => syl.toUpperCase()).join(', ')} (${player.stats.fuckedSyllables}): ${word.toUpperCase()}`
             );
