@@ -9,3 +9,4 @@
 - Le mot bonus est trop lent
 - L'alpha skippe la lettre Z
 - Recréer une room default après le reboot de 6h
+- Le mot bonus ne correspond pas au mode actuel (mot trop commun en sub par exemple)
