@@ -11,3 +11,4 @@
 - "/reboot" command to reinitiate the default room.
 - Hide the role-specific commands in the "/help" message to users without the required role.
 - Reinstantiate the bot when a disconnect occurs, but ignore if the disconnect was manual (the active room was deleted).
+- Add meta fields to commands to have more clarity in commands usage for the /help command.
