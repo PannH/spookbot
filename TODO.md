@@ -3,6 +3,7 @@
 - Ajouter récap syllabes sur lesquelles on s'est raté dans le mode train
 - Ajouter records accuracy et speed (/acc, /speed, commands identiques à /records)
 - Faire une blacklist
+- Faire un "/train alpha -[lettre]" pour s'entrainer à placer que des mots qui commencent par cette lettre
 
 ### Bugs
 - Le mot bonus est trop lent
