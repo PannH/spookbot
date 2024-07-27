@@ -5,7 +5,7 @@ export default new Command(
       name: 'motbonus',
       aliases: ['mb'],
       description: 'Afficher le mot bonus actuel.',
-      usageFormats: ['/bonus']
+      usageFormats: ['/mb']
    },
    (client, message) => {
       if (!client.room.round || client.room.round.isOver)
