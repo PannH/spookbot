@@ -2,7 +2,8 @@ import { Command } from '../classes';
 
 export default new Command(
    {
-      name: 'bonus',
+      name: 'motbonus',
+      aliases: ['mb'],
       description: 'Afficher le mot bonus actuel.',
       usageFormats: ['/bonus']
    },
