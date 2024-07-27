@@ -75,7 +75,8 @@ export default new Event(
          client.room.round.currentBonusWord = bonusWord;
          !client.room.isSilent &&
             client.room.sendMessage(
-               `Le nouveau mot bonus est: ${bonusWord.toUpperCase()}`
+               `Le nouveau mot bonus est: ${bonusWord.toUpperCase()}`,
+               'warning'
             );
       }
 
