@@ -5,7 +5,9 @@ declare namespace NodeJS {
       CLIENT_USER_TOKEN: string;
       DEFAULT_CLIENT_NICKNAME: string;
       DEFAULT_CLIENT_PICTURE: string;
+      DEFAULT_ROOM_NAME: string;
       SERVER_PORT: string;
+      ENV: 'dev' | 'prod';
       DATABASE_URL: string;
    }
 }
