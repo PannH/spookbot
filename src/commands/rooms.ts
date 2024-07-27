@@ -20,7 +20,7 @@ export default new Command(
       );
 
       client.room.sendMessage(
-         `Salles actives (${activeRooms.length}):\n${rooms.map((r) => `${r.roomCode} (${r.isDefault ? 'défaut' : r.ownerProfile.nickname})`).join('\n')}`
+         `Salles actives (${activeRooms.length}):\n${rooms.map((r) => `${r.roomCode} (${r.isDefault ? 'défaut' : r.ownerProfile?.nickname ?? 'N/A'})`).join('\n')}`
       );
    }
 );
