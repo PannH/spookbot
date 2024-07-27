@@ -26,7 +26,7 @@ export default new Command(
             'danger'
          );
 
-      if (targetNickname === '' && !message.chatter.profile.auth)
+      if (!message.args.length && !message.chatter.profile.auth)
          return client.room.sendMessage(
             "Vous n'avez pas de profil, connectez-vous avec Discord, Twitch, ou JKLM pour en créer un.",
             'danger'
@@ -44,15 +44,14 @@ export default new Command(
             'danger'
          );
 
-      const profile =
-         targetNickname === ''
-            ? await getProfileByAuthIdWithRecords(
-                 message.chatter.profile.auth.id,
-                 targetMode
-              )
-            : await getProfileByNicknameWithRecords(targetNickname, targetMode);
+      const profile = !message.args.length
+         ? await getProfileByAuthIdWithRecords(
+              message.chatter.profile.auth.id,
+              targetMode
+           )
+         : await getProfileByNicknameWithRecords(targetNickname, targetMode);
 
-      if (!profile && targetNickname === '')
+      if (!profile && !message.args.length)
          return client.room.sendMessage(
             'Vous n\'avez pas encore de profil, utilisez "/createprofile" pour le créer ou jouer une partie.',
             'danger'
