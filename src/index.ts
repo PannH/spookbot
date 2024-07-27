@@ -8,7 +8,7 @@ import {
    getActiveRooms
 } from './services/db';
 import { createRoom, getRooms } from './services/api';
-import { rmSync } from 'node:fs';
+import { readdirSync, rmSync } from 'node:fs';
 import { runBackup } from '@vorlefan/prisma-backup';
 import { CronJob } from 'cron';
 
@@ -80,6 +80,15 @@ new CronJob(
          prisma.record.findMany(),
          prisma.word.findMany()
       ]);
+
+      for (const backupFile of readdirSync('/').filter((fileName) =>
+         /\d{13}(.zip)$/.test(fileName)
+      )) {
+         rmSync(backupFile, {
+            recursive: true,
+            force: true
+         });
+      }
 
       await runBackup({
          models: {
