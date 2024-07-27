@@ -14,10 +14,14 @@ export class Round {
 
    constructor(
       private readonly _milestone: RoundMilestone,
-      private readonly _client: Client
+      private _client: Client
    ) {
       this.previousSyllable = _milestone.syllable;
       this.currentSyllable = _milestone.syllable;
+   }
+
+   public updateClient(client: Client): void {
+      this._client = client;
    }
 
    public get currentWord(): string {

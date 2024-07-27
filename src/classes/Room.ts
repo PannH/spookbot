@@ -26,9 +26,17 @@ export class Room {
    public isSilent = false;
 
    constructor(
-      public readonly data: RoomData,
-      private readonly _client: Client
+      public data: RoomData,
+      private _client: Client
    ) {}
+
+   public updateClient(client: Client): void {
+      this._client = client;
+   }
+
+   public updateData(data: RoomData): void {
+      this.data = data;
+   }
 
    public async destroy(): Promise<void> {
       await deleteRoomByCode(this.data.roomEntry.roomCode);

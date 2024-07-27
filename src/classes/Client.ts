@@ -16,11 +16,16 @@ export class Client extends EventEmitter {
    constructor(
       public readonly nickname: string = process.env.DEFAULT_CLIENT_NICKNAME,
       public readonly picture: string = process.env.DEFAULT_CLIENT_PICTURE,
-      deadInstance?: Client
+      room?: Room | null
    ) {
       super();
 
-      if (deadInstance) this.room = deadInstance.room;
+      if (room) {
+         this.room = room;
+
+         this.room.updateClient(this);
+         this.room.round?.updateClient(this);
+      }
    }
 
    private _initEvents(): void {
@@ -88,7 +93,11 @@ export class Client extends EventEmitter {
                         process.env.CLIENT_USER_TOKEN
                      );
 
-                     if (!fromDisconnect) this.room = new Room(room, this);
+                     if (!fromDisconnect) {
+                        this.room = new Room(room, this);
+                     } else {
+                        this.room?.updateData(room);
+                     }
 
                      this._initEvents();
 
