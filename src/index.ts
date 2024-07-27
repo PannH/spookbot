@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import './socket';
-import { dictionary, logger, prisma } from './globals';
+import { allClients, dictionary, logger, prisma } from './globals';
 import { Client } from './classes';
 import {
    createActiveRoom,
@@ -38,6 +38,8 @@ process.on('uncaughtException', (error, origin) => {
 
       const client = new Client();
 
+      allClients.push(client);
+
       await client.joinRoom(activeRoom.code);
 
       logger.info(`Joined default room: ${activeRoom.code}`);
@@ -45,6 +47,8 @@ process.on('uncaughtException', (error, origin) => {
 
    if (!activeRooms.some((activeRoom) => activeRoom.isDefault)) {
       const client = new Client();
+
+      allClients.push(client);
 
       const roomCode = await createRoom({
          creatorUserToken: process.env.CLIENT_USER_TOKEN,

@@ -41,7 +41,17 @@ const prisma = new PrismaClient();
 const meta: { client: Client | null } = {
    client: null
 };
+const allClients: Client[] = [];
 
 dayjs.extend(durationPlugin);
 
-export { commands, baseDir, dictionary, dayjs, prisma, meta, logger };
+export {
+   commands,
+   baseDir,
+   dictionary,
+   dayjs,
+   prisma,
+   meta,
+   logger,
+   allClients
+};

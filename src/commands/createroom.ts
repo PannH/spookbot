@@ -1,4 +1,5 @@
 import { Client, Command } from '../classes';
+import { allClients } from '../globals';
 import { createRoom } from '../services/api';
 import { createActiveRoom, getActiveRoomByOwnerAuthId } from '../services/db';
 
@@ -22,6 +23,8 @@ export default new Command(
          );
 
       const newClient = new Client();
+
+      allClients.push(newClient);
 
       const newRoomCode = await createRoom({
          creatorUserToken: process.env.CLIENT_USER_TOKEN,
