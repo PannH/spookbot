@@ -1,6 +1,7 @@
 import { Command } from '../classes';
 import { pluralize } from '../functions';
 import { commands } from '../globals';
+import { getProfileByAuthId } from '../services/db';
 
 export default new Command(
    {
@@ -10,12 +11,29 @@ export default new Command(
       usageFormats: ['/help', '/help [commande]'],
       usageExamples: ['/help', '/help records']
    },
-   (client, message) => {
+   async (client, message) => {
       const commandNameQuery = message.args[0]?.toLowerCase();
 
       if (!commandNameQuery) {
+         const profile = await getProfileByAuthId(
+            message.chatter.profile.auth?.id
+         );
+
+         let shownCommands = commands;
+
+         if (!profile.roles.includes('admin'))
+            shownCommands = shownCommands.filter((c) => !c.options.adminOnly);
+
+         if (!profile.roles.includes('dictionaryManager'))
+            shownCommands = shownCommands.filter(
+               (c) => !c.options.dictionaryManagerOnly
+            );
+
+         if (!profile.roles.includes('trusted'))
+            shownCommands = shownCommands.filter((c) => !c.options.trustedOnly);
+
          client.room.sendMessage(
-            `Commandes: ${commands.map((c) => `/${c.options.name}`).join(' — ')}`
+            `Commandes: ${shownCommands.map((c) => `/${c.options.name}`).join(' — ')}`
          );
       } else {
          const command = commands.find(
