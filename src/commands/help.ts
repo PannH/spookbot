@@ -21,15 +21,15 @@ export default new Command(
 
          let shownCommands = commands;
 
-         if (!profile.roles.includes('admin'))
+         if (!profile || !profile?.roles?.includes('admin'))
             shownCommands = shownCommands.filter((c) => !c.options.adminOnly);
 
-         if (!profile.roles.includes('dictionaryManager'))
+         if (!profile || !profile?.roles?.includes('dictionaryManager'))
             shownCommands = shownCommands.filter(
                (c) => !c.options.dictionaryManagerOnly
             );
 
-         if (!profile.roles.includes('trusted'))
+         if (!profile || !profile?.roles?.includes('trusted'))
             shownCommands = shownCommands.filter((c) => !c.options.trustedOnly);
 
          client.room.sendMessage(
