@@ -5,7 +5,9 @@ import { getActiveRoomByCode } from '../../services/db';
 export default new Event('disconnect', async (client, reason: string) => {
    if (!client.room) return;
 
-   const activeRoom = getActiveRoomByCode(client.room.data.roomEntry.roomCode);
+   const activeRoom = await getActiveRoomByCode(
+      client.room.data.roomEntry.roomCode
+   );
 
    if (!activeRoom) return;
 
