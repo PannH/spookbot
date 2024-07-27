@@ -2,7 +2,6 @@
 - Dico de test
 - Ajouter récap syllabes sur lesquelles on s'est raté dans le mode train
 - Ajouter records accuracy et speed (/acc, /speed, commands identiques à /records)
-- Mettre à jour la commande "/dictionary conjug" sur le bot Discord
 - Faire une blacklist
 
 ### Bugs
