@@ -11,17 +11,19 @@ const logger = new Logger({
    format: 1
 });
 
-try {
-   const { PrismaClient } = require('@prisma/client');
-   new PrismaClient();
-} catch (error) {
-   logger.info('Generating Prisma client...');
-   execSync('npm run prisma:generate');
+if (process.env.ENV === 'prod') {
+   try {
+      const { PrismaClient } = require('@prisma/client');
+      new PrismaClient();
+   } catch (error) {
+      logger.info('Generating Prisma client...');
+      execSync('npm run prisma:generate');
+   }
+
+   logger.info('Deploying Prisma migrations...');
+
+   execSync('npm run prisma:deploy');
 }
-
-logger.info('Deploying Prisma migrations...');
-
-execSync('npm run prisma:deploy');
 
 const commands: Command[] = [];
 
