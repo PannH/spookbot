@@ -18,6 +18,12 @@ export default new Command(
          '/c ^auto-.+',
          '/c -l -adv',
          '/c souris -mc -pl'
+      ],
+      metaFields: [
+         {
+            title: 'Guide expr. rég.',
+            content: 'https://shorturl.at/190LW'
+         }
       ]
    },
    async (client, message) => {

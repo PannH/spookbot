@@ -2,6 +2,15 @@ import { Command } from '../classes';
 import { TRAIN_CATEGORY_NAME_PLURAL, TRAIN_RULES } from '../constants';
 import type { TrainCategory } from '../types';
 
+const CATEGORY_SHORTCUT: Record<string, TrainCategory> = {
+   mc: 'hyphens',
+   l: 'longs',
+   eth: 'ethnonyms',
+   adv: 'adverbs',
+   pl: 'plants',
+   cr: 'creatures'
+};
+
 export default new Command(
    {
       name: 'train',
@@ -9,7 +18,18 @@ export default new Command(
       usageFormats: ['/train [catégorie]', '/train off'],
       usageExamples: ['/train eth', '/train off'],
       inSeatingOnly: true,
-      roomOwnerOnly: true
+      roomOwnerOnly: true,
+      metaFields: [
+         {
+            title: 'Catégories',
+            content: Object.entries(CATEGORY_SHORTCUT)
+               .map(
+                  ([shortcut, category]) =>
+                     `${shortcut} (${TRAIN_CATEGORY_NAME_PLURAL[category]})`
+               )
+               .join(', ')
+         }
+      ]
    },
    (client, message) => {
       const targetCategory = message.args[0]?.toLowerCase();
@@ -37,15 +57,6 @@ export default new Command(
             'success'
          );
       } else {
-         const CATEGORY_SHORTCUT: Record<string, TrainCategory> = {
-            mc: 'hyphens',
-            l: 'longs',
-            eth: 'ethnonyms',
-            adv: 'adverbs',
-            pl: 'plants',
-            cr: 'creatures'
-         };
-
          const category = CATEGORY_SHORTCUT[targetCategory];
 
          if (!category)

@@ -1,6 +1,11 @@
 import type { Client, Message } from '.';
 import type { Awaitable } from '../types';
 
+interface MetaField {
+   title: string;
+   content: string;
+}
+
 interface CommandOptions {
    name: string;
    description: string;
@@ -13,6 +18,7 @@ interface CommandOptions {
    adminOnly?: boolean;
    trustedOnly?: boolean;
    dictionaryManagerOnly?: boolean;
+   metaFields?: MetaField[];
 }
 
 type CommandCallback = (client: Client, message: Message) => Awaitable<void>;

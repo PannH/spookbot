@@ -51,7 +51,7 @@ export default new Command(
          const { options } = command;
 
          client.room.sendMessage(
-            `Commande /${options.name}${options.aliases?.length ? ` (${options.aliases.map((a) => `/${a}`).join(', ')})` : ''}: ${options.description}\n\n${pluralize(options.usageFormats.length, 'Format')} :\n${options.usageFormats.join('\n')}${options.usageExamples?.length ? `\n\n${pluralize(options.usageExamples.length, 'Exemple')} :\n${options.usageExamples.join('\n')}` : ''}`
+            `Commande /${options.name}${options.aliases?.length ? ` (${options.aliases.map((a) => `/${a}`).join(', ')})` : ''}: ${options.description}\n\n${pluralize(options.usageFormats.length, 'Format')} :\n${options.usageFormats.join('\n')}${options.usageExamples?.length ? `\n\n${pluralize(options.usageExamples.length, 'Exemple')} :\n${options.usageExamples.join('\n')}` : ''}${options.metaFields?.length ? `\n\n${options.metaFields.map((mf) => `${mf.title} :\n${mf.content}`).join('\n\n')}` : ''}`
          );
       }
    }

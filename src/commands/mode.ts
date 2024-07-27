@@ -8,7 +8,13 @@ export default new Command(
       usageFormats: ['/mode [mode]'],
       usageExamples: ['/mode sub500'],
       inSeatingOnly: true,
-      roomOwnerOnly: true
+      roomOwnerOnly: true,
+      metaFields: [
+         {
+            title: 'Modes',
+            content: 'normal, easy, turbo, survival, sub500, sub50'
+         }
+      ]
    },
    (client, message) => {
       const MODES: Mode[] = [

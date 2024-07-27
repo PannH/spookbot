@@ -7,8 +7,14 @@ export default new Command(
       aliases: ['ps'],
       description: 'Modifier le style de jeu du bot.',
       usageFormats: ['/playstyle [style]'],
-      usageExamples: ['/playstyle normal', '/playstyle reverse'],
-      roomOwnerOnly: true
+      usageExamples: ['/playstyle reverse'],
+      roomOwnerOnly: true,
+      metaFields: [
+         {
+            title: 'Styles',
+            content: 'normal, human, reverse, crypted'
+         }
+      ]
    },
    (client, message) => {
       const playstyleQuery = message.args[0]?.toLowerCase() as Playstyle;
