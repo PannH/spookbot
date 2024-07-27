@@ -6,7 +6,7 @@ export default new Event(
    'chatterAdded',
    async (client, chatterProfile: ChatterProfile) => {
       client.room.sendMessage(
-         `Bienvenue ${chatterProfile.nickname} ! Vous pouvez utiliser /help pour voir les commandes et rejoindre le Discord: https://dsc.gg/spookbot\nPS: Le bot est en bêta et est propice à certains bugs.`
+         `Bienvenue ${chatterProfile.nickname} ! Vous pouvez utiliser /help pour voir les commandes et rejoindre le Discord: https://dsc.gg/spookbot`
       );
 
       const profile = await getProfileByAuthId(chatterProfile.auth?.id);
