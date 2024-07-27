@@ -54,7 +54,7 @@ process.on('uncaughtException', (error, origin) => {
          creatorUserToken: process.env.CLIENT_USER_TOKEN,
          gameId: 'bombparty',
          isPublic: process.env.ENV === 'prod',
-         name: '🎃 SpookBot [DEV]'
+         name: process.env.DEFAULT_ROOM_NAME
       });
 
       await createActiveRoom({
