@@ -5,7 +5,7 @@ import isSafeRegex from 'safe-regex';
 import { CATEGORY_NAME } from '../constants';
 import { dictionary } from '../globals';
 import type { WordCategory } from '../types';
-import { compactNumber, pluralize } from '../functions';
+import { compactNumber, pluralize, boldify } from '../functions';
 
 export default new Command(
    {
@@ -98,7 +98,8 @@ export default new Command(
       } else {
          while (true) {
             const oldMessageContent = messageContent;
-            messageContent += `${messageContent.endsWith(': ') ? '' : ', '}${shownWords.shift().toUpperCase()}`;
+            const word = shownWords.shift();
+            messageContent += `${messageContent.endsWith(': ') ? '' : ', '}${client.room.round && !client.room.round.isOver && client.room.round.usedWords.has(word) ? boldify(word.toUpperCase()) : word.toUpperCase()}`;
 
             if (!shownWords.length) break;
 

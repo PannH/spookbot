@@ -8,3 +8,4 @@ export { sleep } from './sleep';
 export { determineCategories } from './determineCategories';
 export { removeDuplicates } from './removeDuplicates';
 export { getPositionString } from './getPositionString';
+export { boldify } from './boldify';
