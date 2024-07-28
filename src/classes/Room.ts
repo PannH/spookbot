@@ -19,6 +19,7 @@ export class Room {
    public seatingChatters: Chatter[] = [];
    public mode: Mode | null = 'normal';
    public trainCategory: TrainCategory | null = null;
+   public trainRegex: RegExp | null = null;
    public registerStats = true;
    public notRegisterStatsReason: NotRegisterStatsReason | null = null;
    public playstyle: Playstyle = 'normal';

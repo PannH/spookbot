@@ -6,6 +6,9 @@ import socket from '../socket';
 import { logger } from '../globals';
 import shuffle from 'lodash/shuffle';
 
+const regexify = (query: string | RegExp): RegExp =>
+   query instanceof RegExp ? query : new RegExp(query, 'i');
+
 interface SearchWordsOptions {
    excludeSet?: Set<string>;
    withCategories?: WordCategory[];
@@ -28,20 +31,21 @@ export class Dictionary {
    }
 
    public async searchWords(
-      query: string | RegExp,
+      queries: string | RegExp | (string | RegExp)[],
       options?: SearchWordsOptions
    ): Promise<string[]> {
       if (!this.words.size) throw new Error('Dictionary cache not initialized');
 
       const { excludeSet = new Set(), withCategories = [] } = options ?? {};
 
-      const queryRegex =
-         query instanceof RegExp ? query : new RegExp(query, 'i');
+      const queryRegexes = Array.isArray(queries)
+         ? queries.map(regexify)
+         : [regexify(queries)];
 
       const matchingWords = Array.from(this.words).filter(
          (word) =>
             !excludeSet.has(word) &&
-            queryRegex.test(word) &&
+            queryRegexes.every((r) => r.test(word)) &&
             (!withCategories.length ||
                withCategories.every((c) =>
                   this.wordsCategories.get(word)?.includes(c)

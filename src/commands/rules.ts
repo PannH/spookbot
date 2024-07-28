@@ -35,6 +35,7 @@ export default new Command(
          client.room.notRegisterStatsReason = null;
          client.room.mode = 'normal';
          client.room.trainCategory = null;
+         client.room.trainRegex = null;
          client.room.sendMessage(
             'Les règles ont été réinitialisées, les scores seront de nouveau enregistrés.',
             'success'
@@ -94,6 +95,7 @@ export default new Command(
          client.room.notRegisterStatsReason = 'customRules';
          client.room.mode = null;
          client.room.trainCategory = null;
+         client.room.trainRegex = null;
          client.room.sendMessage(
             'Les règles ont été modifiées, les scores ne seront pas enregistrés.',
             'success'

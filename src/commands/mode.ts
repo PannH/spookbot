@@ -47,5 +47,7 @@ export default new Command(
       );
       client.room.registerStats = true;
       client.room.notRegisterStatsReason = null;
+      client.room.trainCategory = null;
+      client.room.trainRegex = null;
    }
 );

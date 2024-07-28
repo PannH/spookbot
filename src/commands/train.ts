@@ -8,15 +8,16 @@ const CATEGORY_SHORTCUT: Record<string, TrainCategory> = {
    eth: 'ethnonyms',
    adv: 'adverbs',
    pl: 'plants',
-   cr: 'creatures'
+   cr: 'creatures',
+   pt: 'patterns'
 };
 
 export default new Command(
    {
       name: 'train',
       description: 'Gérer le mode entraînement.',
-      usageFormats: ['/train [catégorie]', '/train off'],
-      usageExamples: ['/train eth', '/train off'],
+      usageFormats: ['/train [catégorie] (pattern)', '/train off'],
+      usageExamples: ['/train eth', '/train pt ^w', '/train off'],
       inSeatingOnly: true,
       roomOwnerOnly: true,
       metaFields: [
@@ -77,6 +78,20 @@ export default new Command(
                "La catégorie d'entraînement spécifiée est déjà active.",
                'danger'
             );
+
+         if (category === 'patterns') {
+            const pattern = message.args[1];
+
+            if (!pattern)
+               return client.room.sendMessage(
+                  'Veuillez spécifier le pattern sur lequel vous souhaitez vous entraîner.',
+                  'danger'
+               );
+
+            client.room.trainRegex = new RegExp(pattern, 'i');
+         } else {
+            client.room.trainRegex = null;
+         }
 
          client.room.setCustomRules(TRAIN_RULES);
          client.room.trainCategory = category;

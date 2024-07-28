@@ -12,12 +12,26 @@ import { compactNumber } from '../../functions';
 export default new Event('trainHints', async (client, syllable) => {
    client.room.round.isIdle = true;
 
-   const hintWords = await dictionary.searchWords(syllable, {
-      excludeSet: client.room.round.usedWords,
-      withCategories: [
-         TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
-      ]
-   });
+   const hintWords: string[] = [];
+   if (client.room.trainCategory === 'patterns') {
+      const words = await dictionary.searchWords(
+         [syllable, client.room.trainRegex],
+         {
+            excludeSet: client.room.round.usedWords
+         }
+      );
+
+      hintWords.push(...words);
+   } else {
+      const words = await dictionary.searchWords(syllable, {
+         excludeSet: client.room.round.usedWords,
+         withCategories: [
+            TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
+         ]
+      });
+
+      hintWords.push(...words);
+   }
 
    if (!hintWords.length) {
       client.room.sendMessage(
@@ -28,7 +42,7 @@ export default new Event('trainHints', async (client, syllable) => {
          .slice(0, 5)
          .map((word) => word.toUpperCase());
       client.room.sendMessage(
-         `💡 ${capitalize(TRAIN_CATEGORY_NAME_PLURAL[client.room.trainCategory])} pour ${client.room.round.previousSyllable.toUpperCase()} (${compactNumber(hintWords.length)}): ${words.join(', ')}`
+         `💡 ${client.room.trainCategory === 'patterns' ? 'Patterns' : capitalize(TRAIN_CATEGORY_NAME_PLURAL[client.room.trainCategory])} pour ${client.room.round.previousSyllable.toUpperCase()} (${compactNumber(hintWords.length)}): ${words.join(', ')}`
       );
    }
 });

@@ -33,7 +33,8 @@ const DEFAULT_ROUND_PLAYER_STATS: RoundPlayerStats = {
    lives: 0,
    alpha: 0,
    fuckedSyllables: 0,
-   bonusWords: 0
+   bonusWords: 0,
+   patterns: 0
 };
 
 const CATEGORY_TO_STAT: Record<WordCategory, keyof RoundPlayerStats> = {
@@ -59,7 +60,8 @@ const STAT_NAME: Record<keyof RoundPlayerStats, string> = {
    longs: 'mots longs',
    plants: 'plantes',
    words: 'mots',
-   bonusWords: 'mots bonus'
+   bonusWords: 'mots bonus',
+   patterns: 'patterns'
 };
 
 const CATEGORY_NAME: Record<WordCategory, string> = {
@@ -171,7 +173,8 @@ const TRAIN_CATEGORY_NAME_SINGULAR: Record<TrainCategory, string> = {
    ethnonyms: 'ethnonyme',
    hyphens: 'mot composé',
    longs: 'mot long',
-   plants: 'plante'
+   plants: 'plante',
+   patterns: 'pattern'
 };
 
 const TRAIN_CATEGORY_NAME_PLURAL: Record<TrainCategory, string> = {
@@ -180,7 +183,8 @@ const TRAIN_CATEGORY_NAME_PLURAL: Record<TrainCategory, string> = {
    ethnonyms: 'ethnonymes',
    hyphens: 'mots composés',
    longs: 'mots longs',
-   plants: 'plantes'
+   plants: 'plantes',
+   patterns: 'patterns'
 };
 
 const TRAIN_CATEGORY_TO_WORD_CATEGORY: Record<TrainCategory, WordCategory> = {
@@ -189,7 +193,8 @@ const TRAIN_CATEGORY_TO_WORD_CATEGORY: Record<TrainCategory, WordCategory> = {
    ethnonyms: 'ethnonym',
    hyphens: 'hyphen',
    longs: 'long',
-   plants: 'plant'
+   plants: 'plant',
+   patterns: null
 };
 
 const STAT_COINS_WORTH: Record<keyof RoundPlayerStats, number> = {
@@ -204,7 +209,8 @@ const STAT_COINS_WORTH: Record<keyof RoundPlayerStats, number> = {
    fuckedSyllables: 0.2,
    lives: 0.1,
    lifetime: 0.000001,
-   bonusWords: 0.1
+   bonusWords: 0.1,
+   patterns: 0.2
 };
 
 const PROFILE_ROLE_NAME: Record<ProfileRole, string> = {

@@ -4,4 +4,5 @@ export type TrainCategory =
    | 'ethnonyms'
    | 'adverbs'
    | 'plants'
-   | 'creatures';
+   | 'creatures'
+   | 'patterns';

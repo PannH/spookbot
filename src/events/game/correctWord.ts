@@ -68,15 +68,26 @@ export default new Event(
       }
 
       if (client.room.trainCategory && !client.room.isSilent) {
-         if (
-            wordCategories.includes(
-               TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
+         if (client.room.trainCategory === 'patterns') {
+            if (client.room.trainRegex.test(word)) {
+               player.incrementStat('patterns');
+
+               client.room.sendMessage(
+                  `✅ ${player.profile.nickname} a placé un pattern (${player.stats[client.room.trainCategory]}, ${percentage(player.stats[client.room.trainCategory], player.stats.words).toFixed(1)}%): ${word.toUpperCase()}`
+               );
+            } else
+               client.emit('trainHints', client.room.round.previousSyllable);
+         } else {
+            if (
+               wordCategories.includes(
+                  TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
+               )
             )
-         )
-            client.room.sendMessage(
-               `✅ ${player.profile.nickname} a placé ${CATEGORY_NAME_WITH_ARTICLE[TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]]} (${player.stats[client.room.trainCategory]}, ${percentage(player.stats[client.room.trainCategory], player.stats.words).toFixed(1)}%): ${word.toUpperCase()}`
-            );
-         else client.emit('trainHints', client.room.round.previousSyllable);
+               client.room.sendMessage(
+                  `✅ ${player.profile.nickname} a placé ${CATEGORY_NAME_WITH_ARTICLE[TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]]} (${player.stats[client.room.trainCategory]}, ${percentage(player.stats[client.room.trainCategory], player.stats.words).toFixed(1)}%): ${word.toUpperCase()}`
+               );
+            else client.emit('trainHints', client.room.round.previousSyllable);
+         }
       }
 
       if (

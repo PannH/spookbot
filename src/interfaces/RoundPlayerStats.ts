@@ -11,4 +11,5 @@ export interface RoundPlayerStats {
    alpha: number;
    fuckedSyllables: number;
    bonusWords: number;
+   patterns: number;
 }
