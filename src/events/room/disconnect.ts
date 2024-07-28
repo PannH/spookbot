@@ -12,7 +12,7 @@ export default new Event('disconnect', async (client, reason: string) => {
    if (!activeRoom) return;
 
    logger.warn(
-      `Disconnected from game socket (room: ${client.room.data.roomEntry.roomCode}): ${reason}`
+      `Disconnected from room socket (room: ${client.room.data.roomEntry.roomCode}): ${reason}`
    );
 
    logger.info('Reinstantiating client...');
