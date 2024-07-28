@@ -11,39 +11,38 @@ interface SearchWordsOptions {
 }
 
 export class Dictionary {
-   private _words: Set<string> = new Set();
-   private _wordsCategories: Map<string, WordCategory[]> = new Map();
+   public words: Set<string> = new Set();
+   public wordsCategories: Map<string, WordCategory[]> = new Map();
 
    public async initCache(): Promise<void> {
       const words = await getWords();
 
       for (const { value, categories } of words) {
-         this._words.add(value);
-         if (categories.length) this._wordsCategories.set(value, categories);
+         this.words.add(value);
+         if (categories.length) this.wordsCategories.set(value, categories);
       }
 
-      logger.info(`Dictionary cache initialized (${this._words.size} words)`);
+      logger.info(`Dictionary cache initialized (${this.words.size} words)`);
    }
 
    public async searchWords(
       query: string | RegExp,
       options?: SearchWordsOptions
    ): Promise<string[]> {
-      if (!this._words.size)
-         throw new Error('Dictionary cache not initialized');
+      if (!this.words.size) throw new Error('Dictionary cache not initialized');
 
       const { excludeSet = new Set(), withCategories = [] } = options ?? {};
 
       const queryRegex =
          query instanceof RegExp ? query : new RegExp(query, 'i');
 
-      const matchingWords = Array.from(this._words).filter(
+      const matchingWords = Array.from(this.words).filter(
          (word) =>
             !excludeSet.has(word) &&
             queryRegex.test(word) &&
             (!withCategories.length ||
                withCategories.every((c) =>
-                  this._wordsCategories.get(word)?.includes(c)
+                  this.wordsCategories.get(word)?.includes(c)
                ))
       );
 
@@ -51,7 +50,7 @@ export class Dictionary {
    }
 
    public hasWord(word: string): boolean {
-      return this._words.has(word);
+      return this.words.has(word);
    }
 
    public async addWords(
@@ -67,8 +66,8 @@ export class Dictionary {
          value: string;
          categories: WordCategory[];
       }[]) {
-         this._words.add(value);
-         if (categories.length) this._wordsCategories.set(value, categories);
+         this.words.add(value);
+         if (categories.length) this.wordsCategories.set(value, categories);
       }
 
       socket.emit('wordsAdd', words, authorAuthId);
@@ -81,8 +80,8 @@ export class Dictionary {
       authorAuthId?: string
    ): Promise<void> {
       for (const word of words) {
-         this._words.delete(word);
-         this._wordsCategories.delete(word);
+         this.words.delete(word);
+         this.wordsCategories.delete(word);
       }
 
       socket.emit('wordsRemove', words, authorAuthId);
@@ -91,6 +90,6 @@ export class Dictionary {
    }
 
    public getWordCategories(word: string): WordCategory[] {
-      return this._wordsCategories.get(word) ?? [];
+      return this.wordsCategories.get(word) ?? [];
    }
 }

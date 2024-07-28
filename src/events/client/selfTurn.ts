@@ -14,7 +14,7 @@ export default new Event('selfTurn', async (client) => {
    if (!matchingWords.length) return client.room.round.setWord('💥');
 
    const noCategoryWords = matchingWords.filter(
-      (word) => !dictionary.getWordCategories(word).length
+      (word) => !dictionary.wordsCategories.get(word)
    );
    const randomWord = pickRandom(
       noCategoryWords.length ? noCategoryWords : matchingWords
