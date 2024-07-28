@@ -53,7 +53,7 @@ export default new Command(
 
       if (!profile && !message.args.length)
          return client.room.sendMessage(
-            'Vous n\'avez pas encore de profil, utilisez "/createprofile" pour le créer ou jouer une partie.',
+            'Vous n\'avez pas encore de profil, utilisez "/createprofile" pour le créer ou jouez une partie.',
             'danger'
          );
 
