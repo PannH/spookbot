@@ -1,13 +1,15 @@
 import { createWords, deleteWords, getWords } from '../services/db';
-import { determineCategories } from '../functions';
+import { determineCategories, pickRandom } from '../functions';
 import type { WordCategory } from '../types';
 import type { Word } from '@prisma/client';
 import socket from '../socket';
 import { logger } from '../globals';
+import shuffle from 'lodash/shuffle';
 
 interface SearchWordsOptions {
    excludeSet?: Set<string>;
    withCategories?: WordCategory[];
+   noCategoriesOnly?: boolean;
 }
 
 export class Dictionary {
@@ -43,7 +45,8 @@ export class Dictionary {
             (!withCategories.length ||
                withCategories.every((c) =>
                   this.wordsCategories.get(word)?.includes(c)
-               ))
+               )) &&
+            (!options?.noCategoriesOnly || !this.getWordCategories(word).length)
       );
 
       return matchingWords;
@@ -91,5 +94,16 @@ export class Dictionary {
 
    public getWordCategories(word: string): WordCategory[] {
       return this.wordsCategories.get(word) ?? [];
+   }
+
+   public async getRandomBonusWord(excludeSet: Set<string>): Promise<string> {
+      const words = await this.searchWords(/./, {
+         excludeSet,
+         noCategoriesOnly: true
+      });
+
+      const randomWord = pickRandom(shuffle(words).slice(0, 10));
+
+      return randomWord;
    }
 }

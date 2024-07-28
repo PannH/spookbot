@@ -10,9 +10,8 @@ import {
    percentage,
    pluralize
 } from '../../functions';
-import { dictionary, prisma } from '../../globals';
+import { dictionary } from '../../globals';
 import { getWordCategories } from '../../services/db';
-import shuffle from 'lodash/shuffle';
 
 export default new Event(
    'correctWord',
@@ -56,23 +55,11 @@ export default new Event(
          player.incrementStat('bonusWords');
          wordCategories.push('bonus');
 
-         const possibleBonusWords = shuffle(
-            await prisma.word.findMany({
-               where: {
-                  categories: {
-                     equals: []
-                  },
-                  value: {
-                     notIn: Array.from(client.room.round.usedWords)
-                  }
-               },
-               select: {
-                  value: true
-               }
-            })
+         const bonusWord = await dictionary.getRandomBonusWord(
+            client.room.round.usedWords
          );
-         const bonusWord = possibleBonusWords[0].value;
          client.room.round.currentBonusWord = bonusWord;
+
          !client.room.isSilent &&
             client.room.sendMessage(
                `Le nouveau mot bonus est: ${bonusWord.toUpperCase()}`,

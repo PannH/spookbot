@@ -1,6 +1,5 @@
 import { Round, Event, RoundPlayer } from '../../classes';
-import { prisma } from '../../globals';
-import shuffle from 'lodash/shuffle';
+import { dictionary } from '../../globals';
 import type { Milestone } from '../../types';
 
 export default new Event(
@@ -21,22 +20,9 @@ export default new Event(
             if (milestone.currentPlayerPeerId === client.room.data.selfPeerId)
                client.emit('selfTurn');
 
-            const possibleBonusWords = shuffle(
-               await prisma.word.findMany({
-                  where: {
-                     categories: {
-                        equals: []
-                     },
-                     value: {
-                        notIn: Array.from(client.room.round.usedWords)
-                     }
-                  },
-                  select: {
-                     value: true
-                  }
-               })
+            const bonusWord = await dictionary.getRandomBonusWord(
+               client.room.round.usedWords
             );
-            const bonusWord = possibleBonusWords[0].value;
             client.room.round.currentBonusWord = bonusWord;
 
             client.room.sendMessage(
