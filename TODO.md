@@ -9,3 +9,4 @@
 ### Bugs
 - L'alpha skippe la lettre Z
 - Le mot bonus ne correspond pas au mode actuel (mot trop commun en sub par exemple)
+- La gestion de l'event willTransferRoom ne fonctionne pas
