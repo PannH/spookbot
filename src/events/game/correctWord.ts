@@ -5,14 +5,13 @@ import {
    TRAIN_CATEGORY_TO_WORD_CATEGORY
 } from '../../constants';
 import {
-   determineCategories,
    formatStat,
    getSyllables,
    percentage,
    pluralize
 } from '../../functions';
 import { dictionary } from '../../globals';
-import { getWordCategories, setWordTestedState } from '../../services/db';
+import { getWordCategories } from '../../services/db';
 
 export default new Event(
    'correctWord',
