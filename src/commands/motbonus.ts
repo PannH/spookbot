@@ -18,7 +18,8 @@ export default new Command(
          );
 
       client.room.sendMessage(
-         `Mot bonus actuel: ${client.room.round.currentBonusWord.toUpperCase()}.`
+         `Mot bonus actuel: ${client.room.round.currentBonusWord.toUpperCase()}.`,
+         'warning'
       );
    }
 );
