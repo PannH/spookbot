@@ -1,9 +1,10 @@
 ### Features
-- Dico de test
 - Ajouter récap syllabes sur lesquelles on s'est raté dans le mode train
 - Ajouter records accuracy et speed (/acc, /speed, commands identiques à /records)
 - Faire une blacklist
 - Ajouter status Discord pour dire room principale et nombre de rooms (setInterval)
+- Faire un shop
+- Changer la couleur des messages par défaut (orange?)
 
 ### Bugs
 - L'alpha skippe la lettre Z
