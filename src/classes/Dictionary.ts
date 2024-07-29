@@ -1,4 +1,9 @@
-import { createWords, deleteWords, getWords } from '../services/db';
+import {
+   createWords,
+   deleteWords,
+   getWords,
+   setWordTestedState
+} from '../services/db';
 import { determineCategories, pickRandom } from '../functions';
 import type { WordCategory } from '../types';
 import type { Word } from '@prisma/client';
@@ -13,21 +18,28 @@ interface SearchWordsOptions {
    excludeSet?: Set<string>;
    withCategories?: WordCategory[];
    noCategoriesOnly?: boolean;
+   excludeUntesteds?: boolean;
+   untestedsOnly?: boolean;
 }
 
 export class Dictionary {
    public words: Set<string> = new Set();
    public wordsCategories: Map<string, WordCategory[]> = new Map();
+   public untestedWords: Set<string> = new Set();
 
    public async initCache(): Promise<void> {
       const words = await getWords();
 
-      for (const { value, categories } of words) {
-         this.words.add(value);
+      for (const { value, categories, isTested } of words) {
+         if (isTested) this.words.add(value);
+         else this.untestedWords.add(value);
+
          if (categories.length) this.wordsCategories.set(value, categories);
       }
 
-      logger.info(`Dictionary cache initialized (${this.words.size} words)`);
+      logger.info(
+         `Dictionary cache initialized (${this.words.size} words, untested: ${this.untestedWords.size})`
+      );
    }
 
    public async searchWords(
@@ -42,7 +54,14 @@ export class Dictionary {
          ? queries.map(regexify)
          : [regexify(queries)];
 
-      const matchingWords = Array.from(this.words).filter(
+      let words: string[];
+      if (options?.untestedsOnly && !options.excludeUntesteds)
+         words = Array.from(this.untestedWords);
+      else if (options.excludeUntesteds) words = Array.from(this.words);
+      else
+         words = Array.from(this.words).concat(Array.from(this.untestedWords));
+
+      const matchingWords = words.filter(
          (word) =>
             !excludeSet.has(word) &&
             queryRegexes.every((r) => r.test(word)) &&
@@ -62,22 +81,26 @@ export class Dictionary {
 
    public async addWords(
       words: string[],
-      authorAuthId?: string
+      authorAuthId?: string,
+      areTested = false
    ): Promise<void> {
       const data: Omit<Word, 'id'>[] = words.map((value) => ({
          value,
-         categories: determineCategories(value)
+         categories: determineCategories(value),
+         isTested: areTested
       }));
 
       for (const { value, categories } of data as {
          value: string;
          categories: WordCategory[];
       }[]) {
-         this.words.add(value);
+         if (areTested) this.words.add(value);
+         else this.untestedWords.add(value);
+
          if (categories.length) this.wordsCategories.set(value, categories);
       }
 
-      socket.emit('wordsAdd', words, authorAuthId);
+      socket.emit('wordsAdd', words, authorAuthId, areTested);
 
       await createWords(data);
    }
@@ -86,12 +109,14 @@ export class Dictionary {
       words: string[],
       authorAuthId?: string
    ): Promise<void> {
+      let wasUntested: boolean;
       for (const word of words) {
          this.words.delete(word);
+         wasUntested = this.untestedWords.delete(word);
          this.wordsCategories.delete(word);
       }
 
-      socket.emit('wordsRemove', words, authorAuthId);
+      socket.emit('wordsRemove', words, authorAuthId, wasUntested);
 
       await deleteWords(words);
    }
@@ -103,11 +128,19 @@ export class Dictionary {
    public async getRandomBonusWord(excludeSet: Set<string>): Promise<string> {
       const words = await this.searchWords(/./, {
          excludeSet,
-         noCategoriesOnly: true
+         noCategoriesOnly: true,
+         excludeUntesteds: true
       });
 
       const randomWord = pickRandom(shuffle(words).slice(0, 10));
 
       return randomWord;
+   }
+
+   public async migrateTestedWord(word: string): Promise<void> {
+      this.untestedWords.delete(word);
+      this.words.add(word);
+
+      setWordTestedState(word, true);
    }
 }

@@ -1,7 +1,7 @@
 import { Command } from '../classes';
 import deburr from 'lodash/deburr';
 import { dictionary } from '../globals';
-import { removeDuplicates } from '../functions';
+import { pluralize, removeDuplicates } from '../functions';
 import axios from 'axios';
 
 type Subcommand = 'add' | 'remove' | 'conjug';
@@ -58,7 +58,7 @@ export default new Command(
             dictionary.addWords(unknownWords, message.chatter.profile.auth?.id);
 
             client.room.sendMessage(
-               `[+] ${unknownWords.map((w) => w.toUpperCase()).join(', ')}`,
+               `${pluralize(unknownWords.length, 'Ajouté')} au dictionnaire de test: ${unknownWords.map((w) => w.toUpperCase()).join(', ')}`,
                'success'
             );
 
@@ -69,7 +69,10 @@ export default new Command(
             const words = removeDuplicates(
                message.args.map((arg) => deburr(arg.toLowerCase()))
             );
-            const knownWords = words.filter((word) => dictionary.hasWord(word));
+            const knownWords = words.filter(
+               (word) =>
+                  dictionary.hasWord(word) || dictionary.untestedWords.has(word)
+            );
 
             if (!knownWords.length)
                return client.room.sendMessage(
@@ -83,7 +86,7 @@ export default new Command(
             );
 
             client.room.sendMessage(
-               `[-] ${knownWords.map((w) => w.toUpperCase()).join(', ')}`,
+               `${pluralize(knownWords.length, 'Enlevé')} du dictionnaire: ${knownWords.map((w) => w.toUpperCase()).join(', ')}`,
                'danger'
             );
 
@@ -132,7 +135,7 @@ export default new Command(
                .catch(() => {});
 
             client.room.sendMessage(
-               `[+] ${unknownConjugations.map((c) => c.toUpperCase()).join(', ')}`,
+               `${pluralize(unknownConjugations.length, 'Ajouté')} au dictionnaire de test: ${unknownConjugations.map((c) => c.toUpperCase()).join(', ')}`,
                'success'
             );
 

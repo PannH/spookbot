@@ -12,6 +12,15 @@ export default new Event(
          playerPeerId === client.room.data.selfPeerId &&
          reason === 'notInDictionary'
       ) {
+         if (dictionary.untestedWords.has(word)) {
+            dictionary.removeWords([word]);
+
+            client.room.sendMessage(
+               `Le mot ${word.toUpperCase()} n'a pas fonctionné et a été retiré du dictionnaire de test.`,
+               'danger'
+            );
+         }
+
          client.emit('selfTurn');
 
          if (dictionary.hasWord(word)) {

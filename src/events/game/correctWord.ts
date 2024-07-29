@@ -5,13 +5,14 @@ import {
    TRAIN_CATEGORY_TO_WORD_CATEGORY
 } from '../../constants';
 import {
+   determineCategories,
    formatStat,
    getSyllables,
    percentage,
    pluralize
 } from '../../functions';
 import { dictionary } from '../../globals';
-import { getWordCategories } from '../../services/db';
+import { getWordCategories, setWordTestedState } from '../../services/db';
 
 export default new Event(
    'correctWord',
@@ -22,12 +23,22 @@ export default new Event(
 
       client.room.round.usedWords.add(word);
 
+      if (dictionary.untestedWords.has(word)) {
+         dictionary.migrateTestedWord(word);
+
+         !client.room.isSilent &&
+            client.room.sendMessage(
+               `Le mot ${word.toUpperCase()} a fonctionné et a été migré vers le dictionnaire principal.`,
+               'info'
+            );
+      }
+
       if (playerPeerId === client.room.data.selfPeerId) return;
 
       const player = client.room.round.players.get(playerPeerId);
 
       if (!dictionary.hasWord(word)) {
-         dictionary.addWords([word], player.profile.auth?.id);
+         dictionary.addWords([word], player.profile.auth?.id, true);
          !client.room.isSilent &&
             client.room.sendMessage(
                `Merci ${player.profile.nickname} ! Vous avez appris le mot ${word.toUpperCase()} au bot${player.profile.auth ? ' (+3 🪙)' : ''}.`,
@@ -105,7 +116,8 @@ export default new Event(
             async (syl) =>
                (
                   await dictionary.searchWords(syl, {
-                     excludeSet: client.room.round.usedWords
+                     excludeSet: client.room.round.usedWords,
+                     excludeUntesteds: true
                   })
                ).length
          )

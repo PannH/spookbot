@@ -13,12 +13,21 @@ export default new Event('selfTurn', async (client) => {
 
    if (!matchingWords.length) return client.room.round.setWord('💥');
 
-   const noCategoryWords = matchingWords.filter(
-      (word) => !dictionary.wordsCategories.get(word)
+   const untestedWord = matchingWords.find((word) =>
+      dictionary.untestedWords.has(word)
    );
-   const randomWord = pickRandom(
-      noCategoryWords.length ? noCategoryWords : matchingWords
-   );
+
+   let randomWord: string;
+   if (untestedWord) {
+      randomWord = untestedWord;
+   } else {
+      const noCategoryWords = matchingWords.filter(
+         (word) => !dictionary.wordsCategories.get(word)
+      );
+      randomWord = pickRandom(
+         noCategoryWords.length ? noCategoryWords : matchingWords
+      );
+   }
 
    if (client.room.trainCategory) {
       await sleep(100);

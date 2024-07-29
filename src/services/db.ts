@@ -5,16 +5,31 @@ import { STAT_NAME } from '../constants';
 import { randomBytes } from 'node:crypto';
 
 export async function getWords(): Promise<
-   { value: string; categories: WordCategory[] }[]
+   { value: string; categories: WordCategory[]; isTested: boolean }[]
 > {
    const words = await prisma.word.findMany({
       select: {
          value: true,
-         categories: true
+         categories: true,
+         isTested: true
       }
    });
 
-   return words as { value: string; categories: WordCategory[] }[];
+   return words as {
+      value: string;
+      categories: WordCategory[];
+      isTested: boolean;
+   }[];
+}
+
+export async function setWordTestedState(
+   word: string,
+   isTested: boolean
+): Promise<void> {
+   await prisma.word.update({
+      where: { value: word },
+      data: { isTested }
+   });
 }
 
 export async function getWordCategories(word: string): Promise<WordCategory[]> {

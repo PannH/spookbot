@@ -17,7 +17,8 @@ export default new Event('trainHints', async (client, syllable) => {
       const words = await dictionary.searchWords(
          [syllable, client.room.trainRegex],
          {
-            excludeSet: client.room.round.usedWords
+            excludeSet: client.room.round.usedWords,
+            excludeUntesteds: true
          }
       );
 
@@ -27,7 +28,8 @@ export default new Event('trainHints', async (client, syllable) => {
          excludeSet: client.room.round.usedWords,
          withCategories: [
             TRAIN_CATEGORY_TO_WORD_CATEGORY[client.room.trainCategory]
-         ]
+         ],
+         excludeUntesteds: true
       });
 
       hintWords.push(...words);

@@ -28,7 +28,9 @@ export default new Command(
          await Promise.all(
             syllables.map(async (syl) => ({
                syllable: syl,
-               wordsCount: (await dictionary.searchWords(syl)).length
+               wordsCount: (
+                  await dictionary.searchWords(syl, { excludeUntesteds: true })
+               ).length
             }))
          )
       ).sort((a, b) => a.wordsCount - b.wordsCount);

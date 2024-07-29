@@ -12,7 +12,9 @@ export default new Command(
       name: 'searchwords',
       aliases: ['sw', 'c'],
       description: 'Rechercher des mots dans le dictionnaire.',
-      usageFormats: ['/c [recherche] [-catégorie1] [-catégorie2] [...]'],
+      usageFormats: [
+         '/c [recherche] [-catégorie1] [-catégorie2] [...] [-test]'
+      ],
       usageExamples: [
          '/c biolog',
          '/c ^auto-.+',
@@ -28,6 +30,11 @@ export default new Command(
    },
    async (client, message) => {
       const queries = message.args.map((arg) => deburr(arg));
+
+      const untestedsOnly = message.flags.includes('-test');
+
+      if (untestedsOnly)
+         message.flags = message.flags.filter((f) => f !== '-test');
 
       if (queries.some((query) => !isSafeRegex(query)))
          return client.room.sendMessage(
@@ -67,15 +74,11 @@ export default new Command(
             'danger'
          );
 
-      const matchingWords = (
-         await Promise.all(
-            queries.map((query) =>
-               dictionary.searchWords(query, {
-                  withCategories: categories
-               })
-            )
-         )
-      ).flat();
+      const matchingWords = await dictionary.searchWords(queries, {
+         withCategories: categories,
+         untestedsOnly: untestedsOnly,
+         excludeUntesteds: !untestedsOnly
+      });
 
       if (!matchingWords.length)
          return client.room.sendMessage(
@@ -96,7 +99,7 @@ export default new Command(
          matchingWords.filter((word) => !hiddenWords.has(word))
       );
 
-      let messageContent = `${compactNumber(matchingWords.length)} ${pluralize(matchingWords.length, 'mot trouvé', 'mots trouvés')}${hiddenWords.size ? ` (${compactNumber(hiddenWords.size)} ${pluralize(hiddenWords.size, 'caché')})` : ''}: `;
+      let messageContent = `${compactNumber(matchingWords.length)} ${pluralize(matchingWords.length, 'mot trouvé', 'mots trouvés')}${hiddenWords.size ? ` (${compactNumber(hiddenWords.size)} ${pluralize(hiddenWords.size, 'caché')})` : ''}${untestedsOnly ? ' [test]' : ''}: `;
 
       const MAX_CONTENT_LENGTH = 200;
       if (!shownWords.length) {

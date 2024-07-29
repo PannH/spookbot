@@ -2,8 +2,8 @@ import type { Chatter, Client } from '.';
 
 export class Message {
    public readonly rawArgs: string[];
-   public readonly flags: string[];
-   public readonly args: string[];
+   public flags: string[];
+   public args: string[];
 
    constructor(
       public readonly content: string,

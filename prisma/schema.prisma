@@ -8,9 +8,10 @@ datasource db {
 }
 
 model Word {
-  id         Int    @id @default(autoincrement())
-  value      String @unique
-  categories Json   @default("[]")
+  id         Int     @id @default(autoincrement())
+  value      String  @unique
+  categories Json    @default("[]")
+  isTested   Boolean @default(true) @map("is_tested")
 
   @@map("words")
 }
