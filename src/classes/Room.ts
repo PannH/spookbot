@@ -94,7 +94,7 @@ export class Room {
       variant: MessageVariant = 'default'
    ): void {
       const variantColors: Record<MessageVariant, string> = {
-         default: '#ffffff',
+         default: '#e5760d',
          danger: '#e61717',
          success: '#12c934',
          warning: '#f5a905',

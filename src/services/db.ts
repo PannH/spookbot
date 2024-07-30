@@ -1,4 +1,10 @@
-import type { Profile, ActiveRoom, Record, Word } from '@prisma/client';
+import type {
+   Profile,
+   ActiveRoom,
+   Record,
+   Word,
+   Blacklist
+} from '@prisma/client';
 import type { Mode, ProfileRole, RecordCategory, WordCategory } from '../types';
 import { prisma } from '../globals';
 import { STAT_NAME } from '../constants';
@@ -278,4 +284,29 @@ export async function deleteRoomByCode(code: string): Promise<void> {
    await prisma.activeRoom.delete({
       where: { code }
    });
+}
+
+export async function blacklistUser(
+   authId: string,
+   reason: string
+): Promise<void> {
+   await prisma.blacklist.create({
+      data: { authId, reason }
+   });
+}
+
+export async function unblacklistUser(authId: string): Promise<void> {
+   await prisma.blacklist.delete({
+      where: { authId }
+   });
+}
+
+export async function getBlacklistUser(authId: string): Promise<Blacklist> {
+   return await prisma.blacklist.findUnique({
+      where: { authId: authId ?? '' }
+   });
+}
+
+export async function getBlacklist(): Promise<Blacklist[]> {
+   return await prisma.blacklist.findMany();
 }

@@ -29,6 +29,14 @@ model Profile {
   @@map("profiles")
 }
 
+model Blacklist {
+  id     Int    @id @default(autoincrement())
+  authId String @unique @map("auth_id")
+  reason String
+
+  @@map("blacklist")
+}
+
 model Record {
   id        Int      @id @default(autoincrement())
   key       String

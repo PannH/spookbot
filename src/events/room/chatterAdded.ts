@@ -1,6 +1,10 @@
 import { Event } from '../../classes';
 import type { ChatterProfile } from '../../interfaces';
-import { getActiveRoomByCode, getProfileByAuthId } from '../../services/db';
+import {
+   getActiveRoomByCode,
+   getBlacklistUser,
+   getProfileByAuthId
+} from '../../services/db';
 
 export default new Event(
    'chatterAdded',
@@ -13,13 +17,16 @@ export default new Event(
       const activeRoom = await getActiveRoomByCode(
          client.room.data.roomEntry.roomCode
       );
+      const chatter = await client.room.getChatter(chatterProfile.peerId);
+      const blacklistUser = await getBlacklistUser(chatterProfile?.auth?.id);
+
+      if (blacklistUser) return chatter.ban();
 
       if (
          profile?.roles?.length ||
          (chatterProfile.auth &&
             chatterProfile.auth.id === activeRoom.ownerAuthId)
       ) {
-         const chatter = await client.room.getChatter(chatterProfile.peerId);
          chatter.setModerator(true).catch(() => {});
       }
    }
