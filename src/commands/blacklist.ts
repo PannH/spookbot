@@ -37,7 +37,7 @@ export default new Command(
             const authId = message.args[1];
             const reason = message.args.slice(2).join(' ');
 
-            if (!authId || !reason)
+            if (!authId || reason === '')
                return client.room.sendMessage(
                   "Veuillez spécifier l'auth et la raison de l'ajoute dans la blacklist.",
                   'danger'
