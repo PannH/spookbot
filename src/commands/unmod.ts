@@ -28,6 +28,11 @@ export default new Command(
             'danger'
          );
 
+      if (chatter.profile.peerId === message.chatter.profile.peerId)
+         return client.room.sendMessage(
+            'Vous ne pouvez pas enlever le rôle de vous-même.'
+         );
+
       if (!chatter.profile.roles.includes('moderator'))
          return client.room.sendMessage(
             "Ce joueur n'est pas modérateur.",
