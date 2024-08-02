@@ -10,3 +10,4 @@ export type { Auth } from './Auth';
 export type { SetupRules } from './SetupRules';
 export type { Player } from './Player';
 export type { RoundPlayerStats } from './RoundPlayerStats';
+export type { ShopItem } from './ShopItem';

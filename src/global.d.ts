@@ -6,6 +6,7 @@ declare namespace NodeJS {
       DEFAULT_CLIENT_NICKNAME: string;
       DEFAULT_CLIENT_PICTURE: string;
       DEFAULT_ROOM_NAME: string;
+      DEFAULT_CHAT_COLOR: string;
       SERVER_PORT: string;
       ENV: 'dev' | 'prod';
       DATABASE_URL: string;

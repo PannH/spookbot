@@ -94,7 +94,7 @@ export class Room {
       variant: MessageVariant = 'default'
    ): void {
       const variantColors: Record<MessageVariant, string> = {
-         default: '#e5760d',
+         default: this._client.chatDefaultColor,
          danger: '#e61717',
          success: '#12c934',
          warning: '#f5a905',

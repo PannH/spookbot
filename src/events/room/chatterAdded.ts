@@ -3,14 +3,21 @@ import type { ChatterProfile } from '../../interfaces';
 import {
    getActiveRoomByCode,
    getBlacklistUser,
-   getProfileByAuthId
+   getProfileByAuthId,
+   getProfileShopItems
 } from '../../services/db';
 
 export default new Event(
    'chatterAdded',
    async (client, chatterProfile: ChatterProfile) => {
+      const shopItems = await getProfileShopItems(chatterProfile.auth?.id);
+      const greetingMessage = shopItems.find(
+         (item) => item.itemId === 4
+      )?.value;
+
       client.room.sendMessage(
-         `Bienvenue ${chatterProfile.nickname} ! Vous pouvez utiliser /help pour voir les commandes et rejoindre le Discord: https://dsc.gg/spookbot`
+         greetingMessage ??
+            `Bienvenue ${chatterProfile.nickname} ! Vous pouvez utiliser /help pour voir les commandes et rejoindre le Discord: https://dsc.gg/spookbot`
       );
 
       const profile = await getProfileByAuthId(chatterProfile.auth?.id);

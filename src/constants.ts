@@ -1,4 +1,4 @@
-import type { RoundPlayerStats, Rules } from './interfaces';
+import type { RoundPlayerStats, Rules, ShopItem } from './interfaces';
 import type {
    Mode,
    NotRegisterStatsReason,
@@ -258,6 +258,34 @@ const RECORD_CATEGORY_NAME: Record<RecordCategory, string> = {
    bonusWords: 'mots bonus'
 };
 
+const SHOP_ITEMS: ShopItem[] = [
+   {
+      id: 1,
+      name: 'Pseudo',
+      price: 700
+   },
+   {
+      id: 2,
+      name: 'Avatar',
+      price: 800
+   },
+   {
+      id: 3,
+      name: 'Couleur des messages',
+      price: 500
+   },
+   {
+      id: 4,
+      name: "Message d'accueil",
+      price: 500
+   },
+   {
+      id: 5,
+      name: 'Nom de salle',
+      price: 800
+   }
+];
+
 export {
    COMMAND_PREFIXES,
    DEFAULT_RULES,
@@ -277,5 +305,6 @@ export {
    PROFILE_ROLE_NAME,
    MODE_FLAG_TO_MODE,
    CATEGORY_SHORTCUT_TO_CATEGORY,
-   RECORD_CATEGORY_NAME
+   RECORD_CATEGORY_NAME,
+   SHOP_ITEMS
 };

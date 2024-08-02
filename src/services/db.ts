@@ -3,7 +3,8 @@ import type {
    ActiveRoom,
    Record,
    Word,
-   Blacklist
+   Blacklist,
+   ShopItem
 } from '@prisma/client';
 import type { Mode, ProfileRole, RecordCategory, WordCategory } from '../types';
 import { prisma } from '../globals';
@@ -159,6 +160,28 @@ export async function updateProfileNickname(
    });
 }
 
+export async function decrementProfileCoins(authId: string, amount: number) {
+   await prisma.profile.update({
+      where: { authId },
+      data: {
+         coins: {
+            decrement: amount
+         }
+      }
+   });
+}
+
+export async function incrementProfileCoins(authId: string, amount: number) {
+   await prisma.profile.update({
+      where: { authId },
+      data: {
+         coins: {
+            increment: amount
+         }
+      }
+   });
+}
+
 export async function getProfilesCount(): Promise<number> {
    return await prisma.profile.count();
 }
@@ -309,4 +332,73 @@ export async function getBlacklistUser(authId: string): Promise<Blacklist> {
 
 export async function getBlacklist(): Promise<Blacklist[]> {
    return await prisma.blacklist.findMany();
+}
+
+export async function buyShopItem(
+   profileId: number,
+   itemId: number
+): Promise<void> {
+   await prisma.shopItem.create({
+      data: {
+         profileId,
+         itemId
+      }
+   });
+}
+
+export async function sellShopItem(profileId: number, itemId: number) {
+   const shopItem = await prisma.shopItem.findFirst({
+      where: {
+         profileId,
+         itemId
+      }
+   });
+
+   await prisma.shopItem.delete({
+      where: {
+         id: shopItem.id
+      }
+   });
+}
+
+export async function updateShopItemValue(
+   profileId: number,
+   itemId: number,
+   value: string
+): Promise<void> {
+   const shopItem = await prisma.shopItem.findFirst({
+      where: {
+         profileId,
+         itemId
+      }
+   });
+
+   await prisma.shopItem.update({
+      where: {
+         id: shopItem.id
+      },
+      data: { value }
+   });
+}
+
+export async function getProfileShopItem(
+   profileId: number,
+   itemId: number
+): Promise<ShopItem> {
+   return await prisma.shopItem.findFirst({
+      where: {
+         profileId,
+         itemId
+      }
+   });
+}
+
+export async function getProfileShopItems(authId: string): Promise<ShopItem[]> {
+   return await prisma.shopItem.findMany({
+      where: {
+         Profile: {
+            authId: authId ?? ''
+         }
+      }
+   });
 }

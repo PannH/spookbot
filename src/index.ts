@@ -5,7 +5,8 @@ import { Client } from './classes';
 import {
    createActiveRoom,
    deleteRoomsByCode,
-   getActiveRooms
+   getActiveRooms,
+   getProfileShopItems
 } from './services/db';
 import { createRoom, getRooms } from './services/api';
 import { readdirSync, rmSync } from 'node:fs';
@@ -36,7 +37,16 @@ process.on('uncaughtException', (error, origin) => {
       if (!jklmRooms.some((room) => room.roomCode === activeRoom.code))
          continue;
 
-      const client = new Client();
+      const shopItems = await getProfileShopItems(activeRoom.ownerAuthId);
+
+      const nickname = shopItems.find((item) => item.itemId === 1)?.value;
+      const picture = shopItems.find((item) => item.itemId === 2)?.value;
+      const roomName = shopItems.find((item) => item.itemId === 5)?.value;
+      const chatDefaultColor = shopItems.find(
+         (item) => item.itemId === 3
+      )?.value;
+
+      const client = new Client(nickname, picture, chatDefaultColor);
 
       allClients.push(client);
 

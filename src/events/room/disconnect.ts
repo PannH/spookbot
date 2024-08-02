@@ -17,7 +17,12 @@ export default new Event('disconnect', async (client, reason: string) => {
 
    logger.info('Reinstantiating client...');
 
-   const newClient = new Client(client.nickname, client.picture, client.room);
+   const newClient = new Client(
+      client.nickname,
+      client.picture,
+      client.chatDefaultColor,
+      client.room
+   );
 
    allClients.push(newClient);
 

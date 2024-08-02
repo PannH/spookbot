@@ -17,14 +17,15 @@ model Word {
 }
 
 model Profile {
-  id          Int      @id @default(autoincrement())
-  authId      String   @unique @map("auth_id")
-  nickname    String   @unique
-  roles       Json     @default("[]")
+  id          Int        @id @default(autoincrement())
+  authId      String     @unique @map("auth_id")
+  nickname    String     @unique
+  roles       Json       @default("[]")
   records     Record[]
-  taughtWords Int      @default(0) @map("taught_words")
-  coins       Int      @default(0)
-  playtime    Int      @default(0)
+  taughtWords Int        @default(0) @map("taught_words")
+  coins       Int        @default(0)
+  playtime    Int        @default(0)
+  items       ShopItem[]
 
   @@map("profiles")
 }
@@ -55,4 +56,14 @@ model ActiveRoom {
   isDefault   Boolean @default(false) @map("is_default")
 
   @@map("active_rooms")
+}
+
+model ShopItem {
+  id        Int      @id @default(autoincrement())
+  itemId    Int      @map("item_id")
+  value     String?  @db.Text
+  Profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId Int?     @map("profile_id")
+
+  @@map("shop_items")
 }

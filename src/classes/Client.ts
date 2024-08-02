@@ -16,6 +16,7 @@ export class Client extends EventEmitter {
    constructor(
       public readonly nickname: string = process.env.DEFAULT_CLIENT_NICKNAME,
       public readonly picture: string = process.env.DEFAULT_CLIENT_PICTURE,
+      public readonly chatDefaultColor: string = process.env.DEFAULT_CHAT_COLOR,
       room?: Room | null
    ) {
       super();
