@@ -1,7 +1,7 @@
 import { Client, Command } from '../classes';
 import { allClients, logger } from '../globals';
 import { createRoom } from '../services/api';
-import { createActiveRoom } from '../services/db';
+import { createActiveRoom, getDefaultActiveRoom } from '../services/db';
 
 export default new Command(
    {
@@ -37,8 +37,14 @@ export default new Command(
 
       newClient.room.resetRules();
 
-      client.room.sendMessage(`Salle redémarrée: https://jklm.fun/${roomCode}`);
+      const defaultRoom = await getDefaultActiveRoom();
 
-      client.room.destroy();
+      allClients
+         .find(
+            (client) => client.room.data.roomEntry.roomCode === defaultRoom.code
+         )
+         .room.destroy();
+
+      client.room.sendMessage(`Salle redémarrée: https://jklm.fun/${roomCode}`);
    }
 );
