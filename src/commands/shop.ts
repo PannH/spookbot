@@ -11,7 +11,7 @@ import {
    sellShopItem,
    updateShopItemValue
 } from '../services/db';
-import Jimp from 'Jimp';
+import Jimp from 'jimp';
 
 export default new Command(
    {
