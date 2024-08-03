@@ -43,7 +43,7 @@ export default new Command(
          .find(
             (client) => client.room.data.roomEntry.roomCode === defaultRoom.code
          )
-         .room.destroy();
+         ?.room?.destroy();
 
       client.room.sendMessage(`Salle redémarrée: https://jklm.fun/${roomCode}`);
    }
