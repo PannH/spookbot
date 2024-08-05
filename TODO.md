@@ -5,6 +5,8 @@
 - Commande "/def" : voir quelle api utilisée par overlay Amaya
 - Dans le "/c", ajouter un flag pour ne rechercher que des mots SANS catégories.
 - Dans le "/c", ajouter flags "-vrb" (verbes à l'infinif uniquement) et "-svrb" (enlève conjugaisons ET infinitifs)
+- Ajouter un moyen de chercher pour des mots qui sont d'un certain sub.
+- Dans le "/c", ajouter flag "-sub*" ("-sub50", "-sub1", ...).
 
 ### Bugs
 - L'alpha skippe la lettre Z
