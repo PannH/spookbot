@@ -4,6 +4,7 @@
 - Ajouter status Discord pour dire room principale et nombre de rooms (setInterval)
 - Commande "/def" : voir quelle api utilisée par overlay Amaya
 - Dans le "/c", ajouter un flag pour ne rechercher que des mots SANS catégories.
+- Dans le "/c", ajouter flags "-vrb" (verbes à l'infinif uniquement) et "-svrb" (enlève conjugaisons ET infinitifs)
 
 ### Bugs
 - L'alpha skippe la lettre Z
