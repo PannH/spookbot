@@ -1,3 +1,14 @@
+## 1.3.0 (11/08/2024)
+### Features
+- Make the default message variant color lighter for better readability.
+- Add Toki's category words and subs (1-5) to the dictionary.
+
+### Fixes
+- Make the bot reconnect to the room when one of the sockets is disconnected.
+- Make the bot recreate a new default room 10 minutes after the room transfer and destroy the other ones.
+
+---
+
 ## 1.2.0  (03/08/2024)
 ### Features
 - Optimize the filtering of words with no categories on selfTurn event.
