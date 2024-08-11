@@ -11,5 +11,4 @@
 ### Bugs
 - L'alpha skippe la lettre Z
 - Le mot bonus ne correspond pas au mode actuel (mot trop commun en sub par exemple)
-- La gestion de l'event willTransferRoom ne fonctionne
 - Certains profils ne sont pas détectés avec le "/profile" et ne peut pas être créé avec "/createprofile"
