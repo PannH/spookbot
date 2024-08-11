@@ -9,7 +9,7 @@ export default new Command(
    },
    (client, message) => {
       client.room.sendMessage('Destruction de la salle...');
-
       client.room.destroy();
+      client.room = null;
    }
 );

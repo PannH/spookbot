@@ -27,8 +27,6 @@ interface SetupData {
 export default new Event('setup', (client, setup: SetupData) => {
    switch (setup.milestone.name) {
       case 'round': {
-         client.room.round = new Round(setup.milestone, client);
-
          setup.milestone.currentPlayerPeerId === setup.selfPeerId &&
             client.gameSocket.emit('selfTurn', setup.milestone.syllable);
 

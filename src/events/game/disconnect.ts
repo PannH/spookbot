@@ -9,5 +9,5 @@ export default new Event('disconnect', async (client, reason: string) => {
    client.gameSocket.disconnect();
    client.gameSocket = null;
 
-   await handleClientReconnect(client, reason, 'room');
+   await handleClientReconnect(client, reason, 'game');
 });
