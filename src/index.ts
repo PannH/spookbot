@@ -121,3 +121,28 @@ new CronJob(
    true,
    'Europe/Brussels'
 );
+
+new CronJob(
+   '*/10 * * * *',
+   async () => {
+      logger.info('Checking for expired rooms...');
+      const activeRooms = await getActiveRooms();
+      const jklmRooms = await getRooms();
+
+      const expiredRoomCodes: string[] = [];
+      for (const room of activeRooms) {
+         const existingRoom = jklmRooms.find((r) => r.roomCode === room.code);
+
+         if (!existingRoom) expiredRoomCodes.push(room.code);
+      }
+
+      logger.info(
+         `Found ${expiredRoomCodes.length} expired rooms, deleting them...`
+      );
+
+      await deleteRoomsByCode(expiredRoomCodes);
+   },
+   null,
+   true,
+   'Europe/Brussels'
+);
